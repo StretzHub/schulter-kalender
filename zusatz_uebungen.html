@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zusatzübungen · Knie & Bauch</title>
+<style>
+:root{
+  --bg:#060d18;--s1:#0d1b2e;--s2:#112240;--s3:#1a3055;
+  --primary:#38bdf8;--accent:#a78bfa;--success:#34d399;
+  --warning:#fbbf24;--danger:#f87171;--knie:#f472b6;--bauch:#fb923c;
+  --text:#f0f9ff;--muted:#94a3b8;--border:#1e3a5f;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,sans-serif}
+
+header{
+  background:linear-gradient(135deg,#0a1628,#130a2e);
+  border-bottom:1px solid var(--border);padding:22px 24px 16px;
+}
+header h1{
+  font-size:1.5em;font-weight:700;
+  background:linear-gradient(90deg,var(--knie),var(--accent),var(--bauch));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+}
+header p{color:var(--muted);font-size:.85em;margin-top:4px}
+
+.tabs{display:flex;gap:0;padding:0 24px;border-bottom:1px solid var(--border)}
+.tab{
+  padding:12px 24px;font-size:.92em;font-weight:600;cursor:pointer;
+  border-bottom:3px solid transparent;color:var(--muted);transition:.2s;
+}
+.tab.active.knie{color:var(--knie);border-color:var(--knie)}
+.tab.active.bauch{color:var(--bauch);border-color:var(--bauch)}
+.tab:hover:not(.active){color:var(--text)}
+
+.panel{display:none;padding:20px 24px 40px;max-width:900px;margin:0 auto}
+.panel.active{display:block}
+
+.section-intro{
+  background:var(--s2);border-radius:12px;padding:16px 20px;
+  margin-bottom:22px;border-left:4px solid var(--knie);
+}
+.section-intro.bauch{border-left-color:var(--bauch)}
+.section-intro h2{font-size:1em;margin-bottom:6px}
+.section-intro p{font-size:.85em;color:var(--muted);line-height:1.6}
+.tag-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.tag{padding:3px 10px;border-radius:12px;font-size:.75em;font-weight:600;border:1px solid}
+.tag-k{color:var(--knie);border-color:var(--knie);background:#2d1020}
+.tag-b{color:var(--bauch);border-color:var(--bauch);background:#2d1a08}
+.tag-g{color:var(--success);border-color:var(--success);background:#0a2018}
+
+.ex-card{
+  background:var(--s1);border:1px solid var(--border);border-radius:14px;
+  margin-bottom:20px;overflow:hidden;
+}
+.ex-head{
+  display:flex;align-items:center;gap:12px;padding:14px 18px;
+  background:linear-gradient(90deg,var(--s3),var(--s2));
+}
+.ex-num{
+  width:34px;height:34px;border-radius:50%;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  font-weight:700;font-size:.9em;color:#060d18;
+}
+.num-k{background:linear-gradient(135deg,var(--knie),#ec4899)}
+.num-b{background:linear-gradient(135deg,var(--bauch),#f59e0b)}
+.ex-title{font-weight:700;font-size:.98em}
+.ex-focus{font-size:.76em;color:var(--muted);margin-top:2px}
+.ex-body{padding:16px 18px}
+.ex-layout{display:flex;gap:18px;flex-wrap:wrap;align-items:flex-start}
+
+.svg-box{
+  flex:0 0 200px;background:var(--bg);border-radius:10px;
+  border:1px solid var(--border);overflow:hidden;
+}
+.svg-box svg{display:block;width:200px;height:220px}
+.svg-box:hover svg .anim{animation-play-state:paused!important}
+.svg-hint{text-align:center;font-size:.67em;color:var(--muted);padding:3px 0 5px}
+
+.ex-info{flex:1;min-width:190px}
+.pills{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:11px}
+.pill{padding:3px 11px;border-radius:16px;font-size:.78em;font-weight:600;background:var(--s3);border:1px solid var(--border);color:var(--primary)}
+.pill-k{color:var(--knie);border-color:#4d1a35}
+.pill-b{color:var(--bauch);border-color:#4d2a08}
+.steps{list-style:none}
+.steps li{padding:5px 0 5px 26px;position:relative;font-size:.85em;border-bottom:1px solid var(--border)}
+.steps li:last-child{border:none}
+.steps li::before{
+  content:attr(data-n);position:absolute;left:0;top:6px;
+  border-radius:50%;width:18px;height:18px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:.72em;font-weight:700;color:#060d18;
+}
+.li-k::before{background:var(--knie)}
+.li-b::before{background:var(--bauch)}
+.tip-k{background:linear-gradient(90deg,#2d1020,var(--s2));border-left:3px solid var(--knie);border-radius:0 8px 8px 0;padding:8px 11px;font-size:.8em;margin-top:9px;color:#fbcfe8}
+.tip-b{background:linear-gradient(90deg,#2d1a08,var(--s2));border-left:3px solid var(--bauch);border-radius:0 8px 8px 0;padding:8px 11px;font-size:.8em;margin-top:9px;color:#fed7aa}
+.vid-link{
+  display:inline-flex;align-items:center;gap:6px;margin-top:10px;
+  padding:6px 12px;border-radius:8px;border:1px solid #1e3a5f;
+  background:var(--s3);color:var(--muted);font-size:.78em;text-decoration:none;transition:.2s;
+}
+.vid-link:hover{border-color:#ff0000aa;color:#ff6b6b;background:#2a1515}
+
+.warn-box{
+  background:#1a0a0a;border-left:3px solid var(--danger);border-radius:0 8px 8px 0;
+  padding:8px 12px;font-size:.8em;margin-top:9px;color:#fca5a5;
+}
+
+.schedule-box{
+  background:var(--s2);border-radius:12px;padding:18px 20px;margin-bottom:22px;
+  border:1px solid var(--border);
+}
+.schedule-box h3{color:var(--primary);margin-bottom:12px;font-size:.95em}
+.sched-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:8px}
+.sched-day{background:var(--s3);border-radius:8px;padding:10px 8px;text-align:center;font-size:.8em}
+.sched-day .day-name{font-weight:700;color:var(--primary);margin-bottom:4px}
+.sched-day .day-ex{color:var(--muted);font-size:.75em;line-height:1.5}
+.sched-day.rest-day .day-name{color:var(--muted)}
+
+/* ANIMATIONS */
+@keyframes squat{0%,100%{transform:translateY(0)}50%{transform:translateY(16px)}}
+@keyframes legRaise{0%,100%{transform:rotate(0deg)}50%{transform:rotate(-35deg)}}
+@keyframes stepUp{0%,100%{transform:translateY(0)}40%,60%{transform:translateY(-14px)}}
+@keyframes tke{0%,100%{transform:rotate(0deg)}50%{transform:rotate(-18deg)}}
+@keyframes bridge{0%,100%{transform:rotate(0deg)}50%{transform:rotate(-12deg)}}
+@keyframes deadbug-arm{0%,100%{transform:rotate(0deg)}50%{transform:rotate(50deg)}}
+@keyframes deadbug-leg{0%,100%{transform:rotate(0deg)}50%{transform:rotate(-45deg)}}
+@keyframes crunch{0%,100%{transform:rotate(0deg)}50%{transform:rotate(-18deg)}}
+@keyframes birddog-arm{0%,100%{transform:rotate(0deg)}50%{transform:rotate(-30deg)}}
+@keyframes birddog-leg{0%,100%{transform:rotate(0deg)}50%{transform:rotate(25deg)}}
+@keyframes pulseGlow{0%,100%{opacity:.2}50%{opacity:.7}}
+@keyframes arrD{0%,100%{transform:translateY(0)}50%{transform:translateY(4px)}}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Zusatzübungen · Knie & Bauch</h1>
+  <p>Linkes Knie (post Knorpeltransplantation) · Bauch & Core · Phase 1 kompatibel</p>
+</header>
+
+<div class="tabs">
+  <div class="tab knie active" onclick="showTab('knie')">🦵 Knie links</div>
+  <div class="tab bauch" onclick="showTab('bauch')">💪 Bauch & Core</div>
+</div>
+
+<!-- KNIE PANEL -->
+<div class="panel active" id="panel-knie">
+
+  <div class="section-intro">
+    <h2>Kniestabilisation nach Knorpeltransplantation</h2>
+    <p>3 Jahre post-OP, leichte Beschwerden bei Belastung – der Fokus liegt auf dem <strong>VMO (Vastus Medialis Oblique)</strong>, dem inneren Quadrizepsmuskel direkt über dem Knie. Er ist der wichtigste Stabilisator nach Knorpelschäden und wird bei normalen Kniebeugen oft vernachlässigt. Dazu kommen Hamstring und Glute-Aktivierung als Schutzmuskeln des Knies.</p>
+    <div class="tag-row">
+      <span class="tag tag-k">VMO-Fokus</span>
+      <span class="tag tag-k">Kein Hochimpact</span>
+      <span class="tag tag-g">Schulter-neutral</span>
+      <span class="tag tag-g">3× pro Woche</span>
+    </div>
+  </div>
+
+  <div class="schedule-box">
+    <h3>Empfohlener Trainingsplan Knie (zusätzlich zu Schulter)</h3>
+    <div class="sched-grid">
+      <div class="sched-day"><div class="day-name">Mo</div><div class="day-ex">Knie + Schulter</div></div>
+      <div class="sched-day rest-day"><div class="day-name">Di</div><div class="day-ex">Schulter + Bauch</div></div>
+      <div class="sched-day"><div class="day-name">Mi</div><div class="day-ex">Knie + Schulter</div></div>
+      <div class="sched-day rest-day"><div class="day-name">Do</div><div class="day-ex">Schulter + Bauch</div></div>
+      <div class="sched-day"><div class="day-name">Fr</div><div class="day-ex">Knie + Schulter</div></div>
+      <div class="sched-day rest-day"><div class="day-name">Sa</div><div class="day-ex">Leicht (nur Dehnen)</div></div>
+      <div class="sched-day rest-day"><div class="day-name">So</div><div class="day-ex">Ruhe</div></div>
+    </div>
+  </div>
+
+  <!-- ÜBUNG K1: Terminal Knee Extension -->
+  <div class="ex-card">
+    <div class="ex-head">
+      <div class="ex-num num-k">K1</div>
+      <div>
+        <div class="ex-title">Terminal Knee Extension (TKE)</div>
+        <div class="ex-focus">VMO-Aktivierung · Wichtigste Übung nach Knorpel-OP</div>
+      </div>
+    </div>
+    <div class="ex-body">
+      <div class="ex-layout">
+        <div class="svg-box">
+          <svg viewBox="0 0 200 220" xmlns="http://www.w3.org/2000/svg">
+            <rect width="200" height="220" fill="#0a1628" rx="10"/>
+            <!-- Wall/anchor on left -->
+            <rect x="8" y="10" width="10" height="200" rx="3" fill="#1e3a5f" stroke="#60a5fa" stroke-width="1.5"/>
+            <!-- Resistance band -->
+            <line x1="18" y1="140" x2="75" y2="155" stroke="#f472b6" stroke-width="2.5" stroke-dasharray="4,2"/>
+            <text x="28" y="135" font-size="8" fill="#f472b6" font-family="sans-serif">Band</text>
+            <!-- Person side view, animated knee extension -->
+            <g class="anim" style="animation:tke 3s ease-in-out infinite;transform-origin:95px 155px">
+              <!-- upper leg -->
+              <rect x="83" y="110" width="14" height="55" rx="7" fill="#112240" stroke="#38bdf8" stroke-width="2"/>
+              <!-- lower leg extending -->
+              <rect x="85" y="155" width="13" height="50" rx="6" fill="#112240" stroke="#38bdf8" stroke-width="2" transform="rotate(-10,91,155)"/>
+            </g>
+            <!-- Body (static) -->
+            <ellipse cx="100" cy="85" rx="28" ry="38" fill="#112240" stroke="#38bdf8" stroke-width="1.5"/>
+            <rect x="89" y="55" width="18" height="22" rx="7" fill="#112240" stroke="#38bdf8" stroke-width="1.5"/>
+            <ellipse cx="98" cy="42" rx="16" ry="18" fill="#112240" stroke="#38bdf8" stroke-width="1.5"/>
+            <!-- Knee highlight -->
+            <circle cx="91" cy="157" r="8" fill="#f472b6" style="animation:pulseGlow 2s ease-in-out infinite" opacity=".4"/>
+            <text x="105" y="162" font-size="8" fill="#f472b6" font-family="sans-serif">VMO!</text>
+            <!-- Floor -->
+            <line x1="20" y1="208" x2="180" y2="208" stroke="#1e3a5f" stroke-width="2"/>
+            <text x="20" y="218" font-size="8" fill="#94a3b8" font-family="sans-serif">Seitenansicht · Band am Knöchel</text>
+          </svg>
+          <div class="svg-hint">Hover = Pause</div>
+        </div>
+        <div class="ex-info">
+          <div class="pills">
+            <span class="pill pill-k">3 × 15 Wdh.</span>
+            <span class="pill pill-k">Langsam & kontrolliert</span>
+            <span class="pill pill-k">3× / Woche</span>
+          </div>
+          <ol class="steps">
+            <li class="li-k" data-n="1">Befestige ein Theraband / Gummiband an einer Wand oder Tischbein in Knöchelhöhe</li>
+            <li class="li-k" data-n="2">Schlinge das Band um den linken Knöchel (Rückseite) – stehe mit Rücken zur Wand</li>
+            <li class="li-k" data-n="3">Knie leicht gebeugt (10–20°) – das ist die Startposition</li>
+            <li class="li-k" data-n="4">Strecke das Knie langsam <strong>vollständig durch</strong> gegen den Bandwiderstand</li>
+            <li class="li-k" data-n="5">2 Sekunden halten, langsam zurück – nie komplett schlaff werden lassen</li>
+          </ol>
+          <div class="tip-k">💡 <strong>Warum TKE?</strong> Die letzten 20° der Kniestreckung aktivieren den VMO am stärksten – genau der Bereich, der nach Knorpel-OP am meisten atrophiert. Kein anderes Gerät notwendig, minimaler Gelenkstress.</div>
+          <a class="vid-link" href="https://www.youtube.com/results?search_query=terminal+knee+extension+VMO+exercise+band" target="_blank">▶ Video auf YouTube</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ÜBUNG K2: Mini Squat (VMO-Fokus) -->
+  <div class="ex-card">
+    <div class="ex-head">
+      <div class="ex-num num-k">K2</div>
+      <div>
+        <div class="ex-title">Mini Squat mit VMO-Fokus</div>
+        <div class="ex-focus">Kontrollierte Kniebeuge bis 60° · Quadrizeps</div>
+      </div>
+    </div>
+    <div class="ex-body">
+      <div class="ex-layout">
+        <div class="svg-box">
+          <svg viewBox="0 0 200 220" xmlns="http://www.w3.org/2000/svg">
+            <rect width="200" height="220" fill="#0a1628" rx="10"/>
+            <g class="anim" style="animation:squat 3.5s ease-in-out infinite;transform-origin:100px 145px">
+              <!-- legs -->
+              <rect x="79" y="135" width="14" height="55" rx="7" fill="#112240" stroke="#38bdf8" stroke-width="2"/>
+              <rect x="107" y="135" width="14" height="55" rx="7" fill="#112240" stroke="#38bdf8" stroke-width="2"/>
+              <!-- feet -->
+              <ellipse cx="86" cy="192" rx="14" ry="6" fill="#112240" stroke="#38bdf8" stroke-width="1.5"/>
+              <ellipse cx="114" cy="192" rx="14" ry="6" fill="#112240" stroke="#38bdf8" stroke-width="1.5"/>
+            </g>
+            <!-- torso static -->
+            <ellipse cx="100" cy="110" rx="26" ry="36" fill="#112240" stroke="#38bdf8" stroke-width="2"/>
+            <rect x="89" y="76" width="18" height="22" rx="7" fill="#112240" stroke="#38bdf8" stroke-width="1.5"/>
+            <ellipse cx="98" cy="62" rx="16" ry="18" fill="#112240" stroke="#38bdf8" stroke-width="1.5"/>
+            <!-- arms forward for balance -->
+            <rect x="55" y="105" width="40" height="10" rx="5" fill="#112240" stroke="#38bdf8" stroke-width="1.5" opacity=".7"/>
+            <!-- 60 degree angle indicator -->
+            <path d="M 86 135 Q 80 155 86 165" stroke="#fbbf24" stroke-width="1.5" fill="none"/>
+            <text x="60" y="158" font-size="8" fill="#fbbf24" font-family="sans-serif">max 60°</text>
+            <!-- Knee VMO highlight -->
+            <circle cx="86" cy="140" r="7" fill="#f472b6" style="animation:pulseGlow 2s ease-in-out infinite" opacity=".4"/>
+            <circle cx="114" cy="140" r="7" fill="#f472b6" style="animation:pulseGlow 2s ease-in-out infinite" opacity=".4"/>
+            <line x1="20" y1="208" x2="180" y2="208" stroke="#1e3a5f" stroke-width="2"/>
+            <text x="40" y="218" font-size="8" fill="#94a3b8" font-family="sans-serif">Frontansicht · Knie über Zehen</text>
+          </svg>
+          <div class="svg-hint">Hover = Pause</div>
+        </div>
+        <div class="ex-info">
+          <div class="pills">
+            <span class="pill pill-k">3 × 12 Wdh.</span>
+            <span class="pill pill-k">Nur bis 60°</span>
+            <span class="pill pill-k">Langsam 3 Sek. runter</span>
+          </div>
+          <ol class="steps">
+            <li class="li-k" data-n="1">Aufrecht stehen, Füße hüftbreit, Zehen leicht nach außen</li>
+            <li class="li-k" data-n="2">Langsam in die Knie (3 Sek. nach unten) – <strong>maximal 60° Beugung</strong></li>
+            <li class="li-k" data-n="3">Knie zeigen in Richtung der Zehen – nicht nach innen einbrechen lassen!</li>
+            <li class="li-k" data-n="4">Gewicht auf den <strong>Fersen</strong> lassen, nicht auf Ballen</li>
+            <li class="li-k" data-n="5">Kontrolliert hochkommen, Knie nicht durchknallen</li>
+          </ol>
+          <div class="tip-k">💡 <strong>60° Regel bei Knorpelschäden:</strong> Über 90° Kniebeuge steigt der Knorpeldruck exponentiell. Bleibe in den ersten Wochen bei max. 60° – das ist sicherer und trotzdem sehr effektiv für den VMO.</div>
+          <div class="warn-box">⚠️ Knie bricht nach innen ein (Valgus) → sofort stoppen. Übung ohne Spiegel erst dann machen wenn Technik sitzt.</div>
+          <a class="vid-link" href="https://www.youtube.com/results?search_query=mini+squat+VMO+knee+cartilage+rehabilitation" target="_blank">▶ Video auf YouTube</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ÜBUNG K3: Straight Leg Raise -->
+  <div class="ex-card">
+    <div class="ex-head">
+      <div class="ex-num num-k">K3</div>
+      <div>
+        <div class="ex-title">Straight Leg Raise</div>
+        <div class="ex-focus">Quadrizeps ohne Kniegelenk-Stress · Klassik der Kniereha</div>
+      </div>
+    </div>
+    <div class="ex-body">
+      <div class="ex-layout">
+        <div class="svg-box">
+          <svg viewBox="0 0 200 220" xmlns="http://www.w3.org/2000/svg">
+            <rect width="200" height="220" fill="#0a1628" rx="10"/>
+            <!-- Floor -->
+            <line x1="10" y1="175" x2="190" y2="175" stroke="#1e3a5f" stroke-width="2"/>
+            <!-- Body lying down (static part) -->
+            <ellipse cx="55" cy="160" rx="35" ry="16" fill="#112240" stroke="#38bdf8" stroke-width="1.5"/>
+            <!-- Head -->
+            <ellipse cx="22" cy="147" rx="16" ry="18" fill="#112240" stroke="#38bdf8" stroke-width="1.5"/>
+            <!-- Right leg bent (static) -->
+            <rect x="82" y="145" width="13" height="38" rx="6" fill="#112240" stroke="#38bdf8" stroke-width="1.5" transform="rotate(-40,88,155)"/>
+            <rect x="98" y="162" width="40" height="12" rx="6" fill="#112240" stroke="#38bdf8" stroke-width="1.5"/>
+            <!-- LEFT leg animated (raises) -->
+            <g class="anim" style="animation:legRaise 3s ease-in-out infinite;transform-origin:100px 167px">
+              <rect x="92" y="150" width="13" height="58" rx="6" fill="#112240" stroke="#f472b6" stroke-width="2.5"/>
+              <!-- foot -->
+              <ellipse cx="98" cy="210" rx="16" ry="7" fill="#112240" stroke="#f472b6" stroke-width="1.5"/>
+            </g>
+            <!-- Knee highlight -->
+            <circle cx="97" cy="165" r="7" fill="#f472b6" style="animation:pulseGlow 2s ease-in-out infinite" opacity=".5"/>
+            <!-- Arrow up -->
+            <g style="animation:arrD 3s ease-in-out infinite">
+              <line x1="155" y1="155" x2="155" y2="130" stroke="#fbbf24" stroke-width="2.5"/>
+              <polygon points="149,132 155,120 161,132" fill="#fbbf24"/>
+            </g>
+            <text x="120" y="118" font-size="8" fill="#fbbf24" font-family="sans-serif">Heben</text>
+            <text x="20" y="210" font-size="8" fill="#94a3b8" font-family="sans-serif">Linkes Bein (pink) gestreckt heben</text>
+          </svg>
+          <div class="svg-hint">Hover = Pause</div>
+        </div>
+        <div class="ex-info">
+          <div class="pills">
+            <span class="pill pill-k">3 × 15 Wdh.</span>
+            <span class="pill pill-k">Linkes Bein</span>
+            <span class="pill pill-k">Täglich möglich</span>
+          </div>
+          <ol class="steps">
+            <li class="li-k" data-n="1">Auf dem Rücken liegen, rechtes Bein angewinkelt (Fuß auf Boden)</li>
+            <li class="li-k" data-n="2">Linkes Bein vollständig <strong>strecken</strong> – Kniescheibe nach oben ziehen (Quadrizeps anspannen)</li>
+            <li class="li-k" data-n="3">Bein langsam auf ca. 45° heben</li>
+            <li class="li-k" data-n="4">2 Sek. halten, dann kontrolliert senken</li>
+            <li class="li-k" data-n="5">Bein nie komplett auf dem Boden ablegen zwischen Wiederholungen</li>
+          </ol>
+          <div class="tip-k">💡 <strong>Kein Gelenkstress:</strong> Das Knie bewegt sich bei dieser Übung gar nicht – trotzdem ist der Quadrizeps voll aktiviert. Perfekt für direkt nach dem Aufwachen oder als tägliche Basisübung.</div>
+          <a class="vid-link" href="https://www.youtube.com/results?search_query=straight+leg+raise+knee+rehabilitation+quad" target="_blank">▶ Video auf YouTube</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ÜBUNG K4: Step Up -->
+  <div class="ex-card">
+    <div class="ex-head">
+      <div class="ex-num num-k">K4</div>
+      <div>
+        <div class="ex-title">Step-Up (niedriger Tritt)</div>
+        <div class="ex-focus">Funktionelles Knietraining · Quadrizeps + Glutes</div>
+      </div>
+    </div>
+    <div class="ex-body">
+      <div class="ex-layout">
+        <div class="svg-box">
+          <svg viewBox="0 0 200 220" xmlns="http://www.w3.org/2000/svg">
+            <rect width="200" height="220" fill="#0a1628" rx="10"/>
+            <!-- Step platform -->
+            <rect x="60" y="165" width="120" height="20" rx="4" fill="#1e3a5f" stroke="#60a5fa" stroke-width="2"/>
+            <rect x="60" y="183" width="120" height="15" rx="3" fill="#112240" stroke="#1e3a5f" stroke-width="1"/>
+            <text x="82" y="178" font-size="8" fill="#60a5fa" font-family="sans-serif">Stufe ~15–20 cm</text>
+            <!-- Floor -->
+            <line x1="10" y1="200" x2="190" y2="200" stroke="#1e3a5f" stroke-width="2"/>
+            <!-- Animated body step up -->
+            <g class="anim" style="animation:stepUp 3.5s ease-in-out infinite;transform-origin:100px 150px">
+              <!-- torso -->
+              <ellipse cx="100" cy="110" rx="24" ry="34" fill="#112240" stroke="#38bdf8" stroke-width="2"/>
+              <rect x="90" y="78" width="17" height="20" rx="7" fill="#112240" stroke="#38bdf8" stroke-width="1.5"/>
+              <ellipse cx="99" cy="65" rx="14" ry="17" fill="#112240" stroke="#38bdf8" stroke-width="1.5"/>
+              <!-- left leg on step (pink) -->
+              <rect x="88" y="138" width="13" height="35" rx="6" fill="#112240" stroke="#f472b6" stroke-width="2.5"/>
+              <!-- right leg trailing -->
+              <rect x="104" y="143" width="12" height="57" rx="6" fill="#112240" stroke="#38bdf8" stroke-width="1.5"/>
+            </g>
+            <!-- VMO highlight -->
+            <circle cx="91" cy="155" r="7" fill="#f472b6" style="animation:pulseGlow 2s ease-in-out infinite" opacity=".4"/>
+            <text x="20" y="215" font-size="8" fill="#94a3b8" font-family="sans-serif">Linkes Bein (pink) führt</text>
+          </svg>
+          <div class="svg-hint">Hover = Pause</div>
+        </div>
+        <div class="ex-info">
+          <div class="pills">
+            <span class="pill pill-k">3 × 10 Wdh.</span>
+            <span class="pill pill-k">Stufe 15–20 cm</span>
+            <span class="pill pill-k">Linkes Bein führt</span>
+          </div>
+          <ol class="steps">
+            <li class="li-k" data-n="1">Stehe vor einem Tritt / stabiler Stufe (15–20 cm Höhe)</li>
+            <li class="li-k" data-n="2"><strong>Linken Fuß</strong> auf die Stufe setzen</li>
+            <li class="li-k" data-n="3">Durch die Ferse des linken Beins den Körper hochdrücken</li>
+            <li class="li-k" data-n="4">Rechtes Bein hebt sich leicht – kurz halten</li>
+            <li class="li-k" data-n="5">Kontrolliert zurück – linkes Bein arbeitet auch beim Absteigen!</li>
+          </ol>
+          <div class="tip-k">💡 <strong>Langsames Absteigen ist das Training:</strong> Die exzentrische Phase (runter) ist für die VMO-Stärkung mindestens so wichtig wie das Hochsteigen. 3 Sekunden für die Abstiegsphase einplanen.</div>
+          <a class="vid-link" href="https://www.youtube.com/results?search_query=step+up+exercise+knee+rehabilitation+VMO" target="_blank">▶ Video auf YouTube</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ÜBUNG K5: Glute Bridge -->
+  <div class="ex-card">
+    <div class="ex-head">
+      <div class="ex-num num-k">K5</div>
+      <div>
+        <div class="ex-title">Glute Bridge</div>
+        <div class="ex-focus">Gesäß + Hamstrings · Schützt das Kniegelenk indirekt</div>
+      </div>
+    </div>
+    <div class="ex-body">
+      <div class="ex-layout">
+        <div class="svg-box">
+          <svg viewBox="0 0 200 220" xmlns="http://www.w3.org/2000/svg">
+            <rect width="200" height="220" fill="#0a1628" rx="10"/>
+            <line x1="10" y1="190" x2="190" y2="190" stroke="#1e3a5f" stroke-width="2"/>
+            <!-- Animated hips lifting -->
+            <g class="anim" style="animation:bridge 3s ease-in-out infinite;transform-origin:95px 155px">
+              <!-- hips/pelvis -->
+              <ellipse cx="95" cy="148" rx="26" ry="14" fill="#112240" stroke="#f472b6" stroke-width="2.5"/>
+              <!-- back/torso on floor -->
+              <rect x="25" y="158" width="55" height="14" rx="7" fill="#112240" stroke="#38bdf8" stroke-width="1.5"/>
+            </g>
+            <!-- Head (static) -->
+            <ellipse cx="22" cy="168" rx="16" ry="18" fill="#112240" stroke="#38bdf8" stroke-width="1.5"/>
+            <!-- Legs (static) -->
+            <rect x="82" y="163" width="13" height="35" rx="6" fill="#112240" stroke="#38bdf8" stroke-width="2" transform="rotate(-25,88,165)"/>
+            <rect x="105" y="163" width="13" height="35" rx="6" fill="#112240" stroke="#38bdf8" stroke-width="2" transform="rotate(-25,111,165)"/>
+            <!-- Feet on floor -->
+            <ellipse cx="68" cy="188" rx="13" ry="6" fill="#112240" stroke="#38bdf8" stroke-width="1.5"/>
+            <ellipse cx="116" cy="188" rx="13" ry="6" fill="#112240" stroke="#38bdf8" stroke-width="1.5"/>
+            <!-- Glute highlight -->
+            <circle cx="95" cy="153" r="9" fill="#f472b6" style="animation:pulseGlow 2s ease-in-out infinite" opacity=".4"/>
+            <!-- Arrow up -->
+            <g style="animation:arrD 3s ease-in-out infinite">
+              <line x1="160" y1="155" x2="160" y2="128" stroke="#fbbf24" stroke-width="2.5"/>
+              <polygon points="154,130 160,118 166,130" fill="#fbbf24"/>
+            </g>
+            <text x="20" y="210" font-size="8" fill="#94a3b8" font-family="sans-serif">Rückenlage · Hüfte hebt sich</text>
+          </svg>
+          <div class="svg-hint">Hover = Pause</div>
+        </div>
+        <div class="ex-info">
+          <div class="pills">
+            <span class="pill pill-k">3 × 15 Wdh.</span>
+            <span class="pill pill-k">3 Sek. halten</span>
+            <span class="pill pill-k">Täglich</span>
+          </div>
+          <ol class="steps">
+            <li class="li-k" data-n="1">Auf dem Rücken liegen, Knie gebeugt, Füße hüftbreit auf dem Boden</li>
+            <li class="li-k" data-n="2">Gesäß anspannen und Hüfte langsam nach oben drücken</li>
+            <li class="li-k" data-n="3">Körper bildet eine gerade Linie von Schulter bis Knie</li>
+            <li class="li-k" data-n="4">3 Sekunden halten – Gesäß dabei konstant angespannt</li>
+            <li class="li-k" data-n="5">Langsam absenken, Gesäß kurz vor Boden wieder hoch</li>
+          </ol>
+          <div class="tip-k">💡 <strong>Warum Glutes fürs Knie?</strong> Schwache Gesäßmuskeln = Knie bricht nach innen ein (Valgus) = erhöhter Druck auf Knorpel. Starke Glutes sind der wichtigste Schutz für ein operiertes Knie.</div>
+          <a class="vid-link" href="https://www.youtube.com/results?search_query=glute+bridge+exercise+knee+rehabilitation" target="_blank">▶ Video auf YouTube</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- end knie panel -->
+
+<!-- BAUCH PANEL -->
+<div class="panel" id="panel-bauch">
+
+  <div class="section-intro bauch">
+    <h2>Core & Bauchmuskulatur · Schulter-neutral</h2>
+    <p>Alle Übungen sind so gewählt, dass die rechte Schulter <strong>nicht belastet</strong> wird. Kein Stütz auf Händen, keine Belastung der Schulter in Überkopf- oder Vorwärtsposition. Fokus: tiefer Core (Transversus abdominis), gerades Bauch (Rectus), schräge Bauchmuskeln.</p>
+    <div class="tag-row">
+      <span class="tag tag-b">Schulter-neutral</span>
+      <span class="tag tag-b">Tiefer Core</span>
+      <span class="tag tag-g">Knie-kompatibel</span>
+      <span class="tag tag-g">2–3× / Woche</span>
+    </div>
+  </div>
+
+  <!-- ÜBUNG B1: Dead Bug -->
+  <div class="ex-card">
+    <div class="ex-head">
+      <div class="ex-num num-b">B1</div>
+      <div>
+        <div class="ex-title">Dead Bug</div>
+        <div class="ex-focus">Tiefer Core (Transversus) · Beste Basiübung überhaupt</div>
+      </div>
+    </div>
+    <div class="ex-body">
+      <div class="ex-layout">
+        <div class="svg-box">
+          <svg viewBox="0 0 200 220" xmlns="http://www.w3.org/2000/svg">
+            <rect width="200" height="220" fill="#0a1628" rx="10"/>
+            <line x1="10" y1="190" x2="190" y2="190" stroke="#1e3a5f" stroke-width="2"/>
+            <!-- Torso on back -->
+            <ellipse cx="100" cy="155" rx="35" ry="18" fill="#112240" stroke="#38bdf8" stroke-width="2"/>
+            <!-- Head -->
+            <ellipse cx="62" cy="145" rx="15" ry="17" fill="#112240" stroke="#38bdf8" stroke-width="1.5"/>
+            <!-- Right arm static (up) -->
+            <rect x="130" y="100" width="11" height="45" rx="5" fill="#112240" stroke="#38bdf8" stroke-width="1.5" opacity=".5"/>
+            <!-- Left arm animated (lowers) -->
+            <g class="anim" style="animation:deadbug-arm 3.5s ease-in-out infinite;transform-origin:85px 138px">
+              <rect x="80" y="95" width="11" height="48" rx="5" fill="#112240" stroke="#fb923c" stroke-width="2"/>
+            </g>
+            <!-- Left leg animated (extends) -->
+            <g class="anim" style="animation:deadbug-leg 3.5s ease-in-out infinite;transform-origin:85px 172px">
+              <rect x="80" y="168" width="12" height="45" rx="6" fill="#112240" stroke="#fb923c" stroke-width="2.5"/>
+            </g>
+            <!-- Right leg static bent -->
+            <rect x="110" y="165" width="12" height="38" rx="6" fill="#112240" stroke="#38bdf8" stroke-width="1.5" transform="rotate(-20,116,172)" opacity=".5"/>
+            <!-- Core highlight -->
+            <ellipse cx="100" cy="155" rx="22" ry="10" fill="#fb923c" style="animation:pulseGlow 2s ease-in-out infinite" opacity=".25"/>
+            <text x="20" y="210" font-size="8" fill="#94a3b8" font-family="sans-serif">Orange = Seite die sich bewegt</text>
+          </svg>
+          <div class="svg-hint">Hover = Pause</div>
+        </div>
+        <div class="ex-info">
+          <div class="pills">
+            <span class="pill pill-b">3 × 8 Wdh. pro Seite</span>
+            <span class="pill pill-b">Langsam (4 Sek.)</span>
+            <span class="pill pill-b">2–3× / Woche</span>
+          </div>
+          <ol class="steps">
+            <li class="li-b" data-n="1">Auf dem Rücken liegen, Arme senkrecht nach oben, Beine 90° angehoben (Tischposition)</li>
+            <li class="li-b" data-n="2">Lendenwirbel aktiv in den Boden drücken – diese Spannung <strong>nie verlieren!</strong></li>
+            <li class="li-b" data-n="3">Gleichzeitig: linken Arm nach hinten senken + rechtes Bein strecken (ohne Boden zu berühren)</li>
+            <li class="li-b" data-n="4">4 Sekunden langsam – dann zur Mitte zurück</li>
+            <li class="li-b" data-n="5">Seite wechseln (rechter Arm + linkes Bein)</li>
+          </ol>
+          <div class="tip-b">💡 <strong>Rücken bleibt flach!</strong> Sobald der Rücken sich vom Boden hebt, ist die Bewegung zu groß. Lieber kleinere Bewegungen mit perfekter Ausführung. Der Transversus abdominis – der tiefste Bauchmuskel – arbeitet hier auf Hochtouren.</div>
+          <a class="vid-link" href="https://www.youtube.com/results?search_query=dead+bug+exercise+core+stability+beginner" target="_blank">▶ Video auf YouTube</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ÜBUNG B2: Bird Dog -->
+  <div class="ex-card">
+    <div class="ex-head">
+      <div class="ex-num num-b">B2</div>
+      <div>
+        <div class="ex-title">Bird Dog</div>
+        <div class="ex-focus">Core + Rückenstrecker · Schulterneutral auf Händen/Knien</div>
+      </div>
+    </div>
+    <div class="ex-body">
+      <div class="ex-layout">
+        <div class="svg-box">
+          <svg viewBox="0 0 200 220" xmlns="http://www.w3.org/2000/svg">
+            <rect width="200" height="220" fill="#0a1628" rx="10"/>
+            <line x1="10" y1="190" x2="190" y2="190" stroke="#1e3a5f" stroke-width="2"/>
+            <!-- Body on all fours -->
+            <!-- Torso horizontal -->
+            <rect x="60" y="125" width="75" height="18" rx="9" fill="#112240" stroke="#38bdf8" stroke-width="2"/>
+            <!-- Head -->
+            <ellipse cx="150" cy="128" rx="15" ry="17" fill="#112240" stroke="#38bdf8" stroke-width="1.5"/>
+            <!-- Right arm (static, on ground) -->
+            <rect x="125" y="137" width="12" height="38" rx="6" fill="#112240" stroke="#38bdf8" stroke-width="1.5" opacity=".5"/>
+            <!-- Left leg (static, on ground) -->
+            <rect x="55" y="137" width="12" height="40" rx="6" fill="#112240" stroke="#38bdf8" stroke-width="1.5" opacity=".5"/>
+            <!-- Left arm animated (extends forward) -->
+            <g class="anim" style="animation:birddog-arm 3.5s ease-in-out infinite;transform-origin:138px 132px">
+              <rect x="133" y="105" width="11" height="40" rx="5" fill="#112240" stroke="#fb923c" stroke-width="2" transform="rotate(40,138,130)"/>
+            </g>
+            <!-- Right leg animated (extends back) -->
+            <g class="anim" style="animation:birddog-leg 3.5s ease-in-out infinite;transform-origin:68px 138px">
+              <rect x="63" y="137" width="12" height="45" rx="6" fill="#112240" stroke="#fb923c" stroke-width="2.5"/>
+            </g>
+            <!-- Core highlight -->
+            <ellipse cx="95" cy="134" rx="28" ry="8" fill="#fb923c" style="animation:pulseGlow 2s ease-in-out infinite" opacity=".2"/>
+            <text x="20" y="210" font-size="8" fill="#94a3b8" font-family="sans-serif">Vierfüßler · Orange = bewegt sich</text>
+          </svg>
+          <div class="svg-hint">Hover = Pause</div>
+        </div>
+        <div class="ex-info">
+          <div class="pills">
+            <span class="pill pill-b">3 × 10 Wdh. pro Seite</span>
+            <span class="pill pill-b">3 Sek. halten</span>
+            <span class="pill pill-b">2–3× / Woche</span>
+          </div>
+          <ol class="steps">
+            <li class="li-b" data-n="1">In den Vierfüßlerstand (Hände unter Schultern, Knie unter Hüfte)</li>
+            <li class="li-b" data-n="2">Rücken neutral – weder hohlkreuz noch katzenartig – eine gerade Linie</li>
+            <li class="li-b" data-n="3">Gleichzeitig: <strong>linken Arm</strong> nach vorne + <strong>rechtes Bein</strong> nach hinten strecken</li>
+            <li class="li-b" data-n="4">3 Sekunden halten – Becken dabei nicht kippen!</li>
+            <li class="li-b" data-n="5">Kontrolliert zurück, Seite wechseln</li>
+          </ol>
+          <div class="tip-b">💡 <strong>Schulterhinweis:</strong> Die Belastung auf den Händen ist minimal (Körpergewicht verteilt). Falls die rechte Schulter trotzdem zieht → Übung auf Fäusten durchführen (Handgelenk neutral).</div>
+          <a class="vid-link" href="https://www.youtube.com/results?search_query=bird+dog+exercise+core+back+beginner" target="_blank">▶ Video auf YouTube</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ÜBUNG B3: Reverse Crunch -->
+  <div class="ex-card">
+    <div class="ex-head">
+      <div class="ex-num num-b">B3</div>
+      <div>
+        <div class="ex-title">Reverse Crunch</div>
+        <div class="ex-focus">Unterer Bauch · Kein Schulter-/Nackenstress</div>
+      </div>
+    </div>
+    <div class="ex-body">
+      <div class="ex-layout">
+        <div class="svg-box">
+          <svg viewBox="0 0 200 220" xmlns="http://www.w3.org/2000/svg">
+            <rect width="200" height="220" fill="#0a1628" rx="10"/>
+            <line x1="10" y1="195" x2="190" y2="195" stroke="#1e3a5f" stroke-width="2"/>
+            <!-- Body lying -->
+            <ellipse cx="55" cy="175" rx="38" ry="15" fill="#112240" stroke="#38bdf8" stroke-width="1.5"/>
+            <ellipse cx="22" cy="162" rx="15" ry="17" fill="#112240" stroke="#38bdf8" stroke-width="1.5"/>
+            <!-- Arms flat on sides -->
+            <rect x="50" y="182" width="35" height="9" rx="4" fill="#112240" stroke="#38bdf8" stroke-width="1.2" opacity=".6"/>
+            <!-- Legs animated (curl toward chest) -->
+            <g class="anim" style="animation:crunch 3s ease-in-out infinite;transform-origin:90px 172px">
+              <rect x="86" y="148" width="13" height="45" rx="6" fill="#112240" stroke="#fb923c" stroke-width="2.5"/>
+              <rect x="108" y="148" width="13" height="45" rx="6" fill="#112240" stroke="#fb923c" stroke-width="2.5"/>
+              <!-- knees -->
+              <circle cx="92" cy="170" r="7" fill="#fb923c" opacity=".3"/>
+              <circle cx="114" cy="170" r="7" fill="#fb923c" opacity=".3"/>
+            </g>
+            <!-- Core highlight -->
+            <ellipse cx="75" cy="174" rx="22" ry="10" fill="#fb923c" style="animation:pulseGlow 2s ease-in-out infinite" opacity=".25"/>
+            <!-- Arrow -->
+            <g style="animation:arrD 3s ease-in-out infinite">
+              <line x1="155" y1="162" x2="155" y2="140" stroke="#fbbf24" stroke-width="2"/>
+              <polygon points="149,142 155,130 161,142" fill="#fbbf24"/>
+            </g>
+            <text x="20" y="212" font-size="8" fill="#94a3b8" font-family="sans-serif">Beine zum Körper rollen</text>
+          </svg>
+          <div class="svg-hint">Hover = Pause</div>
+        </div>
+        <div class="ex-info">
+          <div class="pills">
+            <span class="pill pill-b">3 × 12 Wdh.</span>
+            <span class="pill pill-b">Kontrolliert</span>
+            <span class="pill pill-b">2–3× / Woche</span>
+          </div>
+          <ol class="steps">
+            <li class="li-b" data-n="1">Auf dem Rücken liegen, Arme flach neben dem Körper</li>
+            <li class="li-b" data-n="2">Beine anwinkeln (90°) und leicht anheben</li>
+            <li class="li-b" data-n="3">Knie langsam <strong>Richtung Brust rollen</strong> – Gesäß hebt sich leicht vom Boden</li>
+            <li class="li-b" data-n="4">Nicht mit Schwung – nur mit Bauchkraft!</li>
+            <li class="li-b" data-n="5">Kontrolliert zurück, Füße berühren nicht den Boden</li>
+          </ol>
+          <div class="tip-b">💡 <strong>Schulterneutral:</strong> Kopf und Schultern bleiben die ganze Zeit auf dem Boden. Kein Nackenziehen, keine Schulterbelastung. Perfekte Ergänzung zu Schulter-Phase 1.</div>
+          <a class="vid-link" href="https://www.youtube.com/results?search_query=reverse+crunch+lower+abs+no+neck+strain" target="_blank">▶ Video auf YouTube</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- end bauch panel -->
+
+<script>
+function showTab(id){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('panel-'+id).classList.add('active');
+  document.querySelector('.tab.'+id).classList.add('active');
+}
+</script>
+</body>
+</html>

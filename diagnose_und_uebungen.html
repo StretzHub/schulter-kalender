@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="de" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Schulterdiagnose & Therapieplan – Rechte Schulter</title>
+<style>
+/* ── CSS Variables ── */
+:root {
+  --bg:        #e8f1f8;
+  --card:      #ffffff;
+  --text:      #1a1a2e;
+  --text-muted:#555;
+  --primary:   #2c5f8a;
+  --accent:    #e8722a;
+  --green:     #2e8b57;
+  --red:       #c0392b;
+  --yellow:    #d4a017;
+  --light:     #f0f6fb;
+  --border:    #ccdde8;
+  --header-bg: linear-gradient(135deg,#2c5f8a,#1a3f5c);
+  --note-bg:   #e8f5ee;
+  --note-border:#b2dfc5;
+  --note-text: #1a4a2e;
+  --warn-bg:   #fdf0e8;
+  --warn-border:#f4c89a;
+  --warn-text: #7a3500;
+  --shadow:    rgba(0,0,0,0.08);
+  --bar-bg:    #dde8f0;
+  --nav-bg:    #2c5f8a;
+  --footer-bg: #d6e8f5;
+  --svg-bg:    #f0f6fb;
+  --tl-border: #ccdde8;
+}
+[data-theme="dark"] {
+  --bg:        #0f1923;
+  --card:      #1a2a3a;
+  --text:      #e0eaf5;
+  --text-muted:#8aabcc;
+  --primary:   #4a9fd4;
+  --accent:    #f0923a;
+  --green:     #3dba78;
+  --red:       #e05555;
+  --yellow:    #e8b84b;
+  --light:     #1e3348;
+  --border:    #2a4a6a;
+  --header-bg: linear-gradient(135deg,#1a3a58,#0d2035);
+  --note-bg:   #0f2a1a;
+  --note-border:#1e5a36;
+  --note-text: #7adba0;
+  --warn-bg:   #2a1800;
+  --warn-border:#5a3a00;
+  --warn-text: #e8b84b;
+  --shadow:    rgba(0,0,0,0.35);
+  --bar-bg:    #1e3348;
+  --nav-bg:    #1a3a58;
+  --footer-bg: #0d1e2e;
+  --svg-bg:    #0d1e2e;
+  --tl-border: #2a4a6a;
+}
+
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:var(--bg);color:var(--text);line-height:1.6;transition:background .3s,color .3s;}
+
+/* ── Dark mode toggle ── */
+.theme-toggle{
+  position:fixed;top:16px;right:16px;z-index:999;
+  background:var(--card);border:2px solid var(--border);
+  border-radius:50%;width:44px;height:44px;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;font-size:1.2em;
+  box-shadow:0 2px 10px var(--shadow);
+  transition:all .3s;
+}
+.theme-toggle:hover{transform:scale(1.1);border-color:var(--accent);}
+
+/* ── Header ── */
+header{background:var(--header-bg);color:white;padding:32px 24px 24px;text-align:center;box-shadow:0 4px 12px rgba(0,0,0,.2);}
+header h1{font-size:2em;margin-bottom:6px;text-shadow:0 1px 4px rgba(0,0,0,.3);}
+header p{opacity:.85;font-size:1em;}
+
+/* ── Nav ── */
+nav{
+  background:var(--nav-bg);display:flex;flex-wrap:wrap;
+  justify-content:center;gap:4px;padding:10px;
+  position:sticky;top:0;z-index:100;
+  box-shadow:0 2px 8px rgba(0,0,0,.15);
+}
+nav a{color:white;text-decoration:none;padding:6px 14px;border-radius:20px;font-size:.88em;background:rgba(255,255,255,.12);transition:background .2s;}
+nav a:hover{background:var(--accent);}
+
+/* ── Main layout ── */
+main{max-width:980px;margin:0 auto;padding:24px 16px;}
+section{margin-bottom:36px;}
+
+/* ── Cards ── */
+.card{background:var(--card);border-radius:14px;padding:24px;box-shadow:0 2px 12px var(--shadow);border-left:5px solid var(--primary);transition:box-shadow .2s;}
+.card.accent{border-left-color:var(--accent);}
+.card.green{border-left-color:var(--green);}
+.card.red{border-left-color:var(--red);}
+.card.yellow{border-left-color:var(--yellow);}
+
+h2{font-size:1.5em;color:var(--primary);margin-bottom:16px;padding-bottom:8px;border-bottom:2px solid var(--light);}
+h3{color:var(--accent);font-size:1.1em;margin:18px 0 8px;}
+h4{color:var(--primary);font-size:1em;margin:14px 0 6px;}
+p{margin-bottom:10px;}
+ul,ol{padding-left:22px;margin-bottom:10px;}
+li{margin-bottom:5px;}
+
+/* ── Diagnosis bars ── */
+.diag-block{margin-bottom:22px;}
+.diag-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;}
+.diag-name{font-weight:700;font-size:1em;}
+.diag-pct{font-weight:700;color:white;background:var(--accent);padding:3px 10px;border-radius:12px;font-size:.9em;}
+.bar-bg{background:var(--bar-bg);border-radius:6px;height:16px;overflow:hidden;}
+.bar-fill{height:100%;border-radius:6px;transition:width 1.2s ease;}
+.fill-1{background:linear-gradient(90deg,#e8722a,#f4a261);}
+.fill-2{background:linear-gradient(90deg,#2c5f8a,#5b9ec9);}
+.fill-3{background:linear-gradient(90deg,#2e8b57,#52c47a);}
+.diag-desc{font-size:.9em;color:var(--text-muted);margin-top:6px;}
+
+/* ── Anatomy SVG area ── */
+.anatomy-container{display:flex;gap:24px;flex-wrap:wrap;align-items:flex-start;}
+.anatomy-svg{flex:0 0 auto;}
+.anatomy-text{flex:1;min-width:240px;}
+
+/* ── Exercise cards ── */
+.exercise-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;}
+.ex-card{background:var(--light);border-radius:10px;padding:18px;border:1px solid var(--border);position:relative;transition:box-shadow .2s;}
+.ex-card:hover{box-shadow:0 4px 16px var(--shadow);}
+.ex-card h4{color:var(--primary);margin-top:0;}
+.ex-badge{position:absolute;top:12px;right:12px;background:var(--primary);color:white;font-size:.72em;padding:2px 8px;border-radius:10px;}
+.ex-badge.adv{background:var(--accent);}
+.ex-params{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 8px;}
+.param-pill{background:var(--primary);color:white;font-size:.78em;padding:3px 10px;border-radius:12px;}
+.param-pill.green{background:var(--green);}
+.param-pill.orange{background:var(--accent);}
+
+/* ── Posture compare ── */
+.posture-compare{display:flex;gap:24px;flex-wrap:wrap;justify-content:center;margin:16px 0;}
+.posture-box{flex:1;min-width:200px;text-align:center;}
+.posture-box .label{font-weight:700;padding:6px;border-radius:6px;margin-bottom:10px;font-size:.9em;}
+.posture-box .label.bad{background:#fde8e8;color:var(--red);}
+.posture-box .label.good{background:#e8f5ee;color:var(--green);}
+[data-theme="dark"] .posture-box .label.bad{background:#2a0f0f;color:var(--red);}
+[data-theme="dark"] .posture-box .label.good{background:#0f2a1a;color:var(--green);}
+
+/* ── Red flags ── */
+.redflag-list{list-style:none;padding:0;}
+.redflag-list li{padding:10px 14px;margin-bottom:8px;background:#fdf0f0;border-left:4px solid var(--red);border-radius:6px;font-size:.95em;}
+.redflag-list li::before{content:"⚠ ";color:var(--red);font-weight:bold;}
+[data-theme="dark"] .redflag-list li{background:#2a0f0f;}
+
+/* ── Avoid list ── */
+.avoid-list{list-style:none;padding:0;}
+.avoid-list li{padding:10px 14px;margin-bottom:8px;background:#fff8e8;border-left:4px solid var(--yellow);border-radius:6px;font-size:.95em;}
+.avoid-list li::before{content:"✗ ";color:var(--yellow);font-weight:bold;}
+[data-theme="dark"] .avoid-list li{background:#1e1800;}
+
+/* ── Timeline ── */
+.timeline{position:relative;padding-left:30px;}
+.timeline::before{content:'';position:absolute;left:10px;top:0;bottom:0;width:3px;background:var(--tl-border);}
+.tl-item{position:relative;margin-bottom:20px;padding:14px 16px;background:var(--light);border-radius:8px;border:1px solid var(--border);}
+.tl-item::before{content:'';position:absolute;left:-26px;top:18px;width:14px;height:14px;border-radius:50%;background:var(--accent);border:3px solid var(--card);box-shadow:0 0 0 2px var(--accent);}
+.tl-phase{font-weight:700;color:var(--primary);font-size:.9em;}
+.tl-weeks{color:var(--accent);font-size:.85em;margin-bottom:4px;}
+
+/* ── Tables ── */
+.mech-table{width:100%;border-collapse:collapse;font-size:.92em;}
+.mech-table th{background:var(--primary);color:white;padding:10px 12px;text-align:left;}
+.mech-table td{padding:9px 12px;border-bottom:1px solid var(--border);}
+.mech-table tr:nth-child(even) td{background:var(--light);}
+
+/* ── Info boxes ── */
+.note-box{background:var(--note-bg);border:1px solid var(--note-border);border-radius:8px;padding:14px 18px;font-size:.93em;color:var(--note-text);margin-top:16px;}
+.warn-box{background:var(--warn-bg);border:1px solid var(--warn-border);border-radius:8px;padding:14px 18px;font-size:.93em;color:var(--warn-text);margin-top:16px;}
+
+/* ── Anatomy SVG animation ── */
+@keyframes tendon-slide{
+  0%,100%{transform:translateY(0);}
+  40%,60%{transform:translateY(-8px) translateX(5px);}
+}
+@keyframes tendon-pulse{
+  0%,100%{opacity:.8;}
+  50%     {opacity:1;filter:drop-shadow(0 0 4px #e8722a);}
+}
+@keyframes sublux-glow{
+  0%,100%{r:7;opacity:.5;}
+  45%,55%{r:12;opacity:.85;}
+}
+.tendon-anim{animation:tendon-slide 3s ease-in-out infinite,tendon-pulse 3s ease-in-out infinite;}
+.pain-pulse{animation:sublux-glow 3s ease-in-out infinite;}
+@keyframes space-breathe{
+  0%,100%{ry:10;}
+  45%,55%{ry:6;}
+}
+.space-anim{animation:space-breathe 3s ease-in-out infinite;}
+
+/* ── Footer ── */
+footer{text-align:center;padding:24px;color:var(--text-muted);font-size:.85em;background:var(--footer-bg);border-top:1px solid var(--border);margin-top:40px;}
+
+@media(max-width:600px){
+  header h1{font-size:1.4em;}
+  .anatomy-container{flex-direction:column;}
+  .posture-compare{flex-direction:column;}
+}
+</style>
+</head>
+<body>
+
+<button class="theme-toggle" onclick="toggleTheme()" title="Dark/Light Mode">☀️</button>
+
+<header>
+  <h1>Schulterdiagnose – Rechte Schulter</h1>
+  <p>Klinisches Bild &amp; evidenzbasierter Therapieplan | Stand: 22. März 2026</p>
+</header>
+
+<nav>
+  <a href="#diagnosen">Diagnosen</a>
+  <a href="#anatomie">Anatomie</a>
+  <a href="#uebungen">Übungen</a>
+  <a href="#vermeiden">Vermeiden</a>
+  <a href="#timeline">Verlauf</a>
+  <a href="#haltung">Haltung</a>
+  <a href="#redflags">Warnsignale</a>
+</nav>
+
+<main>
+
+<!-- PATIENT SUMMARY -->
+<section>
+  <div class="card">
+    <h2>Patientenprofil</h2>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;">
+      <div><strong>Seite:</strong> Rechte Schulter</div>
+      <div><strong>Dauer:</strong> Chronisch (&gt;3 Monate)</div>
+      <div><strong>Schmerzort:</strong> Anterior (vorne)</div>
+      <div><strong>Beweglichkeit:</strong> Voll erhalten</div>
+      <div><strong>Auslöser:</strong> Arm vorwärts/aufwärts</div>
+      <div><strong>Beruf:</strong> Büroarbeit / PC</div>
+      <div><strong>Nachtschmerz:</strong> 4/10 (Seitenlage)</div>
+      <div><strong>Aggravation:</strong> Schwerer Rucksack</div>
+    </div>
+  </div>
+</section>
+
+<!-- DIAGNOSEN -->
+<section id="diagnosen">
+  <div class="card accent">
+    <h2>Differenzialdiagnosen</h2>
+
+    <div class="diag-block">
+      <div class="diag-header">
+        <span class="diag-name">1. Bizeps-Tendinopathie (langer Kopf)</span>
+        <span class="diag-pct">50%</span>
+      </div>
+      <div class="bar-bg"><div class="bar-fill fill-1" style="width:50%"></div></div>
+      <div class="diag-desc">Anterior-superior Schmerz, aggraviert durch Vorwärtsflexion und Überkopfbelastung, typisch bei Büroarbeit mit Protraktion. Speed-Test und Yergason-Test wären positiv.</div>
+    </div>
+
+    <div class="diag-block">
+      <div class="diag-header">
+        <span class="diag-name">2. Subakromiales Impingement-Syndrom (SIS)</span>
+        <span class="diag-pct">35%</span>
+      </div>
+      <div class="bar-bg"><div class="bar-fill fill-2" style="width:35%"></div></div>
+      <div class="diag-desc">Klassisches Bild bei PC-Arbeitern. Der subakromiale Raum verengt sich durch protrahierte Schultern. Nachtschmerz passt gut. Neer- und Hawkins-Kennedy-Test wären verdächtig.</div>
+    </div>
+
+    <div class="diag-block">
+      <div class="diag-header">
+        <span class="diag-name">3. Subscapularis-Tendinopathie</span>
+        <span class="diag-pct">15%</span>
+      </div>
+      <div class="bar-bg"><div class="bar-fill fill-3" style="width:15%"></div></div>
+      <div class="diag-desc">Anteriorer Schmerz möglich, oft bei Schwäche in Innenrotation. Belly-Press und Lift-Off-Test wären positiv. Oft kombiniert mit Impingement.</div>
+    </div>
+
+    <div class="note-box">
+      <strong>Wichtig:</strong> Diese Diagnosen schließen sich nicht gegenseitig aus. Eine Kombination aus Bizeps-Tendinopathie und Impingement ist bei Büroarbeitern sehr häufig (&gt;60% der Fälle). Eine klinische Untersuchung durch einen Physiotherapeuten oder Orthopäden wird zur Bestätigung empfohlen.
+    </div>
+  </div>
+</section>
+
+<!-- ANATOMIE -->
+<section id="anatomie">
+  <div class="card">
+    <h2>Anatomie – Warum diese Strukturen betroffen sind</h2>
+
+    <div class="anatomy-container">
+      <div class="anatomy-svg">
+        <!-- Main shoulder anatomy SVG - frontal cross-section view -->
+        <svg width="340" height="380" viewBox="0 0 340 380" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <radialGradient id="humerus-grad" cx="40%" cy="35%" r="60%">
+              <stop offset="0%" stop-color="#e8f0f8"/>
+              <stop offset="100%" stop-color="#c0d5e8"/>
+            </radialGradient>
+            <radialGradient id="bone-grad" cx="40%" cy="35%" r="65%">
+              <stop offset="0%" stop-color="#f8eedc"/>
+              <stop offset="100%" stop-color="#e0c898"/>
+            </radialGradient>
+            <linearGradient id="muscle-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#ffcccc"/>
+              <stop offset="100%" stop-color="#ff9090"/>
+            </linearGradient>
+            <filter id="soft-shadow">
+              <feDropShadow dx="1" dy="2" stdDeviation="2" flood-opacity=".2"/>
+            </filter>
+          </defs>
+
+          <!-- Background panel -->
+          <rect width="340" height="380" fill="#f0f6fb" rx="12"/>
+          <text x="170" y="22" text-anchor="middle" font-size="12" fill="#2c5f8a" font-weight="bold" font-family="Segoe UI,sans-serif">Schulter-Querschnitt · Rechte Seite (von vorne)</text>
+
+          <!-- ── BONES ── -->
+
+          <!-- Clavicle (Schlüsselbein) -->
+          <path d="M 20 95 Q 80 80 130 92 Q 145 96 152 100" fill="none" stroke="#c9a96e" stroke-width="10" stroke-linecap="round"/>
+          <path d="M 20 95 Q 80 80 130 92 Q 145 96 152 100" fill="none" stroke="#f5e6c8" stroke-width="6" stroke-linecap="round"/>
+          <text x="22" y="78" font-size="10" fill="#8a6a30" font-family="Segoe UI,sans-serif">Clavicle</text>
+
+          <!-- Scapula body (Schulterblatt) -->
+          <path d="M 155 98 L 240 78 L 270 120 L 265 200 L 240 230 L 200 225 L 165 200 L 158 155 Z"
+            fill="url(#bone-grad)" stroke="#c9a96e" stroke-width="2" filter="url(#soft-shadow)"/>
+          <!-- Scapula spine ridge -->
+          <path d="M 160 108 Q 200 90 240 80" stroke="#c9a96e" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+
+          <!-- Acromion (Schulterdach) -->
+          <path d="M 112 88 Q 130 82 152 88 Q 163 92 165 102 L 158 110 Q 145 104 130 100 Q 112 96 108 96 Z"
+            fill="url(#bone-grad)" stroke="#c9a96e" stroke-width="2"/>
+          <text x="78" y="77" font-size="10" fill="#8a6a30" font-family="Segoe UI,sans-serif">Acromion</text>
+          <line x1="108" y1="78" x2="125" y2="90" stroke="#8a6a30" stroke-width="1" stroke-dasharray="3,2"/>
+
+          <!-- Coracoid process -->
+          <path d="M 150 102 Q 145 118 138 128 Q 133 134 128 133 Q 122 130 126 122 Q 132 112 142 105 Z"
+            fill="url(#bone-grad)" stroke="#c9a96e" stroke-width="1.8"/>
+          <text x="60" y="140" font-size="10" fill="#8a6a30" font-family="Segoe UI,sans-serif">Coracoid</text>
+          <line x1="96" y1="137" x2="126" y2="131" stroke="#8a6a30" stroke-width="1" stroke-dasharray="3,2"/>
+
+          <!-- Glenoid (socket) -->
+          <ellipse cx="175" cy="175" rx="22" ry="35" fill="#dce8f0" stroke="#6a99bb" stroke-width="2"/>
+          <!-- Glenoid labrum (cartilage ring) -->
+          <ellipse cx="175" cy="175" rx="25" ry="38" fill="none" stroke="#c0a870" stroke-width="3" opacity=".6"/>
+
+          <!-- Humerus head (Oberarmknochen-Kopf) -->
+          <circle cx="155" cy="178" r="44" fill="url(#humerus-grad)" stroke="#6a99bb" stroke-width="2.5" filter="url(#soft-shadow)"/>
+          <!-- Articular cartilage highlight -->
+          <path d="M 140 148 Q 160 135 178 148" stroke="white" stroke-width="3" fill="none" opacity=".5"/>
+          <text x="106" y="184" font-size="10" fill="#2c5f8a" font-weight="bold" font-family="Segoe UI,sans-serif">Humeruskopf</text>
+
+          <!-- Humerus shaft -->
+          <rect x="133" y="216" width="44" height="130" rx="16" fill="url(#humerus-grad)" stroke="#6a99bb" stroke-width="2"/>
+
+          <!-- Bicipital groove (Bizepsrille) – HIGHLIGHTED -->
+          <rect x="127" y="185" width="14" height="60" rx="6" fill="#f5deb3" stroke="#c9a96e" stroke-width="1.5"/>
+          <!-- Groove groove highlight -->
+          <rect x="129" y="188" width="6" height="52" rx="3" fill="#ffe8a0" opacity=".7"/>
+
+          <!-- ── MUSCLES / TENDONS ── -->
+
+          <!-- Supraspinatus tendon (over top of humerus) -->
+          <path d="M 165 108 Q 162 118 158 128 Q 155 140 155 150"
+            stroke="#4a9fd4" stroke-width="5" fill="none" stroke-linecap="round" opacity=".85"/>
+          <path d="M 165 108 Q 162 118 158 128 Q 155 140 155 150"
+            stroke="white" stroke-width="2" fill="none" stroke-linecap="round" opacity=".4"/>
+          <text x="30" y="115" font-size="10" fill="#2c5f8a" font-family="Segoe UI,sans-serif">Supraspinatus-</text>
+          <text x="35" y="127" font-size="10" fill="#2c5f8a" font-family="Segoe UI,sans-serif">Sehne</text>
+          <line x1="90" y1="118" x2="163" y2="115" stroke="#2c5f8a" stroke-width="1.2" stroke-dasharray="3,2"/>
+
+          <!-- Subscapularis (anterior, internal rotation) -->
+          <path d="M 195 165 Q 210 162 220 158 Q 235 152 245 148"
+            stroke="#2e8b57" stroke-width="5" fill="none" stroke-linecap="round" opacity=".85"/>
+          <text x="228" y="145" font-size="10" fill="#2e8b57" font-family="Segoe UI,sans-serif">Subscapularis</text>
+          <text x="230" y="157" font-size="10" fill="#2e8b57" font-family="Segoe UI,sans-serif">(hinten)</text>
+
+          <!-- Biceps tendon long head (MAIN PATHOLOGY) – animated -->
+          <g class="tendon-anim">
+            <path d="M 134 132 Q 133 150 134 170 Q 134 188 134 210"
+              stroke="#e8722a" stroke-width="5" fill="none" stroke-linecap="round"/>
+            <path d="M 134 132 Q 133 150 134 170 Q 134 188 134 210"
+              stroke="#ffd080" stroke-width="2" fill="none" stroke-linecap="round" opacity=".6"/>
+            <!-- Attachment at superior labrum (SLAP area) -->
+            <circle cx="134" cy="130" r="8" fill="#e8722a" stroke="white" stroke-width="2.5"/>
+            <circle cx="134" cy="130" r="4" fill="#fff0d0"/>
+          </g>
+
+          <!-- Transverse humeral ligament (holds tendon in groove) -->
+          <rect x="124" y="182" width="24" height="6" rx="3" fill="#c0392b" stroke="#a02020" stroke-width="1" opacity=".75"/>
+          <text x="225" y="192" font-size="9.5" fill="#c0392b" font-family="Segoe UI,sans-serif">Transversalband</text>
+          <text x="228" y="203" font-size="9.5" fill="#c0392b" font-family="Segoe UI,sans-serif">(geschwächt!)</text>
+          <line x1="226" y1="194" x2="152" y2="187" stroke="#c0392b" stroke-width="1.2" stroke-dasharray="3,2"/>
+
+          <!-- Subluxation pain zone (animated pulsing) -->
+          <circle class="pain-pulse" cx="134" cy="185" r="7" fill="#ff000055" stroke="#ff0000" stroke-width="2"/>
+
+          <!-- Subacromial space (animated breathing) -->
+          <ellipse class="space-anim" cx="157" cy="118" rx="30" ry="10" fill="#ffe08a" fill-opacity=".6" stroke="#d4a017" stroke-width="1.5" stroke-dasharray="4,2"/>
+          <text x="132" y="113" font-size="8" fill="#7a5500" font-family="Segoe UI,sans-serif">Subakromialer</text>
+          <text x="136" y="122" font-size="8" fill="#7a5500" font-family="Segoe UI,sans-serif">Raum ↕</text>
+
+          <!-- ── LABELS ── -->
+          <!-- Bizeps tendon label with arrow -->
+          <text x="30" y="158" font-size="11" fill="#e8722a" font-weight="bold" font-family="Segoe UI,sans-serif">Bizepssehne</text>
+          <text x="34" y="171" font-size="10" fill="#e8722a" font-family="Segoe UI,sans-serif">(langer Kopf)</text>
+          <text x="34" y="184" font-size="9" fill="#e8722a" font-family="Segoe UI,sans-serif">→ subluxiert!</text>
+          <line x1="100" y1="166" x2="126" y2="172" stroke="#e8722a" stroke-width="1.5" stroke-dasharray="3,2"/>
+
+          <!-- Groove label -->
+          <text x="225" y="215" font-size="9.5" fill="#8a6a30" font-family="Segoe UI,sans-serif">Bizepsrille</text>
+          <text x="227" y="226" font-size="9.5" fill="#8a6a30" font-family="Segoe UI,sans-serif">(Sulcus)</text>
+          <line x1="226" y1="217" x2="146" y2="210" stroke="#8a6a30" stroke-width="1" stroke-dasharray="3,2"/>
+
+          <!-- Labrum label -->
+          <text x="225" y="178" font-size="9.5" fill="#6a99bb" font-family="Segoe UI,sans-serif">Glenoid-</text>
+          <text x="225" y="190" font-size="9.5" fill="#6a99bb" font-family="Segoe UI,sans-serif">Labrum</text>
+          <line x1="225" y1="182" x2="200" y2="176" stroke="#6a99bb" stroke-width="1" stroke-dasharray="3,2"/>
+
+          <!-- Legend -->
+          <rect x="14" y="340" width="310" height="32" rx="6" fill="rgba(200,220,240,.3)"/>
+          <circle cx="28" cy="356" r="5" fill="#e8722a"/>
+          <text x="37" y="360" font-size="9" fill="#555" font-family="Segoe UI,sans-serif">Hauptpathologie</text>
+          <circle cx="105" cy="356" r="5" fill="#4a9fd4"/>
+          <text x="114" y="360" font-size="9" fill="#555" font-family="Segoe UI,sans-serif">Sehne (Supraspinatus)</text>
+          <circle cx="210" cy="356" r="5" fill="#2e8b57"/>
+          <text x="219" y="360" font-size="9" fill="#555" font-family="Segoe UI,sans-serif">Subscapularis</text>
+        </svg>
+      </div>
+
+      <div class="anatomy-text">
+        <h3>Was passiert in deiner Schulter?</h3>
+        <p>Die <strong>lange Bizepssehne</strong> (orange im Bild) läuft durch eine Knochenrinne am Oberarm – die Bizepsrille (Sulcus bicipitalis). Normalerweise wird sie dort durch das <strong>Transversalband</strong> in Position gehalten.</p>
+
+        <p>Bei dir ist dieses Band durch chronische Bürofehlhaltung und Überbelastung geschwächt. Die Sehne springt bei Vorwärtsbewegungen leicht aus der Rille – das ist das <strong>Knacken und Schnappen</strong>, das du beschreibst.</p>
+
+        <h3>Gleichzeitiges Impingement</h3>
+        <p>Die protrahierte Schulterposition (nach vorne rollende Schultern) verengt den <strong>subakromialen Raum</strong> (gelb im Bild). Das Schulterdach (Acromion) reibt dabei an der Supraspinatus-Sehne – besonders beim Arm-Heben.</p>
+
+        <h3>Warum beide zusammen?</h3>
+        <p>Büroarbeit schwächt den <strong>Subscapularis</strong> (grün), der die Sehne eigentlich in der Rille hält. Gleichzeitig verkürzen sich Brustmuskeln → Schulter rotiert nach innen → Raum verengt sich.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ÜBUNGEN -->
+<section id="uebungen">
+  <div class="card green">
+    <h2>Therapieübungen – Überblick</h2>
+    <div class="exercise-grid">
+
+      <div class="ex-card">
+        <span class="ex-badge">Phase 1</span>
+        <h4>1. Kinnrückzug (Chin Tuck)</h4>
+        <div class="ex-params">
+          <span class="param-pill">3 × 10 Wdh.</span>
+          <span class="param-pill green">10 Sek. halten</span>
+        </div>
+        <p style="font-size:.9em">Haltungskorrektur – zieht den vorgestreckten Kopf zurück und stellt die gesamte Schultermechanik auf. Sofortige Entlastung.</p>
+      </div>
+
+      <div class="ex-card">
+        <span class="ex-badge">Phase 1</span>
+        <h4>2. Schulterblatt-Retraktion</h4>
+        <div class="ex-params">
+          <span class="param-pill">3 × 15 Wdh.</span>
+          <span class="param-pill green">5 Sek. halten</span>
+        </div>
+        <p style="font-size:.9em">Schulterblätter nach hinten/unten ziehen. Aktiviert Rhomboiden und mittleren Trapezius. Öffnet den subakromialen Raum.</p>
+      </div>
+
+      <div class="ex-card">
+        <span class="ex-badge">Phase 1</span>
+        <h4>3. Isometrische Außenrotation</h4>
+        <div class="ex-params">
+          <span class="param-pill">3 × 10 Wdh.</span>
+          <span class="param-pill green">10 Sek. halten</span>
+        </div>
+        <p style="font-size:.9em">Infraspinatus + Teres minor aktivieren ohne Bewegung. Schonend für akut gereizte Sehnen.</p>
+      </div>
+
+      <div class="ex-card">
+        <span class="ex-badge">Phase 1</span>
+        <h4>4. Isometrische Innenrotation</h4>
+        <div class="ex-params">
+          <span class="param-pill">3 × 10 Wdh.</span>
+          <span class="param-pill green">10 Sek. halten</span>
+        </div>
+        <p style="font-size:.9em">Subscapularis kräftigen – der Muskel, der die Bizepssehne in der Rille hält. Direkte Behandlung der Subluxation.</p>
+      </div>
+
+      <div class="ex-card">
+        <span class="ex-badge">Phase 1</span>
+        <h4>5. Türrahmen-Dehnung</h4>
+        <div class="ex-params">
+          <span class="param-pill orange">3 × 30 Sek.</span>
+          <span class="param-pill">1× täglich</span>
+        </div>
+        <p style="font-size:.9em">Pectoralis minor dehnen. Löst die Hauptursache der Protraktion. Extrem wirksam bei Büroarbeitern.</p>
+      </div>
+
+      <div class="ex-card">
+        <span class="ex-badge adv">Phase 2</span>
+        <h4>6. Eccentric Curl (Phase 2)</h4>
+        <div class="ex-params">
+          <span class="param-pill orange">3 × 15 Wdh.</span>
+          <span class="param-pill">Leichtes Gewicht</span>
+        </div>
+        <p style="font-size:.9em">Exzentrisches Bieps-Training – baut die Sehnenstruktur systematisch auf. Erst ab Woche 4–5 wenn Schmerz &lt;3/10.</p>
+      </div>
+
+    </div>
+    <div class="note-box">
+      <strong>Vollständige Anleitung:</strong> Detaillierte Schritt-für-Schritt Animationen aller Phase-1-Übungen findest du in der <a href="phase1_uebungen.html" style="color:var(--primary)">Phase-1-Übungsseite</a>.
+    </div>
+  </div>
+</section>
+
+<!-- VERMEIDEN -->
+<section id="vermeiden">
+  <div class="card red">
+    <h2>Was du jetzt vermeidest</h2>
+    <ul class="avoid-list">
+      <li>Liegestütze und Push-ups (komprimieren den subakromialen Raum massiv)</li>
+      <li>Klimmzüge und Hängen am Reck (maximale Zugbelastung auf Bizepssehne)</li>
+      <li>Schwere Rucksäcke (Zug nach unten streckt die Sehne)</li>
+      <li>Überkopf-Arbeiten länger als 2 Minuten</li>
+      <li>Schnelle Wurfbewegungen (Tennis, Fußball werfen)</li>
+      <li>Auf der rechten Schulter schlafen – wenn möglich Rückenlage bevorzugen</li>
+    </ul>
+    <div class="warn-box">
+      <strong>Schmerzschwelle:</strong> Max. 3/10 bei allen Übungen. Bei mehr Schmerz → Belastung sofort reduzieren, nicht durch den Schmerz trainieren.
+    </div>
+  </div>
+</section>
+
+<!-- TIMELINE -->
+<section id="timeline">
+  <div class="card">
+    <h2>Therapieverlauf</h2>
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-phase">Phase 1: Schmerzreduktion &amp; Stabilisation</div>
+        <div class="tl-weeks">Woche 1–4 · Du bist jetzt hier</div>
+        <p style="font-size:.9em">Chin Tuck, Schulterblatt-Retraktion, isometrische Rotationsübungen, Pec Minor Dehnung. Ziel: Schmerz unter 2/10 bei Alltagsbewegungen.</p>
+      </div>
+      <div class="tl-item">
+        <div class="tl-phase">Phase 2: Tendon-Loading &amp; Kräftigung</div>
+        <div class="tl-weeks">Woche 4–10</div>
+        <p style="font-size:.9em">Exzentrischer Bizeps-Curl, Widerstandsband-Außenrotation, Schulterblatt-Übungen mit Gewicht. Sehne wird systematisch belastbarer gemacht.</p>
+      </div>
+      <div class="tl-item">
+        <div class="tl-phase">Phase 3: Funktionelle Belastungssteigerung</div>
+        <div class="tl-weeks">Woche 10–16</div>
+        <p style="font-size:.9em">Return-to-sport Vorbereitung, sportspezifische Übungen, langsame Wiederaufnahme aller normalen Aktivitäten.</p>
+      </div>
+      <div class="tl-item">
+        <div class="tl-phase">Wartungsprogramm</div>
+        <div class="tl-weeks">Ab Woche 16 dauerhaft</div>
+        <p style="font-size:.9em">2–3× wöchentlich Erhaltungsübungen. Haltungskorrektur im Alltag beibehalten.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HALTUNG -->
+<section id="haltung">
+  <div class="card yellow">
+    <h2>Haltung – Der Schlüssel zur Heilung</h2>
+    <div class="posture-compare">
+      <div class="posture-box">
+        <div class="label bad">Falsch – deine aktuelle Haltung</div>
+        <svg width="140" height="200" viewBox="0 0 140 200" xmlns="http://www.w3.org/2000/svg">
+          <rect width="140" height="200" fill="#fdf0f0" rx="8"/>
+          <!-- Bent spine (kyphosis) -->
+          <path d="M 70 180 Q 80 150 85 120 Q 88 95 78 70" stroke="#c9a96e" stroke-width="4" fill="none"/>
+          <!-- Head forward -->
+          <circle cx="68" cy="55" r="22" fill="#ffd5b5" stroke="#d4956a" stroke-width="1.5"/>
+          <text x="72" y="59" font-size="8" fill="#c0392b" text-anchor="middle">Kopf vor</text>
+          <!-- Rounded shoulders -->
+          <ellipse cx="95" cy="105" rx="18" ry="12" fill="#ffd5b5" stroke="#d4956a" stroke-width="1.5" transform="rotate(-15,95,105)"/>
+          <ellipse cx="45" cy="105" rx="18" ry="12" fill="#ffd5b5" stroke="#d4956a" stroke-width="1.5" transform="rotate(15,45,105)"/>
+          <!-- Torso -->
+          <ellipse cx="80" cy="148" rx="34" ry="40" fill="#ffd5b5" stroke="#d4956a" stroke-width="1.5"/>
+          <!-- Pain marker -->
+          <circle cx="94" cy="108" r="8" fill="#ff000044" stroke="#ff0000" stroke-width="1.5"/>
+          <text x="70" y="195" font-size="9" fill="#c0392b" text-anchor="middle">Schulter eng</text>
+        </svg>
+      </div>
+      <div class="posture-box">
+        <div class="label good">Richtig – Zielposition</div>
+        <svg width="140" height="200" viewBox="0 0 140 200" xmlns="http://www.w3.org/2000/svg">
+          <rect width="140" height="200" fill="#f0fff4" rx="8"/>
+          <!-- Straight spine -->
+          <line x1="70" y1="180" x2="70" y2="70" stroke="#c9a96e" stroke-width="4"/>
+          <!-- Head upright -->
+          <circle cx="70" cy="55" r="22" fill="#ffd5b5" stroke="#d4956a" stroke-width="1.5"/>
+          <text x="70" y="59" font-size="8" fill="#2e8b57" text-anchor="middle">Kinn zurück</text>
+          <!-- Open shoulders -->
+          <ellipse cx="105" cy="100" rx="18" ry="12" fill="#ffd5b5" stroke="#d4956a" stroke-width="1.5" transform="rotate(5,105,100)"/>
+          <ellipse cx="35" cy="100" rx="18" ry="12" fill="#ffd5b5" stroke="#d4956a" stroke-width="1.5" transform="rotate(-5,35,100)"/>
+          <!-- Torso -->
+          <ellipse cx="70" cy="148" rx="34" ry="40" fill="#ffd5b5" stroke="#d4956a" stroke-width="1.5"/>
+          <!-- Checkmark -->
+          <path d="M 92 95 L 97 105 L 112 90" stroke="#2e8b57" stroke-width="3" fill="none" stroke-linecap="round"/>
+          <text x="70" y="195" font-size="9" fill="#2e8b57" text-anchor="middle">Raum offen</text>
+        </svg>
+      </div>
+    </div>
+
+    <table class="mech-table">
+      <thead>
+        <tr><th>Fehlerquelle (Büro)</th><th>Mechanismus</th><th>Folge für Schulter</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Kopf nach vorne (Bildschirm)</td><td>HWS-Extensionskompensation</td><td>Schulter wird nach innen rotiert</td></tr>
+        <tr><td>Rundücken / Kyphose</td><td>Scapula kippt nach vorne</td><td>Subakromialer Raum verengt sich</td></tr>
+        <tr><td>Arme lange nach vorne (Tastatur)</td><td>Pec minor verkürzt</td><td>Coracoid-Impingement möglich</td></tr>
+        <tr><td>Dauersitzen &gt;2h ohne Pause</td><td>Gluteus schwach, Beckenkippung</td><td>Lordose flacht ab → Kettenreaktion bis Schulter</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ROTE FLAGS -->
+<section id="redflags">
+  <div class="card red">
+    <h2>Warnsignale – Arzt aufsuchen wenn...</h2>
+    <ul class="redflag-list">
+      <li>Plötzliche starke Schwäche im Arm (kann nichts mehr heben)</li>
+      <li>Taubheitsgefühl oder Kribbeln im Arm/Fingern</li>
+      <li>Schmerz geht in den Kiefer oder die Brust aus (Herzzeichen ausschließen)</li>
+      <li>Schmerz verschlimmert sich trotz 4-wöchiger Therapie deutlich</li>
+      <li>Sichtbare Deformität der Schulter (z.B. „Popeye-Arm" = gerissene Bizepssehne)</li>
+      <li>Schmerz über 7/10 im Ruhezustand, nachts stark werdend</li>
+    </ul>
+    <div class="warn-box">
+      <strong>Diagnose-Sicherheit:</strong> Die Diagnose basiert auf anamnestischen Angaben ohne körperliche Untersuchung. Ein Physiotherapeut kann durch klinische Tests (Speed, Yergason, Hawkins-Kennedy) in 15–20 Minuten erheblich mehr Sicherheit geben.
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>Schulter-Assistent · Diagnose & Therapieplan · 22. März 2026 · Kein Ersatz für medizinische Diagnose</footer>
+
+<script>
+function toggleTheme(){
+  const html=document.documentElement;
+  const btn=document.querySelector('.theme-toggle');
+  if(html.getAttribute('data-theme')==='dark'){
+    html.setAttribute('data-theme','light');
+    btn.textContent='☀️';
+    localStorage.setItem('theme','light');
+  }else{
+    html.setAttribute('data-theme','dark');
+    btn.textContent='🌙';
+    localStorage.setItem('theme','dark');
+  }
+}
+(function(){
+  const saved=localStorage.getItem('theme')||'light';
+  document.documentElement.setAttribute('data-theme',saved);
+  document.querySelector('.theme-toggle').textContent=saved==='dark'?'🌙':'☀️';
+})();
+</script>
+</body>
+</html>

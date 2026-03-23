@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="de" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Phase 1 Übungen – Bizepssehne & Impingement</title>
+<style>
+/* ── CSS Variables ── */
+:root {
+  --bg:        #e8f1f8;
+  --card:      #ffffff;
+  --text:      #1a1a2e;
+  --text-muted:#555;
+  --primary:   #2c5f8a;
+  --accent:    #e8722a;
+  --green:     #2e8b57;
+  --red:       #c0392b;
+  --yellow:    #d4a017;
+  --light:     #f0f6fb;
+  --border:    #ccdde8;
+  --header-bg: linear-gradient(135deg,#2c5f8a,#1a3f5c);
+  --anim-bg:   #f5f9fd;
+  --anim-border:#ccdde8;
+  --warn-bg:   #fff8f0;
+  --tip-bg:    #f0fff4;
+  --avoid-bg:  #fff0f0;
+  --progress-bg:#e0e0e0;
+  --shadow:    rgba(0,0,0,0.08);
+}
+[data-theme="dark"] {
+  --bg:        #0f1923;
+  --card:      #1a2a3a;
+  --text:      #e0eaf5;
+  --text-muted:#8aabcc;
+  --primary:   #4a9fd4;
+  --accent:    #f0923a;
+  --green:     #3dba78;
+  --red:       #e05555;
+  --yellow:    #e8b84b;
+  --light:     #1e3348;
+  --border:    #2a4a6a;
+  --header-bg: linear-gradient(135deg,#1a3a58,#0d2035);
+  --anim-bg:   #0f1f2f;
+  --anim-border:#2a4a6a;
+  --warn-bg:   #2a1f10;
+  --tip-bg:    #0f2a1a;
+  --avoid-bg:  #2a0f0f;
+  --progress-bg:#1e3348;
+  --shadow:    rgba(0,0,0,0.35);
+}
+
+/* ── Reset & Base ── */
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Segoe UI',Tahoma,sans-serif;background:var(--bg);color:var(--text);line-height:1.6;transition:background .3s,color .3s;}
+
+/* ── Dark mode toggle ── */
+.theme-toggle{
+  position:fixed;top:16px;right:16px;z-index:999;
+  background:var(--card);border:2px solid var(--border);
+  border-radius:50%;width:44px;height:44px;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;font-size:1.2em;
+  box-shadow:0 2px 10px var(--shadow);
+  transition:all .3s;
+}
+.theme-toggle:hover{transform:scale(1.1);border-color:var(--accent);}
+
+/* ── Header ── */
+header{background:var(--header-bg);color:white;padding:28px 24px 20px;text-align:center;}
+header h1{font-size:1.8em;text-shadow:0 1px 4px rgba(0,0,0,.3);}
+header p{opacity:.85;margin-top:6px;}
+.phase-banner{background:var(--accent);color:white;text-align:center;padding:12px;font-size:1em;font-weight:bold;}
+
+/* ── Layout ── */
+.container{max-width:920px;margin:0 auto;padding:20px;}
+
+/* ── Intro box ── */
+.intro-box{background:var(--card);border-radius:12px;padding:20px 24px;margin-bottom:24px;box-shadow:0 2px 8px var(--shadow);border-left:4px solid var(--primary);}
+.intro-box h2{color:var(--primary);margin-bottom:10px;}
+.goal-list{display:flex;gap:12px;flex-wrap:wrap;margin-top:12px;}
+.goal-tag{background:var(--light);border:1px solid var(--border);border-radius:20px;padding:5px 14px;font-size:.88em;color:var(--primary);}
+
+/* ── Exercise card ── */
+.exercise-card{background:var(--card);border-radius:14px;box-shadow:0 3px 14px var(--shadow);margin-bottom:28px;overflow:hidden;transition:transform .2s,box-shadow .2s;}
+.exercise-card:hover{transform:translateY(-2px);box-shadow:0 6px 20px var(--shadow);}
+.ex-header{background:var(--primary);color:white;padding:14px 20px;display:flex;align-items:center;gap:14px;}
+.ex-num{background:var(--accent);border-radius:50%;width:38px;height:38px;display:flex;align-items:center;justify-content:center;font-weight:bold;font-size:1.05em;flex-shrink:0;box-shadow:0 2px 6px rgba(0,0,0,.25);}
+.ex-header h2{font-size:1.15em;}
+.ex-header .ex-focus{font-size:.82em;opacity:.8;}
+.ex-body{padding:20px;}
+.ex-layout{display:flex;gap:22px;flex-wrap:wrap;align-items:flex-start;}
+.ex-anim{flex:0 0 210px;}
+.ex-info{flex:1;min-width:200px;}
+
+/* ── Dosage pills ── */
+.dosage-box{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0;}
+.dosage-pill{background:var(--primary);color:white;border-radius:20px;padding:5px 14px;font-size:.88em;font-weight:bold;}
+.dosage-pill span{opacity:.75;font-weight:normal;}
+
+ol.steps{padding-left:20px;}
+ol.steps li{padding:5px 0;}
+
+/* ── Info boxes ── */
+.warn-box{background:var(--warn-bg);border-left:4px solid var(--accent);padding:10px 14px;border-radius:0 8px 8px 0;margin-top:12px;font-size:.9em;color:var(--text);}
+.tip-box{background:var(--tip-bg);border-left:4px solid var(--green);padding:10px 14px;border-radius:0 8px 8px 0;margin-top:12px;font-size:.9em;color:var(--text);}
+
+/* ── Animation container ── */
+.anim-container{
+  position:relative;width:210px;height:250px;
+  background:var(--anim-bg);border-radius:12px;overflow:hidden;
+  border:1px solid var(--anim-border);
+  transition:background .3s;
+}
+.anim-container:hover svg *[class*="anim"],
+.anim-container:hover .head-svg,
+.anim-container:hover .door-arm,
+.anim-container:hover .shoulder-retract-l,
+.anim-container:hover .shoulder-retract-r,
+.anim-container:hover .tension-glow,
+.anim-container:hover .rot-forearm{
+  animation-play-state:paused;
+}
+.anim-label{position:absolute;bottom:6px;left:0;right:0;text-align:center;font-size:11px;color:var(--text-muted);}
+.pause-hint{position:absolute;top:6px;right:8px;font-size:9px;color:var(--text-muted);opacity:.7;}
+
+/* ── @keyframes ── */
+@keyframes chin-tuck{
+  0%,100%{transform:translateX(0);}
+  45%    {transform:translateX(-11px);}
+  55%    {transform:translateX(-11px);}
+}
+.head-svg{animation:chin-tuck 3s ease-in-out infinite;transform-origin:105px 100px;}
+
+@keyframes retract-l{
+  0%,100%{transform:translateX(0) rotate(0deg);}
+  45%,55%{transform:translateX(-9px) rotate(-4deg);}
+}
+@keyframes retract-r{
+  0%,100%{transform:translateX(0) rotate(0deg);}
+  45%,55%{transform:translateX(9px) rotate(4deg);}
+}
+.shoulder-retract-l{animation:retract-l 3s ease-in-out infinite;transform-origin:50% 50%;}
+.shoulder-retract-r{animation:retract-r 3s ease-in-out infinite;transform-origin:50% 50%;}
+
+@keyframes iso-glow{
+  0%,100%{opacity:.15;}
+  45%,55%{opacity:.75;}
+}
+.tension-glow{animation:iso-glow 2.8s ease-in-out infinite;}
+
+@keyframes ext-rot{
+  0%,100%{transform:rotate(0deg);}
+  45%,55%{transform:rotate(44deg);}
+}
+.rot-forearm{animation:ext-rot 3s ease-in-out infinite;transform-origin:122px 202px;}
+
+@keyframes door-stretch{
+  0%,100%{transform:rotate(0deg);}
+  45%,55%{transform:rotate(-18deg);}
+}
+.door-arm{animation:door-stretch 3s ease-in-out infinite;transform-origin:122px 155px;}
+
+/* ── Avoid section ── */
+.avoid-section{background:var(--avoid-bg);border:1px solid var(--red);border-radius:12px;padding:20px 24px;margin-bottom:24px;}
+.avoid-section h2{color:var(--red);margin-bottom:12px;}
+.avoid-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px;}
+.avoid-item{background:var(--card);border:1px solid rgba(192,57,43,.3);border-radius:8px;padding:10px 14px;font-size:.9em;}
+.avoid-item::before{content:"✗ ";color:var(--red);font-weight:bold;}
+
+/* ── Progress ── */
+.progress-section{background:var(--card);border-radius:12px;padding:20px 24px;margin-bottom:24px;box-shadow:0 2px 8px var(--shadow);}
+.progress-bar{background:var(--progress-bg);border-radius:10px;height:14px;margin:8px 0 4px;overflow:hidden;}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--primary),var(--accent));border-radius:10px;}
+
+footer{text-align:center;padding:24px;color:var(--text-muted);font-size:.85em;}
+</style>
+</head>
+<body>
+
+<button class="theme-toggle" onclick="toggleTheme()" title="Dark/Light Mode">☀️</button>
+
+<header>
+  <h1>Schulter-Therapie · Phase 1</h1>
+  <p>Bizepssehnen-Subluxation + Impingement · Woche 1–4</p>
+</header>
+<div class="phase-banner">
+  Ziel dieser Phase: Schmerzen reduzieren · Sehne stabilisieren · Haltung korrigieren
+</div>
+
+<div class="container">
+
+  <div class="intro-box">
+    <h2>Deine Diagnose auf einen Blick</h2>
+    <p>Die <strong>lange Bizepssehne</strong> liegt in einer knöchernen Rinne an der Schulter (Bizepsrille). Bei dir ist das Halteband dieser Rinne geschwächt – die Sehne springt bei Bewegung leicht heraus (→ dein Knacken). Gleichzeitig ist durch <strong>Bürofehlhaltung</strong> der Raum unter dem Schulterdach verengt (Impingement). Diese Phase behandelt beides gleichzeitig.</p>
+    <div class="goal-list">
+      <span class="goal-tag">Täglicher Zeitaufwand: ~15 Min</span>
+      <span class="goal-tag">Frequenz: täglich oder 5×/Woche</span>
+      <span class="goal-tag">Dauer Phase 1: 4 Wochen</span>
+      <span class="goal-tag">Schmerzgrenze: max. 3/10</span>
+    </div>
+  </div>
+
+  <!-- ÜBUNG 1: Chin Tuck -->
+  <div class="exercise-card">
+    <div class="ex-header">
+      <div class="ex-num">1</div>
+      <div>
+        <h2>Kinnrückzug (Chin Tuck)</h2>
+        <div class="ex-focus">Haltungskorrektur · Entlastet Schulter sofort</div>
+      </div>
+    </div>
+    <div class="ex-body">
+      <div class="ex-layout">
+        <div class="ex-anim">
+          <div class="anim-container">
+            <span class="pause-hint">hover = pause</span>
+            <svg viewBox="0 0 210 250" width="210" height="250" xmlns="http://www.w3.org/2000/svg">
+              <!-- Spine -->
+              <line x1="105" y1="240" x2="105" y2="155" stroke="#c9a96e" stroke-width="3.5"/>
+              <!-- Torso -->
+              <ellipse cx="105" cy="200" rx="42" ry="48" fill="#ffd5b5" stroke="#d4956a" stroke-width="1.5"/>
+              <!-- Chest highlight -->
+              <ellipse cx="105" cy="195" rx="28" ry="32" fill="#f0c8a0" stroke="none" opacity=".4"/>
+              <!-- Neck base -->
+              <rect x="93" y="152" width="24" height="14" rx="6" fill="#ffd5b5" stroke="#d4956a" stroke-width="1.5"/>
+
+              <!-- Animated head group -->
+              <g class="head-svg">
+                <!-- Neck -->
+                <rect x="93" y="118" width="24" height="36" rx="10" fill="#ffd5b5" stroke="#d4956a" stroke-width="1.5"/>
+                <!-- Cervical spine dots -->
+                <circle cx="105" cy="126" r="2.5" fill="#c9a96e" opacity=".7"/>
+                <circle cx="105" cy="136" r="2.5" fill="#c9a96e" opacity=".7"/>
+                <circle cx="105" cy="146" r="2.5" fill="#c9a96e" opacity=".7"/>
+                <!-- Head oval -->
+                <ellipse cx="105" cy="92" rx="30" ry="34" fill="#ffd5b5" stroke="#d4956a" stroke-width="1.5"/>
+                <!-- Hair -->
+                <ellipse cx="105" cy="68" rx="30" ry="16" fill="#7a5533" stroke="none"/>
+                <!-- Face features -->
+                <ellipse cx="114" cy="87" rx="5" ry="4" fill="#5a3a1a"/>
+                <ellipse cx="116" cy="85" rx="1.5" ry="1" fill="white" opacity=".7"/>
+                <!-- Nose -->
+                <path d="M 110 93 Q 113 97 110 100" stroke="#c87a50" stroke-width="1.2" fill="none"/>
+                <!-- Mouth smile -->
+                <path d="M 103 103 Q 108 107 113 103" stroke="#c87a50" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+                <!-- Chin forward protrusion (bad posture indicator) -->
+                <ellipse cx="117" cy="106" rx="9" ry="7" fill="#ffd5b5" stroke="#d4956a" stroke-width="1"/>
+                <!-- Arrow: retract direction -->
+                <path d="M 124 95 L 135 89" stroke="#f0923a" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+                <polygon points="132,84 140,90 135,96" fill="#f0923a"/>
+              </g>
+
+              <!-- Label arrow -->
+              <line x1="48" y1="98" x2="88" y2="102" stroke="#4a9fd4" stroke-width="1.2" stroke-dasharray="3,2"/>
+              <text x="10" y="96" font-size="9.5" fill="#4a9fd4" font-weight="bold">Kinn</text>
+              <text x="8" y="107" font-size="9.5" fill="#4a9fd4" font-weight="bold">einziehen</text>
+            </svg>
+            <div class="anim-label">Kinnrückzug animiert</div>
+          </div>
+        </div>
+        <div class="ex-info">
+          <div class="dosage-box">
+            <span class="dosage-pill">3 Sets <span>à 10 Wdh.</span></span>
+            <span class="dosage-pill">10 Sek. <span>halten</span></span>
+            <span class="dosage-pill">Täglich</span>
+          </div>
+          <ol class="steps">
+            <li>Aufrecht sitzen oder stehen</li>
+            <li>Kinn gerade nach <strong>hinten</strong> schieben (kein Nicken!)</li>
+            <li>Wie ein doppeltes Kinn machen – das ist korrekt</li>
+            <li>10 Sekunden halten, dann locker lassen</li>
+          </ol>
+          <div class="tip-box">
+            💡 <strong>Warum:</strong> Büroarbeit schiebt den Kopf nach vorne → die Schulter kippt nach innen → der Raum unter dem Schulterdach verengt sich. Dieser eine Reflex-Move stellt die gesamte Schultermechanik besser auf.
+          </div>
+          <div class="warn-box">
+            ⚠️ Keine Schmerzen möglich bei dieser Übung. Wenn du ein Kribbeln im Arm spürst → sofort aufhören und Arzt aufsuchen.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ÜBUNG 2: Schulterblatt-Retraktion -->
+  <div class="exercise-card">
+    <div class="ex-header">
+      <div class="ex-num">2</div>
+      <div>
+        <h2>Schulterblatt-Retraktion</h2>
+        <div class="ex-focus">Skapulastabilisation · Öffnet den Subakromialraum</div>
+      </div>
+    </div>
+    <div class="ex-body">
+      <div class="ex-layout">
+        <div class="ex-anim">
+          <div class="anim-container">
+            <span class="pause-hint">hover = pause</span>
+            <svg viewBox="0 0 210 250" width="210" height="250" xmlns="http://www.w3.org/2000/svg">
+              <!-- Back view torso -->
+              <ellipse cx="105" cy="165" rx="58" ry="75" fill="#ffd5b5" stroke="#d4956a" stroke-width="1.5"/>
+              <!-- Skin shading -->
+              <ellipse cx="105" cy="165" rx="40" ry="55" fill="#f0c8a0" stroke="none" opacity=".35"/>
+              <!-- Spine dotted -->
+              <line x1="105" y1="95" x2="105" y2="235" stroke="#c9a96e" stroke-width="3" stroke-dasharray="5,4"/>
+              <!-- Shoulder width line -->
+              <line x1="52" y1="135" x2="158" y2="135" stroke="#c9a96e" stroke-width="1" stroke-dasharray="3,3" opacity=".5"/>
+
+              <!-- Left scapula (animated) -->
+              <g class="shoulder-retract-l">
+                <path d="M 58,118 L 76,110 L 82,138 L 68,152 L 52,140 Z" fill="#f5e6c8" stroke="#c9a96e" stroke-width="1.8" opacity=".9"/>
+                <!-- Scapula spine ridge -->
+                <line x1="60" y1="120" x2="78" y2="112" stroke="#c9a96e" stroke-width="2" opacity=".6"/>
+                <!-- Rhomboid muscle overlay -->
+                <path d="M 75,116 Q 90,125 88,140 Q 80,138 68,148" fill="#ffb3b3" stroke="#e05050" stroke-width=".8" opacity=".45"/>
+              </g>
+
+              <!-- Right scapula (animated) -->
+              <g class="shoulder-retract-r">
+                <path d="M 152,118 L 134,110 L 128,138 L 142,152 L 158,140 Z" fill="#f5e6c8" stroke="#c9a96e" stroke-width="1.8" opacity=".9"/>
+                <line x1="150" y1="120" x2="132" y2="112" stroke="#c9a96e" stroke-width="2" opacity=".6"/>
+                <path d="M 135,116 Q 120,125 122,140 Q 130,138 142,148" fill="#ffb3b3" stroke="#e05050" stroke-width=".8" opacity=".45"/>
+              </g>
+
+              <!-- Convergence arrows -->
+              <text x="35" y="133" font-size="20" fill="#f0923a" font-weight="bold">→</text>
+              <text x="150" y="133" font-size="20" fill="#f0923a" font-weight="bold">←</text>
+
+              <!-- Head -->
+              <ellipse cx="105" cy="78" rx="26" ry="28" fill="#ffd5b5" stroke="#d4956a" stroke-width="1.5"/>
+              <ellipse cx="105" cy="62" rx="26" ry="14" fill="#7a5533" stroke="none"/>
+              <!-- Neck -->
+              <rect x="93" y="102" width="24" height="22" rx="8" fill="#ffd5b5" stroke="#d4956a" stroke-width="1.5"/>
+
+              <text x="28" y="243" font-size="9.5" fill="#f0923a" font-weight="bold">Schulterblätter zusammenziehen</text>
+            </svg>
+            <div class="anim-label">Rückenansicht · Retraktion</div>
+          </div>
+        </div>
+        <div class="ex-info">
+          <div class="dosage-box">
+            <span class="dosage-pill">3 Sets <span>à 15 Wdh.</span></span>
+            <span class="dosage-pill">5 Sek. <span>halten</span></span>
+            <span class="dosage-pill">Täglich</span>
+          </div>
+          <ol class="steps">
+            <li>Aufrecht sitzen, Arme locker seitlich oder auf Oberschenkeln</li>
+            <li>Schulterblätter <strong>nach hinten und leicht unten</strong> ziehen – wie wenn du sie in die Gesäßtaschen steckst</li>
+            <li>Schultern dabei <strong>nicht hochziehen!</strong></li>
+            <li>5 Sekunden halten, dann langsam locker lassen</li>
+          </ol>
+          <div class="tip-box">
+            💡 Stell dir vor, du versuchst einen Bleistift zwischen deinen Schulterblättern festzuhalten. Das ist die richtige Aktivierung.
+          </div>
+          <div class="tip-box" style="background:var(--warn-bg);border-color:var(--yellow);">
+            🎯 <strong>Alltagstipp:</strong> Setze dir einen Handy-Alarm alle 45 Min. bei der Büroarbeit – einmal kurz die Schulterblätter zusammenziehen, direkt am Schreibtisch.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ÜBUNG 3: Isometrische Außenrotation -->
+  <div class="exercise-card">
+    <div class="ex-header">
+      <div class="ex-num">3</div>
+      <div>
+        <h2>Isometrische Außenrotation</h2>
+        <div class="ex-focus">Rotatorenmanschette aktivieren · Sehne ohne Bewegung kräftigen</div>
+      </div>
+    </div>
+    <div class="ex-body">
+      <div class="ex-layout">
+        <div class="ex-anim">
+          <div class="anim-container">
+            <span class="pause-hint">hover = pause</span>
+            <svg viewBox="0 0 210 250" width="210" height="250" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <radialGradient id="glow-grad" cx="50%" cy="50%" r="50%">
+                  <stop offset="0%" stop-color="#ff8800" stop-opacity=".9"/>
+                  <stop offset="100%" stop-color="#ff8800" stop-opacity="0"/>
+                </radialGradient>
+              </defs>
+              <!-- Body -->
+              <ellipse cx="88" cy="190" rx="46" ry="52" fill="#ffd5b5" stroke="#d4956a" stroke-width="1.5"/>
+              <ellipse cx="88" cy="185" rx="30" ry="36" fill="#f0c8a0" stroke="none" opacity=".35"/>
+              <!-- Neck -->
+              <rect x="77" y="148" width="22" height="24" rx="8" fill="#ffd5b5" stroke="#d4956a" stroke-width="1.5"/>
+              <!-- Head -->
+              <ellipse cx="88" cy="125" rx="24" ry="27" fill="#ffd5b5" stroke="#d4956a" stroke-width="1.5"/>
+              <ellipse cx="88" cy="110" rx="24" ry="13" fill="#7a5533" stroke="none"/>
+              <!-- Upper arm (right side) -->
+              <rect x="122" y="158" width="20" height="50" rx="10" fill="#ffd5b5" stroke="#d4956a" stroke-width="1.5"/>
+              <!-- Elbow -->
+              <circle cx="132" cy="207" r="8" fill="#f0c8a0" stroke="#d4956a" stroke-width="1.5"/>
+              <!-- Rotating forearm -->
+              <g class="rot-forearm">
+                <rect x="122" y="200" width="62" height="17" rx="8" fill="#ffd5b5" stroke="#d4956a" stroke-width="1.5"/>
+                <!-- Wrist detail -->
+                <ellipse cx="184" cy="208" rx="9" ry="8" fill="#f0c8a0" stroke="#d4956a" stroke-width="1.2"/>
+                <!-- Muscle tension glow on forearm -->
+                <rect x="128" y="202" width="48" height="13" rx="6" fill="url(#glow-grad)" class="tension-glow"/>
+              </g>
+              <!-- Wall -->
+              <rect x="184" y="188" width="10" height="42" rx="4" fill="#aaccdd" stroke="#2c5f8a" stroke-width="1.5"/>
+              <!-- Wall texture -->
+              <line x1="184" y1="196" x2="194" y2="196" stroke="#2c5f8a" stroke-width=".8" opacity=".5"/>
+              <line x1="184" y1="204" x2="194" y2="204" stroke="#2c5f8a" stroke-width=".8" opacity=".5"/>
+              <line x1="184" y1="212" x2="194" y2="212" stroke="#2c5f8a" stroke-width=".8" opacity=".5"/>
+              <!-- Push arrow -->
+              <path d="M 158 208 L 180 208" stroke="#f0923a" stroke-width="2.5" stroke-linecap="round"/>
+              <polygon points="178,203 186,208 178,213" fill="#f0923a"/>
+              <!-- Labels -->
+              <text x="30" y="218" font-size="9" fill="#4a9fd4">Ellbogen</text>
+              <text x="30" y="228" font-size="9" fill="#4a9fd4">am Körper</text>
+              <text x="38" y="243" font-size="9" fill="#f0923a" font-weight="bold">Drücken → halten</text>
+            </svg>
+            <div class="anim-label">Leuchten = Muskelspannung</div>
+          </div>
+        </div>
+        <div class="ex-info">
+          <div class="dosage-box">
+            <span class="dosage-pill">3 Sets <span>à 10 Wdh.</span></span>
+            <span class="dosage-pill">10 Sek. <span>halten</span></span>
+            <span class="dosage-pill">Täglich</span>
+          </div>
+          <ol class="steps">
+            <li>Stehe aufrecht, rechten Ellbogen am Körper anlegen, 90° gebeugt</li>
+            <li>Stelle dich seitlich an eine Wand, sodass der Handrücken an der Wand ist</li>
+            <li>Drücke den Handrücken <strong>sanft gegen die Wand nach außen</strong> – keine Bewegung!</li>
+            <li>10 Sekunden Spannung halten, dann locker</li>
+          </ol>
+          <div class="tip-box">
+            💡 <strong>Isometrisch = keine Bewegung.</strong> Das ist das schonendste Training für gereizte Sehnen. Der Muskel arbeitet, die Sehne bleibt in Ruhe. Ideal für Phase 1.
+          </div>
+          <div class="warn-box">
+            ⚠️ Schmerz über 3/10 → Kraft reduzieren. Leichtes Drücken reicht.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ÜBUNG 4: Isometrische Innenrotation -->
+  <div class="exercise-card">
+    <div class="ex-header">
+      <div class="ex-num">4</div>
+      <div>
+        <h2>Isometrische Innenrotation</h2>
+        <div class="ex-focus">Subscapularis kräftigen · Stabilisiert Bizepssehne in der Rille</div>
+      </div>
+    </div>
+    <div class="ex-body">
+      <div class="ex-layout">
+        <div class="ex-anim">
+          <div class="anim-container">
+            <span class="pause-hint">hover = pause</span>
+            <svg viewBox="0 0 210 250" width="210" height="250" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <radialGradient id="glow-grad2" cx="50%" cy="50%" r="50%">
+                  <stop offset="0%" stop-color="#ff6600" stop-opacity=".9"/>
+                  <stop offset="100%" stop-color="#ff6600" stop-opacity="0"/>
+                </radialGradient>
+              </defs>
+              <!-- Body -->
+              <ellipse cx="115" cy="190" rx="46" ry="52" fill="#ffd5b5" stroke="#d4956a" stroke-width="1.5"/>
+              <ellipse cx="115" cy="185" rx="30" ry="36" fill="#f0c8a0" stroke="none" opacity=".35"/>
+              <rect x="104" y="148" width="22" height="24" rx="8" fill="#ffd5b5" stroke="#d4956a" stroke-width="1.5"/>
+              <ellipse cx="115" cy="125" rx="24" ry="27" fill="#ffd5b5" stroke="#d4956a" stroke-width="1.5"/>
+              <ellipse cx="115" cy="110" rx="24" ry="13" fill="#7a5533" stroke="none"/>
+              <!-- Upper arm -->
+              <rect x="148" y="158" width="20" height="50" rx="10" fill="#ffd5b5" stroke="#d4956a" stroke-width="1.5"/>
+              <circle cx="158" cy="207" r="8" fill="#f0c8a0" stroke="#d4956a" stroke-width="1.5"/>
+              <!-- Forearm (inner rotation) -->
+              <rect x="88" y="200" width="70" height="17" rx="8" fill="#ffd5b5" stroke="#d4956a" stroke-width="1.5"/>
+              <ellipse cx="88" cy="208" rx="9" ry="8" fill="#f0c8a0" stroke="#d4956a" stroke-width="1.2"/>
+              <!-- Tension glow -->
+              <rect x="94" y="202" width="55" height="13" rx="6" fill="url(#glow-grad2)" class="tension-glow"/>
+              <!-- Wall on inside -->
+              <rect x="76" y="188" width="10" height="42" rx="4" fill="#aaccdd" stroke="#2c5f8a" stroke-width="1.5"/>
+              <line x1="76" y1="196" x2="86" y2="196" stroke="#2c5f8a" stroke-width=".8" opacity=".5"/>
+              <line x1="76" y1="204" x2="86" y2="204" stroke="#2c5f8a" stroke-width=".8" opacity=".5"/>
+              <line x1="76" y1="212" x2="86" y2="212" stroke="#2c5f8a" stroke-width=".8" opacity=".5"/>
+              <!-- Push arrow (inward) -->
+              <path d="M 115 208 L 92 208" stroke="#f0923a" stroke-width="2.5" stroke-linecap="round"/>
+              <polygon points="94,203 86,208 94,213" fill="#f0923a"/>
+              <text x="30" y="243" font-size="9" fill="#f0923a" font-weight="bold">← Drücken gegen Wand</text>
+            </svg>
+            <div class="anim-label">Subscapularis-Aktivierung</div>
+          </div>
+        </div>
+        <div class="ex-info">
+          <div class="dosage-box">
+            <span class="dosage-pill">3 Sets <span>à 10 Wdh.</span></span>
+            <span class="dosage-pill">10 Sek. <span>halten</span></span>
+            <span class="dosage-pill">Täglich</span>
+          </div>
+          <ol class="steps">
+            <li>Gleiche Ausgangsposition: Ellbogen am Körper, 90° gebeugt</li>
+            <li>Diesmal: Handfläche gegen die Wand (Wand innen)</li>
+            <li>Drücke die Handfläche <strong>sanft nach innen gegen die Wand</strong> – keine Bewegung!</li>
+            <li>10 Sekunden halten</li>
+          </ol>
+          <div class="tip-box">
+            💡 <strong>Warum das wichtig ist:</strong> Der Subscapularis-Muskel hält die Bizepssehne in ihrer Rille. Ist er schwach, springt die Sehne leichter heraus. Das ist dein Knacken.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ÜBUNG 5: Doorway Stretch -->
+  <div class="exercise-card">
+    <div class="ex-header">
+      <div class="ex-num">5</div>
+      <div>
+        <h2>Türrahmen-Dehnung (Pec Minor Stretch)</h2>
+        <div class="ex-focus">Dehnt verkürzte Brustmuskeln · Öffnet Schulterraum</div>
+      </div>
+    </div>
+    <div class="ex-body">
+      <div class="ex-layout">
+        <div class="ex-anim">
+          <div class="anim-container">
+            <span class="pause-hint">hover = pause</span>
+            <svg viewBox="0 0 210 250" width="210" height="250" xmlns="http://www.w3.org/2000/svg">
+              <!-- Door frame left post -->
+              <rect x="8" y="18" width="13" height="220" rx="4" fill="#c8a96e" stroke="#a07840" stroke-width="1.5"/>
+              <!-- Door frame right post -->
+              <rect x="189" y="18" width="13" height="220" rx="4" fill="#c8a96e" stroke="#a07840" stroke-width="1.5"/>
+              <!-- Door frame top -->
+              <rect x="8" y="18" width="194" height="15" rx="4" fill="#c8a96e" stroke="#a07840" stroke-width="1.5"/>
+              <!-- Wood grain lines -->
+              <line x1="12" y1="40" x2="19" y2="40" stroke="#a07840" stroke-width=".8" opacity=".5"/>
+              <line x1="12" y1="60" x2="19" y2="60" stroke="#a07840" stroke-width=".8" opacity=".5"/>
+              <line x1="12" y1="80" x2="19" y2="80" stroke="#a07840" stroke-width=".8" opacity=".5"/>
+              <line x1="191" y1="40" x2="200" y2="40" stroke="#a07840" stroke-width=".8" opacity=".5"/>
+              <line x1="191" y1="60" x2="200" y2="60" stroke="#a07840" stroke-width=".8" opacity=".5"/>
+
+              <!-- Body -->
+              <ellipse cx="105" cy="185" rx="38" ry="50" fill="#ffd5b5" stroke="#d4956a" stroke-width="1.5"/>
+              <ellipse cx="105" cy="182" rx="25" ry="34" fill="#f0c8a0" stroke="none" opacity=".35"/>
+              <!-- Neck -->
+              <rect x="94" y="142" width="22" height="24" rx="8" fill="#ffd5b5" stroke="#d4956a" stroke-width="1.5"/>
+              <!-- Head -->
+              <ellipse cx="105" cy="120" rx="23" ry="26" fill="#ffd5b5" stroke="#d4956a" stroke-width="1.5"/>
+              <ellipse cx="105" cy="106" rx="23" ry="13" fill="#7a5533" stroke="none"/>
+              <!-- Eyes -->
+              <ellipse cx="112" cy="118" rx="4" ry="3.5" fill="#5a3a1a"/>
+
+              <!-- Animated arm on door frame -->
+              <g class="door-arm">
+                <!-- Upper arm vertical -->
+                <rect x="122" y="130" width="17" height="50" rx="8" fill="#ffd5b5" stroke="#d4956a" stroke-width="1.5"/>
+                <!-- Forearm on frame (horizontal up) -->
+                <rect x="120" y="126" width="16" height="42" rx="7" fill="#ffd5b5" stroke="#d4956a" stroke-width="1.5" transform="rotate(-65,128,148)"/>
+                <!-- Hand/palm on frame -->
+                <ellipse cx="188" cy="107" rx="10" ry="8" fill="#ffd5b5" stroke="#d4956a" stroke-width="1.5"/>
+                <!-- Pec minor muscle stretched -->
+                <path d="M 122 148 Q 150 130 185 110" stroke="#ffb3b3" stroke-width="4" fill="none" opacity=".6"/>
+              </g>
+
+              <!-- Lean forward arrow -->
+              <path d="M 105 170 Q 100 184 105 198" stroke="#f0923a" stroke-width="2.2" fill="none" stroke-dasharray="5,3"/>
+              <polygon points="100,195 105,205 110,195" fill="#f0923a"/>
+
+              <text x="26" y="243" font-size="9.5" fill="#f0923a" font-weight="bold">Körper leicht nach vorne lehnen</text>
+            </svg>
+            <div class="anim-label">Pectoralis Minor Dehnung</div>
+          </div>
+        </div>
+        <div class="ex-info">
+          <div class="dosage-box">
+            <span class="dosage-pill">3× <span>pro Seite</span></span>
+            <span class="dosage-pill">30 Sek. <span>halten</span></span>
+            <span class="dosage-pill">1× täglich</span>
+          </div>
+          <ol class="steps">
+            <li>Stelle dich in einen Türrahmen</li>
+            <li>Rechten Ellbogen auf Schulterhöhe an den Türrahmen lehnen (90° Beugung)</li>
+            <li>Einen Schritt mit dem Fuß nach vorne</li>
+            <li>Körper leicht nach vorne lehnen bis du eine <strong>Dehnung in der Brust/Schulter vorne</strong> spürst</li>
+            <li>30 Sekunden halten – ruhig atmen</li>
+          </ol>
+          <div class="tip-box">
+            💡 <strong>Büroarbeit verkürzt den kleinen Brustmuskel (Pec Minor)</strong>, der die Schulter nach vorne-unten zieht. Das verengt die Bizepsrille und den Subakromialraum. Diese Dehnung ist extrem wirksam.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- WAS VERMEIDEN -->
+  <div class="avoid-section">
+    <h2>Folgendes vermeidest du jetzt</h2>
+    <div class="avoid-grid">
+      <div class="avoid-item">Schwere Rucksäcke tragen</div>
+      <div class="avoid-item">Arme über Kopf belasten</div>
+      <div class="avoid-item">Liegestütze / Push-ups</div>
+      <div class="avoid-item">Schnelle Vorwärtsschläge (Tennis, Werfen)</div>
+      <div class="avoid-item">Schlafen auf der rechten Schulter</div>
+      <div class="avoid-item">Hängen am Reck oder Klimmzüge</div>
+    </div>
+  </div>
+
+  <!-- FORTSCHRITT -->
+  <div class="progress-section">
+    <h2 style="color:var(--primary);margin-bottom:16px">Fortschrittsplan</h2>
+    <p><strong>Phase 1</strong> (Woche 1–4) – Schmerzreduktion &amp; Stabilisation</p>
+    <div class="progress-bar"><div class="progress-fill" style="width:25%"></div></div>
+    <p style="font-size:.85em;color:var(--text-muted);margin-bottom:16px">Du bist hier – Woche 1</p>
+    <p><strong>Phase 2</strong> (Woche 4–10) – Kräftigung &amp; exzentrisches Training</p>
+    <div class="progress-bar"><div class="progress-fill" style="width:0%"></div></div>
+    <p style="margin-bottom:8px"><strong>Phase 3</strong> (Woche 10–16) – Belastungssteigerung</p>
+    <div class="progress-bar"><div class="progress-fill" style="width:0%"></div></div>
+    <div class="tip-box" style="margin-top:16px">
+      <strong>Wann geht's weiter?</strong> Wenn das Knacken weniger wird und der Schmerz bei Vorwärtsflexion unter 2/10 liegt → Phase 2 starten. Berichte mir nach 1–2 Wochen!
+    </div>
+  </div>
+
+</div>
+
+<footer>Schulter-Assistent · Phase 1 erstellt: 22. März 2026 · Kein Ersatz für medizinische Diagnose</footer>
+
+<script>
+function toggleTheme(){
+  const html=document.documentElement;
+  const btn=document.querySelector('.theme-toggle');
+  if(html.getAttribute('data-theme')==='dark'){
+    html.setAttribute('data-theme','light');
+    btn.textContent='☀️';
+    localStorage.setItem('theme','light');
+  }else{
+    html.setAttribute('data-theme','dark');
+    btn.textContent='🌙';
+    localStorage.setItem('theme','dark');
+  }
+}
+(function(){
+  const saved=localStorage.getItem('theme')||'light';
+  document.documentElement.setAttribute('data-theme',saved);
+  document.querySelector('.theme-toggle').textContent=saved==='dark'?'🌙':'☀️';
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang="de" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Klinische Bewegungstests – Rechte Schulter</title>
+<style>
+/* ── CSS Variables ── */
+:root {
+  --bg:        #e8f1f8;
+  --card:      #ffffff;
+  --text:      #1a1a2e;
+  --text-muted:#555;
+  --primary:   #2c5f8a;
+  --accent:    #e8722a;
+  --green:     #2e8b57;
+  --red:       #c0392b;
+  --yellow:    #d4a017;
+  --light:     #f0f6fb;
+  --border:    #ccdde8;
+  --header-bg: linear-gradient(135deg,#2c5f8a,#1a3f5c);
+  --intro-bg:  #fff8e6;
+  --intro-border:#d4a017;
+  --fb-bg:     #f0f6fb;
+  --tip-bg:    #e8f5e9;
+  --pos-bg:    #fff0f0;
+  --neg-bg:    #f0fff4;
+  --shadow:    rgba(0,0,0,0.08);
+  --svg-bg:    #f5f9fd;
+}
+[data-theme="dark"] {
+  --bg:        #0f1923;
+  --card:      #1a2a3a;
+  --text:      #e0eaf5;
+  --text-muted:#8aabcc;
+  --primary:   #4a9fd4;
+  --accent:    #f0923a;
+  --green:     #3dba78;
+  --red:       #e05555;
+  --yellow:    #e8b84b;
+  --light:     #1e3348;
+  --border:    #2a4a6a;
+  --header-bg: linear-gradient(135deg,#1a3a58,#0d2035);
+  --intro-bg:  #1e1800;
+  --intro-border:#e8b84b;
+  --fb-bg:     #1e3348;
+  --tip-bg:    #0f2a1a;
+  --pos-bg:    #2a0f0f;
+  --neg-bg:    #0f2a1a;
+  --shadow:    rgba(0,0,0,0.35);
+  --svg-bg:    #0d1e2e;
+}
+
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Segoe UI',Tahoma,sans-serif;background:var(--bg);color:var(--text);line-height:1.6;transition:background .3s,color .3s;}
+
+.theme-toggle{
+  position:fixed;top:16px;right:16px;z-index:999;
+  background:var(--card);border:2px solid var(--border);
+  border-radius:50%;width:44px;height:44px;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;font-size:1.2em;
+  box-shadow:0 2px 10px var(--shadow);
+  transition:all .3s;
+}
+.theme-toggle:hover{transform:scale(1.1);border-color:var(--accent);}
+
+header{background:var(--header-bg);color:white;padding:28px 24px 20px;text-align:center;}
+header h1{font-size:1.9em;text-shadow:0 1px 4px rgba(0,0,0,.3);}
+header p{opacity:.85;margin-top:6px;}
+
+.intro{
+  background:var(--intro-bg);border-left:5px solid var(--intro-border);
+  padding:16px 20px;margin:20px auto;
+  max-width:880px;border-radius:6px;color:var(--text);
+}
+
+.container{max-width:880px;margin:0 auto;padding:20px;}
+
+/* Test card */
+.test-card{
+  background:var(--card);border-radius:14px;
+  box-shadow:0 3px 14px var(--shadow);
+  margin-bottom:32px;overflow:hidden;
+  transition:transform .2s,box-shadow .2s;
+}
+.test-card:hover{transform:translateY(-2px);box-shadow:0 6px 22px var(--shadow);}
+.test-header{
+  display:flex;align-items:center;gap:14px;
+  padding:18px 22px;background:var(--primary);color:white;
+}
+.test-number{
+  background:var(--accent);border-radius:50%;
+  width:40px;height:40px;
+  display:flex;align-items:center;justify-content:center;
+  font-weight:bold;font-size:1.15em;flex-shrink:0;
+  box-shadow:0 2px 6px rgba(0,0,0,.25);
+}
+.test-header h2{font-size:1.2em;}
+.test-header .target{font-size:.85em;opacity:.8;}
+.test-body{padding:22px;}
+
+.flex-layout{display:flex;gap:24px;align-items:flex-start;flex-wrap:wrap;}
+.illustration{flex:0 0 225px;}
+.instructions{flex:1;min-width:220px;}
+
+/* SVG wrapper */
+.svg-wrap{
+  background:var(--svg-bg);border-radius:12px;
+  border:1px solid var(--border);overflow:hidden;
+  position:relative;
+}
+.svg-wrap:hover svg *[class*="anim-"],
+.svg-wrap:hover .anim-arm,
+.svg-wrap:hover .anim-rot,
+.svg-wrap:hover .anim-cross,
+.svg-wrap:hover .anim-lift,
+.svg-wrap:hover .anim-neer,
+.svg-wrap:hover .anim-yerg{
+  animation-play-state:paused;
+}
+.svg-pause-hint{
+  position:absolute;bottom:5px;right:8px;
+  font-size:9px;color:var(--text-muted);opacity:.7;
+}
+
+/* Step list */
+.step-list{list-style:none;counter-reset:steps;}
+.step-list li{
+  counter-increment:steps;
+  padding:8px 0 8px 36px;position:relative;
+  border-bottom:1px solid var(--border);
+}
+.step-list li:last-child{border-bottom:none;}
+.step-list li::before{
+  content:counter(steps);
+  position:absolute;left:0;top:8px;
+  background:var(--primary);color:white;
+  border-radius:50%;width:25px;height:25px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:.8em;font-weight:bold;
+}
+h3.section-title{color:var(--primary);font-size:.95em;margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px;}
+
+/* Result signs */
+.positive-sign{background:var(--pos-bg);border:1px solid var(--red);border-radius:8px;padding:10px 14px;margin-top:14px;font-size:.9em;}
+.positive-sign strong{color:var(--red);}
+.negative-sign{background:var(--neg-bg);border:1px solid var(--green);border-radius:8px;padding:10px 14px;margin-top:8px;font-size:.9em;}
+.negative-sign strong{color:var(--green);}
+
+/* Feedback box */
+.feedback-box{background:var(--fb-bg);border-radius:8px;padding:16px;margin-top:16px;}
+.feedback-box h4{color:var(--primary);margin-bottom:10px;}
+.scale{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;}
+.scale-btn{
+  padding:6px 12px;border:2px solid var(--primary);
+  border-radius:20px;cursor:pointer;font-size:.9em;
+  background:var(--card);color:var(--text);transition:all .2s;
+}
+.scale-btn:hover{background:var(--primary);color:white;}
+.location-options{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;}
+.loc-btn{
+  padding:6px 14px;border:2px solid var(--border);
+  border-radius:20px;cursor:pointer;font-size:.85em;
+  background:var(--card);color:var(--text);transition:all .2s;
+}
+.loc-btn:hover{background:var(--border);}
+
+.tip-box{background:var(--tip-bg);border-left:4px solid var(--green);padding:12px 16px;border-radius:0 8px 8px 0;margin-top:16px;font-size:.9em;}
+.divider{border:none;border-top:2px dashed var(--border);margin:8px 0 16px;}
+
+/* Result table */
+.result-table{width:100%;border-collapse:collapse;margin-top:20px;font-size:.9em;}
+.result-table th{background:var(--primary);color:white;padding:10px 14px;text-align:left;}
+.result-table td{padding:10px 14px;border-bottom:1px solid var(--border);}
+.result-table tr:nth-child(even) td{background:var(--light);}
+.badge{display:inline-block;padding:3px 10px;border-radius:12px;font-size:.82em;font-weight:bold;}
+.badge-bizeps{background:#ffd700;color:#5a4000;}
+.badge-impingement{background:#87ceeb;color:#1a3f5c;}
+.badge-subscap{background:#98fb98;color:#1a5c2a;}
+
+/* Shared SVG classes referenced inline */
+.svg-bone{fill:#f5e6c8;stroke:#c9a96e;stroke-width:1.5;}
+.svg-muscle{fill:#ffb3b3;stroke:#e05050;stroke-width:1;opacity:.7;}
+.svg-tendon{fill:#ff8c8c;stroke:#c0392b;stroke-width:1.5;}
+.svg-arm{fill:#ffd5b5;stroke:#d4956a;stroke-width:1.5;}
+.svg-highlight{fill:#ff000033;stroke:#ff0000;stroke-width:1.5;}
+.svg-label{font-family:'Segoe UI',sans-serif;font-size:11px;fill:#555;}
+
+/* Animations */
+@keyframes speed-lift{
+  0%,100%{transform:rotate(0deg);}
+  45%,55%{transform:rotate(-20deg);}
+}
+.anim-arm{animation:speed-lift 3s ease-in-out infinite;transform-origin:137px 175px;}
+
+@keyframes yerg-rotate{
+  0%,100%{transform:rotate(0deg);}
+  45%,55%{transform:rotate(50deg);}
+}
+.anim-yerg{animation:yerg-rotate 3s ease-in-out infinite;transform-origin:148px 222px;}
+
+@keyframes neer-arc{
+  0%,100%{transform:rotate(0deg);}
+  45%,55%{transform:rotate(-45deg);}
+}
+.anim-neer{animation:neer-arc 3.5s ease-in-out infinite;transform-origin:108px 175px;}
+
+@keyframes cross-body{
+  0%,100%{transform:translateX(0) rotate(0deg);}
+  45%,55%{transform:translateX(-30px) rotate(-15deg);}
+}
+.anim-cross{animation:cross-body 3s ease-in-out infinite;transform-origin:140px 185px;}
+
+@keyframes empty-can{
+  0%,100%{transform:rotate(0deg);}
+  45%,55%{transform:rotate(-70deg);}
+}
+.anim-lift{animation:empty-can 3.5s ease-in-out infinite;transform-origin:110px 178px;}
+
+@keyframes ext-rot-test{
+  0%,100%{transform:rotate(0deg);}
+  45%,55%{transform:rotate(40deg);}
+}
+.anim-rot{animation:ext-rot-test 3s ease-in-out infinite;transform-origin:148px 222px;}
+
+footer{text-align:center;padding:24px;color:var(--text-muted);font-size:.85em;}
+</style>
+</head>
+<body>
+
+<button class="theme-toggle" onclick="toggleTheme()" title="Dark/Light Mode">☀️</button>
+
+<header>
+  <h1>Klinische Bewegungstests</h1>
+  <p>Rechte Schulter · 22. März 2026 · Diagnose-Verfeinerung</p>
+</header>
+
+<div class="intro">
+  <strong>Wichtiger Hinweis:</strong> Führe alle Tests langsam und kontrolliert durch. Bei starken Schmerzen (über 6/10) sofort abbrechen. Diese Tests dienen der Orientierung – kein Ersatz für eine ärztliche Untersuchung.<br>
+  <strong>Ziel:</strong> 6 gezielte Tests → Diagnose-Sicherheit von 60% → über 85% steigern.
+</div>
+
+<div class="container">
+
+  <!-- TEST 1: Speed's Test -->
+  <div class="test-card">
+    <div class="test-header">
+      <div class="test-number">1</div>
+      <div>
+        <h2>Speed's Test</h2>
+        <div class="target">Zielt auf: Langer Bizepskopf-Sehne (Bizeps-Tendinopathie)</div>
+      </div>
+    </div>
+    <div class="test-body">
+      <div class="flex-layout">
+        <div class="illustration">
+          <div class="svg-wrap">
+            <svg viewBox="0 0 225 285" xmlns="http://www.w3.org/2000/svg" width="225" height="285">
+              <!-- Torso -->
+              <ellipse cx="110" cy="210" rx="58" ry="68" class="svg-arm"/>
+              <ellipse cx="110" cy="204" rx="38" ry="46" fill="#f0c8a0" stroke="none" opacity=".35"/>
+              <!-- Neck -->
+              <rect x="97" y="140" width="26" height="30" rx="9" class="svg-arm"/>
+              <!-- Head -->
+              <ellipse cx="110" cy="118" rx="29" ry="33" class="svg-arm"/>
+              <ellipse cx="110" cy="100" rx="29" ry="15" fill="#7a5533" stroke="none"/>
+              <ellipse cx="120" cy="116" rx="5" ry="4" fill="#5a3a1a"/>
+              <!-- Left arm static -->
+              <rect x="55" y="175" width="18" height="55" rx="9" class="svg-arm" transform="rotate(10,64,202)"/>
+
+              <!-- Right arm animated (lifts forward) -->
+              <g class="anim-arm">
+                <!-- Upper arm -->
+                <rect x="137" y="170" width="22" height="58" rx="11" class="svg-arm"/>
+                <!-- Elbow joint -->
+                <circle cx="148" cy="227" r="9" fill="#f0c8a0" stroke="#d4956a" stroke-width="1.5"/>
+                <!-- Forearm -->
+                <rect x="139" y="220" width="20" height="52" rx="10" class="svg-arm"/>
+                <!-- Hand palm up (supinated) -->
+                <ellipse cx="149" cy="274" rx="14" ry="9" fill="#ffd5b5" stroke="#d4956a" stroke-width="1.5"/>
+                <!-- Supination indicator -->
+                <path d="M142 274 Q149 278 156 274" stroke="#4a9fd4" stroke-width="1.5" fill="none"/>
+              </g>
+
+              <!-- Resistance arrow (downward) from examiner -->
+              <line x1="149" y1="148" x2="149" y2="130" stroke="#f0923a" stroke-width="3" stroke-linecap="round"/>
+              <polygon points="143,152 149,165 155,152" fill="#f0923a"/>
+              <text x="155" y="145" font-size="10" fill="#f0923a" font-weight="bold">Widerstand ↓</text>
+
+              <!-- Pain zone at biceps groove -->
+              <circle cx="140" cy="175" r="12" fill="#ff000033" stroke="#ff0000" stroke-width="1.8"/>
+              <circle cx="140" cy="175" r="6" fill="#ff0000" opacity=".4"/>
+              <text x="103" y="164" font-size="10" fill="#c0392b" font-weight="bold">Schmerz?</text>
+              <line x1="130" y1="166" x2="138" y2="172" stroke="#c0392b" stroke-width="1.2" stroke-dasharray="3,2"/>
+
+              <!-- 90° arc indicator -->
+              <path d="M110 200 Q133 178 148 200" stroke="#4a9fd4" stroke-width="1.5" fill="none" stroke-dasharray="5,3"/>
+              <text x="118" y="193" font-size="10" fill="#4a9fd4">90°</text>
+
+              <text x="40" y="282" font-size="10" fill="#555">Handfläche zeigt OBEN (Supination)</text>
+            </svg>
+            <span class="svg-pause-hint">hover = pause</span>
+          </div>
+        </div>
+        <div class="instructions">
+          <h3 class="section-title">Durchführung</h3>
+          <ol class="step-list">
+            <li>Stehe aufrecht, Arm locker seitlich</li>
+            <li>Strecke den rechten Arm <strong>gerade nach vorne</strong> auf Schulterhöhe (90°)</li>
+            <li>Handfläche zeigt nach <strong>oben</strong> (wie eine Suppenschüssel tragen)</li>
+            <li>Lege deine linke Hand auf den rechten Unterarm und drücke <strong>leicht nach unten</strong></li>
+            <li>Halte 5 Sekunden, leichter Widerstand reicht</li>
+          </ol>
+          <hr class="divider">
+          <div class="positive-sign">
+            <strong>Positiv (deutet auf Bizeps-Sehne hin):</strong><br>
+            Schmerz vorne an der Schulter, tief im Gelenk oder im Bereich der Schulterrinne (Bizepsrille)
+          </div>
+          <div class="negative-sign">
+            <strong>Negativ:</strong> Kein Schmerz oder nur Muskelpumpen im Bizeps
+          </div>
+          <div class="feedback-box">
+            <h4>Deine Rückmeldung nach dem Test:</h4>
+            <p><strong>Schmerzstärke (0–10):</strong></p>
+            <div class="scale">
+              <span class="scale-btn">0 – kein</span>
+              <span class="scale-btn">1–2</span>
+              <span class="scale-btn">3–4</span>
+              <span class="scale-btn">5–6</span>
+              <span class="scale-btn">7+</span>
+            </div>
+            <p style="margin-top:10px"><strong>Wo spürst du es?</strong></p>
+            <div class="location-options">
+              <span class="loc-btn">Vorne Schulter</span>
+              <span class="loc-btn">Seitlich</span>
+              <span class="loc-btn">Tief im Gelenk</span>
+              <span class="loc-btn">Bizepsrille</span>
+              <span class="loc-btn">Kein Schmerz</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TEST 2: Yergason's Test -->
+  <div class="test-card">
+    <div class="test-header">
+      <div class="test-number">2</div>
+      <div>
+        <h2>Yergason-Test</h2>
+        <div class="target">Zielt auf: Langer Bizepskopf-Sehne &amp; Transversalband</div>
+      </div>
+    </div>
+    <div class="test-body">
+      <div class="flex-layout">
+        <div class="illustration">
+          <div class="svg-wrap">
+            <svg viewBox="0 0 225 285" xmlns="http://www.w3.org/2000/svg" width="225" height="285">
+              <!-- Torso -->
+              <ellipse cx="110" cy="210" rx="58" ry="68" class="svg-arm"/>
+              <ellipse cx="110" cy="204" rx="38" ry="46" fill="#f0c8a0" stroke="none" opacity=".35"/>
+              <rect x="97" y="140" width="26" height="30" rx="9" class="svg-arm"/>
+              <ellipse cx="110" cy="118" rx="29" ry="33" class="svg-arm"/>
+              <ellipse cx="110" cy="100" rx="29" ry="15" fill="#7a5533" stroke="none"/>
+              <ellipse cx="120" cy="116" rx="5" ry="4" fill="#5a3a1a"/>
+
+              <!-- Upper arm (right, static, down at side) -->
+              <rect x="150" y="170" width="22" height="54" rx="11" class="svg-arm"/>
+              <circle cx="161" cy="223" r="9" fill="#f0c8a0" stroke="#d4956a" stroke-width="1.5"/>
+
+              <!-- Forearm (rotates from pronation to supination) -->
+              <g class="anim-yerg">
+                <rect x="150" y="218" width="62" height="18" rx="9" class="svg-arm"/>
+                <!-- Hand detail -->
+                <ellipse cx="212" cy="227" rx="11" ry="9" fill="#ffd5b5" stroke="#d4956a" stroke-width="1.5"/>
+                <!-- Rotation lines on forearm -->
+                <line x1="162" y1="222" x2="162" y2="232" stroke="#d4956a" stroke-width=".8" opacity=".5"/>
+                <line x1="172" y1="221" x2="172" y2="233" stroke="#d4956a" stroke-width=".8" opacity=".5"/>
+                <line x1="182" y1="221" x2="182" y2="233" stroke="#d4956a" stroke-width=".8" opacity=".5"/>
+              </g>
+
+              <!-- Rotation arc arrow -->
+              <path d="M188 212 Q210 208 210 228 Q210 248 188 244" stroke="#f0923a" stroke-width="2.5" fill="none"/>
+              <polygon points="184,241 190,250 196,242" fill="#f0923a"/>
+              <text x="190" y="268" font-size="10" fill="#f0923a" font-weight="bold">Supinieren →</text>
+
+              <!-- Left hand providing resistance (ellipse at elbow) -->
+              <ellipse cx="150" cy="222" rx="14" ry="9" fill="#d4a56a" stroke="#a07840" stroke-width="1.2" opacity=".8"/>
+              <text x="50" y="237" font-size="9.5" fill="#4a9fd4">Linke Hand</text>
+              <text x="50" y="249" font-size="9.5" fill="#4a9fd4">blockiert</text>
+              <line x1="78" y1="238" x2="148" y2="226" stroke="#4a9fd4" stroke-width="1" stroke-dasharray="3,2"/>
+
+              <!-- Pain zone -->
+              <circle cx="154" cy="178" r="12" fill="#ff000033" stroke="#ff0000" stroke-width="1.8"/>
+              <circle cx="154" cy="178" r="5" fill="#ff0000" opacity=".4"/>
+              <text x="110" y="168" font-size="10" fill="#c0392b" font-weight="bold">Schmerz hier?</text>
+              <line x1="126" y1="170" x2="150" y2="176" stroke="#c0392b" stroke-width="1.2" stroke-dasharray="3,2"/>
+
+              <text x="45" y="282" font-size="10" fill="#555">Ellbogen am Körper · 90° Beugung</text>
+            </svg>
+            <span class="svg-pause-hint">hover = pause</span>
+          </div>
+        </div>
+        <div class="instructions">
+          <h3 class="section-title">Durchführung</h3>
+          <ol class="step-list">
+            <li>Stehe aufrecht, rechten Ellbogen <strong>am Körper anlegen</strong></li>
+            <li>Ellbogen auf <strong>90° beugen</strong> (Unterarm waagerecht nach vorne)</li>
+            <li>Handfläche zeigt zunächst nach <strong>unten</strong></li>
+            <li>Lege linke Hand um den rechten Unterarm von oben</li>
+            <li>Versuche die Handfläche nach oben zu drehen (<strong>Supination</strong>) – linke Hand hält dagegen</li>
+            <li>5 Sekunden halten</li>
+          </ol>
+          <hr class="divider">
+          <div class="positive-sign">
+            <strong>Positiv:</strong> Schmerz oder Schnappen vorne an der Schulter (Bizepsrille)
+          </div>
+          <div class="negative-sign">
+            <strong>Negativ:</strong> Kein Schmerz, nur Kraft im Unterarm spürbar
+          </div>
+          <div class="feedback-box">
+            <h4>Deine Rückmeldung:</h4>
+            <p><strong>Schmerzstärke (0–10):</strong></p>
+            <div class="scale">
+              <span class="scale-btn">0 – kein</span>
+              <span class="scale-btn">1–2</span>
+              <span class="scale-btn">3–4</span>
+              <span class="scale-btn">5–6</span>
+              <span class="scale-btn">7+</span>
+            </div>
+            <p style="margin-top:10px"><strong>Besonderheit:</strong></p>
+            <div class="location-options">
+              <span class="loc-btn">Schmerz vorne Schulter</span>
+              <span class="loc-btn">Schnappen/Klicken</span>
+              <span class="loc-btn">Kein Schmerz</span>
+              <span class="loc-btn">Schwäche</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TEST 3: Hawkins-Kennedy -->
+  <div class="test-card">
+    <div class="test-header">
+      <div class="test-number">3</div>
+      <div>
+        <h2>Hawkins-Kennedy Test</h2>
+        <div class="target">Zielt auf: Subakromiales Impingement (Supraspinatus)</div>
+      </div>
+    </div>
+    <div class="test-body">
+      <div class="flex-layout">
+        <div class="illustration">
+          <div class="svg-wrap">
+            <svg viewBox="0 0 225 285" xmlns="http://www.w3.org/2000/svg" width="225" height="285">
+              <!-- Torso -->
+              <ellipse cx="108" cy="208" rx="56" ry="66" class="svg-arm"/>
+              <ellipse cx="108" cy="202" rx="36" ry="44" fill="#f0c8a0" stroke="none" opacity=".35"/>
+              <rect x="95" y="140" width="26" height="30" rx="9" class="svg-arm"/>
+              <ellipse cx="108" cy="118" rx="28" ry="32" class="svg-arm"/>
+              <ellipse cx="108" cy="100" rx="28" ry="15" fill="#7a5533" stroke="none"/>
+              <ellipse cx="118" cy="116" rx="4.5" ry="3.5" fill="#5a3a1a"/>
+
+              <!-- Right arm: 90° forward then internally rotated (Hawkins position) -->
+              <g class="anim-neer">
+                <!-- Upper arm -->
+                <rect x="136" y="168" width="22" height="56" rx="11" class="svg-arm" transform="rotate(-80,147,178)"/>
+                <!-- Elbow -->
+                <circle cx="180" cy="173" r="9" fill="#f0c8a0" stroke="#d4956a" stroke-width="1.5"/>
+                <!-- Forearm pointing down (internal rotation) -->
+                <rect x="172" y="172" width="20" height="52" rx="10" class="svg-arm"/>
+                <!-- Fist/hand -->
+                <ellipse cx="182" cy="226" rx="11" ry="9" fill="#ffd5b5" stroke="#d4956a" stroke-width="1.5"/>
+              </g>
+
+              <!-- Impingement zone highlight -->
+              <ellipse cx="140" cy="165" rx="18" ry="10" fill="#ff660033" stroke="#ff6600" stroke-width="1.5" stroke-dasharray="4,2"/>
+              <text x="148" y="155" font-size="10" fill="#cc4400" font-weight="bold">Impingement</text>
+              <text x="152" y="167" font-size="10" fill="#cc4400">Zone</text>
+
+              <!-- Rotation arrow -->
+              <path d="M190 185 Q200 172 192 162" stroke="#f0923a" stroke-width="2.5" fill="none"/>
+              <polygon points="188,160 196,156 198,164" fill="#f0923a"/>
+              <text x="195" y="158" font-size="10" fill="#f0923a" font-weight="bold">IR →</text>
+
+              <!-- Pain zone -->
+              <circle cx="138" cy="173" r="11" fill="#ff000033" stroke="#ff0000" stroke-width="1.8"/>
+              <text x="50" y="178" font-size="10" fill="#c0392b" font-weight="bold">Schmerz?</text>
+              <line x1="86" y1="177" x2="128" y2="175" stroke="#c0392b" stroke-width="1.2" stroke-dasharray="3,2"/>
+
+              <text x="30" y="282" font-size="10" fill="#555">Arm 90° vor, dann Innenrotation</text>
+            </svg>
+            <span class="svg-pause-hint">hover = pause</span>
+          </div>
+        </div>
+        <div class="instructions">
+          <h3 class="section-title">Durchführung</h3>
+          <ol class="step-list">
+            <li>Stehe aufrecht</li>
+            <li>Strecke den rechten Arm <strong>gerade nach vorne</strong> auf Schulterhöhe (90°)</li>
+            <li>Beuge den Ellbogen auf <strong>90°</strong> (Unterarm zeigt nach oben)</li>
+            <li>Drehe den Arm jetzt <strong>nach innen</strong> (Unterarm nach unten schwenken)</li>
+            <li>Optional: linke Hand drückt am Ellbogen leicht nach unten</li>
+          </ol>
+          <hr class="divider">
+          <div class="positive-sign">
+            <strong>Positiv (deutet auf Impingement hin):</strong><br>
+            Schmerz oberhalb der Schulter / unter dem Schulterdach (Acromion) bei der Innenrotation
+          </div>
+          <div class="negative-sign">
+            <strong>Negativ:</strong> Kein oder nur minimaler Schmerz – Bewegung fühlt sich frei an
+          </div>
+          <div class="feedback-box">
+            <h4>Deine Rückmeldung:</h4>
+            <p><strong>Schmerzstärke (0–10):</strong></p>
+            <div class="scale">
+              <span class="scale-btn">0 – kein</span>
+              <span class="scale-btn">1–2</span>
+              <span class="scale-btn">3–4</span>
+              <span class="scale-btn">5–6</span>
+              <span class="scale-btn">7+</span>
+            </div>
+            <p style="margin-top:10px"><strong>Wo spürst du es?</strong></p>
+            <div class="location-options">
+              <span class="loc-btn">Oben Schulter</span>
+              <span class="loc-btn">Unter Acromion</span>
+              <span class="loc-btn">Vorne</span>
+              <span class="loc-btn">Kein Schmerz</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TEST 4: Neer's Test -->
+  <div class="test-card">
+    <div class="test-header">
+      <div class="test-number">4</div>
+      <div>
+        <h2>Neer-Test (Impingement-Zeichen)</h2>
+        <div class="target">Zielt auf: Subakromiales Impingement · Supraspinatus-Sehne</div>
+      </div>
+    </div>
+    <div class="test-body">
+      <div class="flex-layout">
+        <div class="illustration">
+          <div class="svg-wrap">
+            <svg viewBox="0 0 225 285" xmlns="http://www.w3.org/2000/svg" width="225" height="285">
+              <!-- Torso -->
+              <ellipse cx="108" cy="210" rx="56" ry="66" class="svg-arm"/>
+              <ellipse cx="108" cy="204" rx="36" ry="44" fill="#f0c8a0" stroke="none" opacity=".35"/>
+              <rect x="95" y="142" width="26" height="30" rx="9" class="svg-arm"/>
+              <ellipse cx="108" cy="120" rx="28" ry="32" class="svg-arm"/>
+              <ellipse cx="108" cy="102" rx="28" ry="15" fill="#7a5533" stroke="none"/>
+              <ellipse cx="118" cy="118" rx="4.5" ry="3.5" fill="#5a3a1a"/>
+
+              <!-- Left hand stabilising scapula (examiner) -->
+              <ellipse cx="108" cy="168" rx="16" ry="10" fill="#d4a56a" stroke="#a07840" stroke-width="1.2" opacity=".75"/>
+              <text x="28" y="172" font-size="9" fill="#4a9fd4">Schulter</text>
+              <text x="24" y="183" font-size="9" fill="#4a9fd4">fixieren</text>
+              <line x1="57" y1="174" x2="93" y2="171" stroke="#4a9fd4" stroke-width="1" stroke-dasharray="3,2"/>
+
+              <!-- Right arm: forward elevation -->
+              <g class="anim-lift">
+                <!-- Full arm: upper + lower -->
+                <rect x="138" y="166" width="22" height="60" rx="11" class="svg-arm"/>
+                <circle cx="149" cy="225" r="9" fill="#f0c8a0" stroke="#d4956a" stroke-width="1.5"/>
+                <rect x="141" y="220" width="20" height="52" rx="10" class="svg-arm"/>
+                <ellipse cx="151" cy="274" rx="13" ry="9" fill="#ffd5b5" stroke="#d4956a" stroke-width="1.5"/>
+              </g>
+
+              <!-- Arc of pain annotation -->
+              <path d="M108 190 Q135 158 158 170" stroke="#ff6600" stroke-width="1.8" fill="none" stroke-dasharray="5,3" opacity=".7"/>
+              <text x="150" y="160" font-size="9" fill="#cc4400">Schmerzzone</text>
+
+              <!-- Pain zone -->
+              <circle cx="140" cy="173" r="12" fill="#ff000033" stroke="#ff0000" stroke-width="1.8"/>
+              <circle cx="140" cy="173" r="5" fill="#ff0000" opacity=".4"/>
+              <text x="96" y="163" font-size="10" fill="#c0392b" font-weight="bold">Schmerz?</text>
+
+              <!-- Arrow: arm elevates -->
+              <path d="M160 145 L160 125" stroke="#f0923a" stroke-width="2.5" stroke-linecap="round"/>
+              <polygon points="154,128 160,116 166,128" fill="#f0923a"/>
+              <text x="163" y="130" font-size="10" fill="#f0923a" font-weight="bold">↑ Heben</text>
+
+              <text x="28" y="282" font-size="10" fill="#555">Arm passiv nach vorne oben führen</text>
+            </svg>
+            <span class="svg-pause-hint">hover = pause</span>
+          </div>
+        </div>
+        <div class="instructions">
+          <h3 class="section-title">Durchführung</h3>
+          <ol class="step-list">
+            <li>Stehe aufrecht, Arm hängt locker</li>
+            <li>Lege die linke Hand auf die rechte Schulter (Schulterblatt fixieren)</li>
+            <li>Hebe den rechten Arm <strong>gerade nach vorne oben</strong> (Vorwärtsflexion)</li>
+            <li>Arm langsam so weit wie möglich nach oben führen</li>
+            <li>Auf Schmerz achten – besonders zwischen 60° und 120°</li>
+          </ol>
+          <hr class="divider">
+          <div class="positive-sign">
+            <strong>Positiv (klassisches Impingement):</strong><br>
+            Schmerz unter dem Schulterdach bei der Aufwärtsbewegung, besonders der „schmerzhafte Bogen" zwischen 60–120°
+          </div>
+          <div class="negative-sign">
+            <strong>Negativ:</strong> Volle Beweglichkeit ohne Schmerz oder nur Ziehen am Ende der Bewegung
+          </div>
+          <div class="feedback-box">
+            <h4>Deine Rückmeldung:</h4>
+            <p><strong>Schmerzstärke (0–10):</strong></p>
+            <div class="scale">
+              <span class="scale-btn">0 – kein</span>
+              <span class="scale-btn">1–2</span>
+              <span class="scale-btn">3–4</span>
+              <span class="scale-btn">5–6</span>
+              <span class="scale-btn">7+</span>
+            </div>
+            <p style="margin-top:10px"><strong>Bei welchem Winkel?</strong></p>
+            <div class="location-options">
+              <span class="loc-btn">Anfang (0–60°)</span>
+              <span class="loc-btn">Mitte (60–120°)</span>
+              <span class="loc-btn">Ende (über 120°)</span>
+              <span class="loc-btn">Kein Schmerz</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TEST 5: Cross-body Adduktion -->
+  <div class="test-card">
+    <div class="test-header">
+      <div class="test-number">5</div>
+      <div>
+        <h2>Horizontale Adduktion (Cross-Body Test)</h2>
+        <div class="target">Zielt auf: AC-Gelenk · Posteriore Kapsel · Impingement</div>
+      </div>
+    </div>
+    <div class="test-body">
+      <div class="flex-layout">
+        <div class="illustration">
+          <div class="svg-wrap">
+            <svg viewBox="0 0 225 285" xmlns="http://www.w3.org/2000/svg" width="225" height="285">
+              <!-- Torso -->
+              <ellipse cx="108" cy="210" rx="56" ry="66" class="svg-arm"/>
+              <ellipse cx="108" cy="204" rx="36" ry="44" fill="#f0c8a0" stroke="none" opacity=".35"/>
+              <rect x="95" y="142" width="26" height="30" rx="9" class="svg-arm"/>
+              <ellipse cx="108" cy="120" rx="28" ry="32" class="svg-arm"/>
+              <ellipse cx="108" cy="102" rx="28" ry="15" fill="#7a5533" stroke="none"/>
+              <ellipse cx="118" cy="118" rx="4.5" ry="3.5" fill="#5a3a1a"/>
+
+              <!-- Right arm moving across body -->
+              <g class="anim-cross">
+                <!-- Upper arm -->
+                <rect x="138" y="170" width="22" height="54" rx="11" class="svg-arm" transform="rotate(-75,149,178)"/>
+                <!-- Elbow -->
+                <circle cx="180" cy="178" r="9" fill="#f0c8a0" stroke="#d4956a" stroke-width="1.5"/>
+                <!-- Forearm horizontal -->
+                <rect x="140" y="172" width="58" height="18" rx="9" class="svg-arm" transform="rotate(-75,169,181)"/>
+                <!-- Hand -->
+                <ellipse cx="148" cy="162" rx="12" ry="9" fill="#ffd5b5" stroke="#d4956a" stroke-width="1.5"/>
+              </g>
+
+              <!-- Cross-body direction arrow -->
+              <path d="M175 172 Q145 162 120 168" stroke="#f0923a" stroke-width="2.5" fill="none"/>
+              <polygon points="122,162 114,170 122,176" fill="#f0923a"/>
+              <text x="130" y="155" font-size="10" fill="#f0923a" font-weight="bold">← Körper kreuzen</text>
+
+              <!-- AC joint pain area -->
+              <circle cx="136" cy="172" r="12" fill="#ff000033" stroke="#ff0000" stroke-width="1.8"/>
+              <circle cx="136" cy="172" r="5" fill="#ff0000" opacity=".4"/>
+              <text x="55" y="165" font-size="10" fill="#c0392b" font-weight="bold">AC-Gelenk?</text>
+              <line x1="96" y1="167" x2="128" y2="171" stroke="#c0392b" stroke-width="1.2" stroke-dasharray="3,2"/>
+
+              <text x="30" y="282" font-size="10" fill="#555">Arm 90° vor, dann zur Gegenseite</text>
+            </svg>
+            <span class="svg-pause-hint">hover = pause</span>
+          </div>
+        </div>
+        <div class="instructions">
+          <h3 class="section-title">Durchführung</h3>
+          <ol class="step-list">
+            <li>Stehe aufrecht</li>
+            <li>Hebe den rechten Arm auf <strong>Schulterhöhe (90°)</strong> nach vorne</li>
+            <li>Führe den Arm jetzt <strong>quer über den Körper zur linken Seite</strong></li>
+            <li>Optional: linke Hand zieht am rechten Ellbogen sanft weiter</li>
+            <li>Auf Schmerz oben/vorne an der Schulter achten</li>
+          </ol>
+          <hr class="divider">
+          <div class="positive-sign">
+            <strong>Positiv (deutet auf AC-Gelenk oder posteriore Kapsel hin):</strong><br>
+            Schmerz oben an der Schulter, genau am AC-Gelenk (Übergang Schulterblatt-Schlüsselbein)
+          </div>
+          <div class="negative-sign">
+            <strong>Negativ:</strong> Nur Dehnung hinten, kein Schmerz oben
+          </div>
+          <div class="feedback-box">
+            <h4>Deine Rückmeldung:</h4>
+            <p><strong>Schmerzstärke (0–10):</strong></p>
+            <div class="scale">
+              <span class="scale-btn">0 – kein</span>
+              <span class="scale-btn">1–2</span>
+              <span class="scale-btn">3–4</span>
+              <span class="scale-btn">5–6</span>
+              <span class="scale-btn">7+</span>
+            </div>
+            <p style="margin-top:10px"><strong>Wo genau?</strong></p>
+            <div class="location-options">
+              <span class="loc-btn">AC-Gelenk oben</span>
+              <span class="loc-btn">Vorne Schulter</span>
+              <span class="loc-btn">Hinten Kapsel</span>
+              <span class="loc-btn">Kein Schmerz</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TEST 6: Außenrotations-Kraft -->
+  <div class="test-card">
+    <div class="test-header">
+      <div class="test-number">6</div>
+      <div>
+        <h2>Außenrotations-Kraft (ER Strength Test)</h2>
+        <div class="target">Zielt auf: Infraspinatus &amp; Teres minor · Rotatorenmanschette</div>
+      </div>
+    </div>
+    <div class="test-body">
+      <div class="flex-layout">
+        <div class="illustration">
+          <div class="svg-wrap">
+            <svg viewBox="0 0 225 285" xmlns="http://www.w3.org/2000/svg" width="225" height="285">
+              <!-- Torso -->
+              <ellipse cx="108" cy="210" rx="56" ry="66" class="svg-arm"/>
+              <ellipse cx="108" cy="204" rx="36" ry="44" fill="#f0c8a0" stroke="none" opacity=".35"/>
+              <rect x="95" y="142" width="26" height="30" rx="9" class="svg-arm"/>
+              <ellipse cx="108" cy="120" rx="28" ry="32" class="svg-arm"/>
+              <ellipse cx="108" cy="102" rx="28" ry="15" fill="#7a5533" stroke="none"/>
+              <ellipse cx="118" cy="118" rx="4.5" ry="3.5" fill="#5a3a1a"/>
+
+              <!-- Upper arm down at side -->
+              <rect x="150" y="170" width="22" height="54" rx="11" class="svg-arm"/>
+              <circle cx="161" cy="223" r="9" fill="#f0c8a0" stroke="#d4956a" stroke-width="1.5"/>
+
+              <!-- Forearm rotating outward -->
+              <g class="anim-rot">
+                <rect x="150" y="218" width="62" height="18" rx="9" class="svg-arm"/>
+                <!-- Infraspinatus muscle glow -->
+                <rect x="155" y="221" width="48" height="12" rx="5" fill="#ffb3b3" opacity=".5"/>
+                <!-- Hand -->
+                <ellipse cx="212" cy="227" rx="11" ry="9" fill="#ffd5b5" stroke="#d4956a" stroke-width="1.5"/>
+              </g>
+
+              <!-- Rotation arc -->
+              <path d="M185 210 Q206 205 207 225 Q208 244 186 242" stroke="#f0923a" stroke-width="2.5" fill="none"/>
+              <polygon points="182,239 189,248 195,240" fill="#f0923a"/>
+              <text x="188" y="265" font-size="10" fill="#f0923a" font-weight="bold">Außenrotation</text>
+
+              <!-- Resistance from other hand -->
+              <ellipse cx="210" cy="226" rx="13" ry="10" fill="#d4a56a" stroke="#a07840" stroke-width="1.2" opacity=".75"/>
+              <text x="155" y="285" font-size="10" fill="#4a9fd4">Linke Hand: Widerstand</text>
+
+              <!-- Infraspinatus label -->
+              <text x="38" y="220" font-size="9.5" fill="#2e8b57">Infraspinatus</text>
+              <text x="42" y="232" font-size="9.5" fill="#2e8b57">aktiv?</text>
+              <line x1="100" y1="224" x2="148" y2="225" stroke="#2e8b57" stroke-width="1" stroke-dasharray="3,2"/>
+            </svg>
+            <span class="svg-pause-hint">hover = pause</span>
+          </div>
+        </div>
+        <div class="instructions">
+          <h3 class="section-title">Durchführung</h3>
+          <ol class="step-list">
+            <li>Stehe aufrecht, Ellbogen am Körper, 90° gebeugt</li>
+            <li>Unterarm zeigt nach vorne (Neutralposition)</li>
+            <li>Lege linke Hand auf die Außenseite des rechten Handgelenks</li>
+            <li>Versuche den Unterarm <strong>nach außen zu drehen</strong> – linke Hand hält dagegen</li>
+            <li>Beachte: Schmerz? Schwäche? Seitendifferenz?</li>
+          </ol>
+          <hr class="divider">
+          <div class="positive-sign">
+            <strong>Positiv (deutet auf Rotatorenmanschetten-Schwäche hin):</strong><br>
+            Deutliche Kraftverminderung im Vergleich zur linken Seite, oder Schmerz bei aktivem Drücken
+          </div>
+          <div class="negative-sign">
+            <strong>Negativ:</strong> Normale Kraft, kein Schmerz – Rotatorenmanschette intakt
+          </div>
+          <div class="feedback-box">
+            <h4>Deine Rückmeldung:</h4>
+            <p><strong>Schmerzstärke (0–10):</strong></p>
+            <div class="scale">
+              <span class="scale-btn">0 – kein</span>
+              <span class="scale-btn">1–2</span>
+              <span class="scale-btn">3–4</span>
+              <span class="scale-btn">5–6</span>
+              <span class="scale-btn">7+</span>
+            </div>
+            <p style="margin-top:10px"><strong>Kraft im Vergleich zu links:</strong></p>
+            <div class="location-options">
+              <span class="loc-btn">Gleich stark</span>
+              <span class="loc-btn">Leicht schwächer</span>
+              <span class="loc-btn">Deutlich schwächer</span>
+              <span class="loc-btn">Schmerz beim Drücken</span>
+            </div>
+          </div>
+          <div class="tip-box">
+            💡 Schwäche bei Außenrotation ist ein Hauptindikator für Rotatorenmanschetten-Beteiligung. Kombiniert mit dem Speed-Test ergibt sich ein klares Bild.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Ergebnistabelle -->
+  <div style="background:var(--card);border-radius:14px;padding:24px;box-shadow:0 3px 14px var(--shadow);margin-bottom:24px;">
+    <h2 style="color:var(--primary);margin-bottom:16px;font-size:1.3em;">Auswertungsübersicht</h2>
+    <table class="result-table">
+      <thead>
+        <tr>
+          <th>Test</th>
+          <th>Diagnosehinweis</th>
+          <th>Struktur</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1. Speed's Test</td>
+          <td>Bizeps-Tendinopathie (langer Kopf)</td>
+          <td><span class="badge badge-bizeps">Bizepssehne</span></td>
+        </tr>
+        <tr>
+          <td>2. Yergason-Test</td>
+          <td>Bizepssehne + Transversalband</td>
+          <td><span class="badge badge-bizeps">Bizepssehne</span></td>
+        </tr>
+        <tr>
+          <td>3. Hawkins-Kennedy</td>
+          <td>Subakromiales Impingement</td>
+          <td><span class="badge badge-impingement">Impingement</span></td>
+        </tr>
+        <tr>
+          <td>4. Neer-Test</td>
+          <td>Supraspinatus-Impingement</td>
+          <td><span class="badge badge-impingement">Impingement</span></td>
+        </tr>
+        <tr>
+          <td>5. Cross-Body</td>
+          <td>AC-Gelenk / posteriore Kapsel</td>
+          <td><span class="badge badge-subscap">Gelenk</span></td>
+        </tr>
+        <tr>
+          <td>6. ER-Kraft</td>
+          <td>Infraspinatus / Rotatorenmanschette</td>
+          <td><span class="badge badge-subscap">Rotatorenmanschette</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+<footer>Schulter-Assistent · Bewegungstests · 22. März 2026 · Kein Ersatz für medizinische Diagnose</footer>
+
+<script>
+function toggleTheme(){
+  const html=document.documentElement;
+  const btn=document.querySelector('.theme-toggle');
+  if(html.getAttribute('data-theme')==='dark'){
+    html.setAttribute('data-theme','light');
+    btn.textContent='☀️';
+    localStorage.setItem('theme','light');
+  }else{
+    html.setAttribute('data-theme','dark');
+    btn.textContent='🌙';
+    localStorage.setItem('theme','dark');
+  }
+}
+(function(){
+  const saved=localStorage.getItem('theme')||'light';
+  document.documentElement.setAttribute('data-theme',saved);
+  document.querySelector('.theme-toggle').textContent=saved==='dark'?'🌙':'☀️';
+})();
+</script>
+</body>
+</html>
