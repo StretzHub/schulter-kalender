@@ -281,6 +281,9 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
 @keyframes bdLeg{0%,100%{transform:rotate(0deg)}45%,55%{transform:rotate(35deg)}}
 @keyframes rcKnee{0%,100%{transform:rotate(0deg)}45%,55%{transform:rotate(-55deg)}}
 @keyframes muscleGlow{0%,100%{opacity:0}50%{opacity:.45}}
+/* ANIMATIONS – extra */
+@keyframes pressOut{0%,100%{transform:translateX(0)}45%,55%{transform:translateX(7px)}}
+@keyframes wallPulse{0%,100%{opacity:.4}50%{opacity:1}}
 /* ANIMATIONS – optional exercises */
 @keyframes pendCircle{0%{transform:translate(0,0)}25%{transform:translate(7px,5px)}50%{transform:translate(0,10px)}75%{transform:translate(-7px,5px)}100%{transform:translate(0,0)}}
 @keyframes wallArm{0%,100%{transform:translateY(0)}45%,55%{transform:translateY(-26px)}}
@@ -358,6 +361,15 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
 .ex-card.ex-opt.ex-opt-core{border-color:#3a1f05}
 .ex-card.ex-opt.ex-opt-core .ex-hd{background:linear-gradient(90deg,#1a0d03,#112240)}
 
+/* ── SVG VIEW TABS ────────────────────────────── */
+.svg-tab-row{display:flex;gap:4px;padding:6px 6px 0;background:var(--s1)}
+.svg-tab-btn{
+  flex:1;padding:5px 4px;border-radius:6px 6px 0 0;border:none;cursor:pointer;
+  font-size:.7em;font-weight:700;transition:.2s;
+  background:var(--bg);color:var(--muted);border:1px solid var(--border);border-bottom:none;
+}
+.svg-tab-btn.active{background:var(--s2);color:var(--primary);border-color:var(--primary)}
+.svg-tab-btn:hover:not(.active){color:var(--text)}
 /* ── TIMER WIDGET ─────────────────────────────── */
 .timer-widget{margin-top:13px;background:var(--bg);border:1px solid var(--border);border-radius:11px;overflow:hidden}
 .timer-start-row{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;cursor:pointer;transition:.2s;background:linear-gradient(90deg,var(--s3),var(--bg))}
@@ -1248,6 +1260,426 @@ function svgSuperman(){
   <text x="10" y="238" font-size="7" fill="#64748b" font-family="sans-serif">Vogelperspektive · Bauchlage</text>
 </svg>`;}
 
+// ── NEW / ALTERNATIVE SVG VIEWS ───────────────────────
+
+// S3 – Außenrotation: Rückenansicht (ersetzt Vogelperspektive)
+function svgExtRotBack(){
+  return `<svg viewBox="0 0 200 240" xmlns="http://www.w3.org/2000/svg">
+  <rect width="200" height="240" fill="#0a1628" rx="10"/>
+  <defs>
+    <radialGradient id="erg1" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#38bdf8" stop-opacity=".65"/><stop offset="100%" stop-color="#38bdf8" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="ef1"><feGaussianBlur stdDeviation="4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  </defs>
+  <text x="10" y="14" font-size="8" fill="#38bdf8" font-family="sans-serif" font-weight="bold">Außenrotation · Rückenansicht</text>
+  <!-- Wall right -->
+  <rect x="162" y="18" width="30" height="216" rx="4" fill="#0d2a4a" stroke="#38bdf866" stroke-width="1.5"/>
+  <line x1="162" y1="18" x2="162" y2="234" stroke="#38bdf8" stroke-width="2.5"
+    class="anim" style="animation:wallPulse 2.2s ease-in-out infinite"/>
+  <text x="177" y="130" text-anchor="middle" font-size="8" fill="#38bdf844" font-family="sans-serif" transform="rotate(90,177,130)">Wand</text>
+  <!-- Rotator cuff glow -->
+  <ellipse cx="134" cy="96" rx="26" ry="24" fill="url(#erg1)" class="anim" style="animation:muscleGlow 2.2s ease-in-out infinite"/>
+  <!-- HEAD (back view) -->
+  <ellipse cx="90" cy="46" rx="22" ry="26" fill="#1a4a7a"/>
+  <path d="M70 34 Q90 20 110 34 Q103 18 90 16 Q77 16 70 34Z" fill="#0f2a4a"/>
+  <!-- Neck -->
+  <rect x="80" y="69" width="20" height="15" rx="7" fill="#1a4a7a"/>
+  <!-- Shoulders -->
+  <rect x="48" y="81" width="104" height="14" rx="7" fill="#1a4a7a"/>
+  <!-- Torso -->
+  <path d="M58 93 Q56 146 62 162 Q74 178 90 180 Q106 178 118 162 Q124 146 122 93Z" fill="#1a4a7a"/>
+  <!-- Shoulder blades -->
+  <ellipse cx="74" cy="116" rx="10" ry="13" fill="#153d63" opacity=".6"/>
+  <ellipse cx="106" cy="116" rx="10" ry="13" fill="#153d63" opacity=".6"/>
+  <!-- Left arm inactive -->
+  <rect x="36" y="83" width="13" height="50" rx="6" fill="#153d63"/>
+  <rect x="36" y="130" width="12" height="28" rx="6" fill="#153d63" opacity=".7"/>
+  <!-- Legs -->
+  <rect x="68" y="178" width="16" height="54" rx="8" fill="#1a4a7a"/>
+  <rect x="96" y="178" width="16" height="54" rx="8" fill="#153d63"/>
+  <ellipse cx="76" cy="233" rx="15" ry="5" fill="#1a4a7a"/>
+  <ellipse cx="104" cy="233" rx="15" ry="5" fill="#153d63"/>
+  <!-- Shoulder joint circle -->
+  <circle cx="132" cy="88" r="9" fill="#0f2a4a" stroke="#38bdf8" stroke-width="2.5"
+    filter="url(#ef1)" class="anim" style="animation:pulse 2.5s ease-in-out infinite"/>
+  <!-- RIGHT ARM animated (pressing outward) -->
+  <g class="anim" style="animation:pressOut 3s ease-in-out infinite;transform-origin:132px 88px">
+    <rect x="122" y="84" width="14" height="44" rx="7" fill="#2a6aaa"/>
+    <ellipse cx="129" cy="126" rx="10" ry="9" fill="#0f2a4a" stroke="#38bdf8" stroke-width="2"/>
+    <rect x="126" y="119" width="38" height="12" rx="6" fill="#2a6aaa"/>
+    <ellipse cx="162" cy="125" rx="9" ry="7" fill="#34d399" opacity=".9"/>
+  </g>
+  <!-- Arrow -->
+  <g class="anim" style="animation:arrR 1.8s ease-in-out infinite">
+    <line x1="148" y1="108" x2="160" y2="108" stroke="#fbbf24" stroke-width="3" stroke-linecap="round"/>
+    <polygon points="157,102 168,108 157,114" fill="#fbbf24"/>
+    <text x="132" y="99" font-size="9" fill="#fbbf24" font-family="sans-serif" font-weight="800">drücken →</text>
+  </g>
+  <!-- Labels -->
+  <text x="8" y="105" font-size="8" fill="#38bdf8" font-family="sans-serif" font-weight="700">Rotator-</text>
+  <text x="8" y="116" font-size="8" fill="#38bdf8" font-family="sans-serif" font-weight="700">manschette</text>
+  <line x1="55" y1="109" x2="108" y2="100" stroke="#38bdf8" stroke-width="1" stroke-dasharray="3,3" opacity=".6"/>
+  <text x="8" y="232" font-size="7.5" fill="#94a3b8" font-family="sans-serif">Handrücken zeigt zur Wand</text>
+</svg>`;
+}
+
+// S3 – Außenrotation: Anatomie-Ansicht
+function svgExtRotAnatomy(){
+  return `<svg viewBox="0 0 200 240" xmlns="http://www.w3.org/2000/svg">
+  <rect width="200" height="240" fill="#0a1628" rx="10"/>
+  <defs>
+    <radialGradient id="era1" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#38bdf8" stop-opacity=".7"/><stop offset="100%" stop-color="#38bdf8" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="era2" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#a78bfa" stop-opacity=".5"/><stop offset="100%" stop-color="#a78bfa" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="ef2"><feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  </defs>
+  <text x="10" y="14" font-size="8" fill="#38bdf8" font-family="sans-serif" font-weight="bold">Muskeln &amp; Gelenk · Vergrößert</text>
+  <!-- Shoulder joint enlarged -->
+  <!-- Glenoid fossa (socket) -->
+  <ellipse cx="100" cy="110" rx="28" ry="32" fill="#0d1b2e" stroke="#1e3a5f" stroke-width="2"/>
+  <!-- Rotator cuff glow -->
+  <circle cx="100" cy="110" r="42" fill="url(#era1)" class="anim" style="animation:muscleGlow 2s ease-in-out infinite"/>
+  <!-- Infraspinatus / Supraspinatus (blue arc, back/top) -->
+  <path d="M72 82 Q100 66 128 82" stroke="#38bdf8" stroke-width="9" fill="none" stroke-linecap="round" opacity=".5"/>
+  <!-- Subscapularis (violet, front) -->
+  <ellipse cx="100" cy="122" rx="16" ry="10" fill="url(#era2)" class="anim" style="animation:muscleGlow 2.4s ease-in-out infinite 0.3s"/>
+  <!-- Humeral head (ball) -->
+  <circle cx="100" cy="110" r="20" fill="#1a4a7a" stroke="#38bdf8" stroke-width="2.5" filter="url(#ef2)"/>
+  <circle cx="100" cy="110" r="14" fill="#153d63" class="anim" style="animation:muscleGlow 2s ease-in-out infinite"/>
+  <!-- Rotation arrow (external – counterclockwise from front) -->
+  <g class="anim" style="animation:arrR 2s ease-in-out infinite">
+    <path d="M126 96 Q138 110 126 124" stroke="#fbbf24" stroke-width="3" fill="none" stroke-linecap="round" stroke-dasharray="6,3"/>
+    <polygon points="120,122 130,128 126,116" fill="#fbbf24"/>
+  </g>
+  <!-- Humerus shaft going down -->
+  <rect x="90" y="128" width="20" height="70" rx="10" fill="#1a4a7a" stroke="#2a6aaa" stroke-width="1.5"/>
+  <!-- Wall + forearm pressing -->
+  <rect x="158" y="40" width="30" height="180" rx="4" fill="#0d2a4a" stroke="#38bdf866" stroke-width="1.5"/>
+  <rect x="148" y="154" width="14" height="12" rx="5" fill="#2a6aaa"/>
+  <rect x="150" y="158" width="12" height="14" rx="4" fill="#34d399" opacity=".85"
+    class="anim" style="animation:wallPulse 2s ease-in-out infinite"/>
+  <!-- Labels -->
+  <line x1="10" y1="77" x2="74" y2="84" stroke="#38bdf8" stroke-width="1" stroke-dasharray="3,3" opacity=".7"/>
+  <text x="8" y="75" font-size="8.5" fill="#38bdf8" font-family="sans-serif" font-weight="700">Infraspinatus</text>
+  <text x="8" y="86" font-size="7.5" fill="#38bdf8" font-family="sans-serif">(Außenrotation)</text>
+  <line x1="10" y1="128" x2="84" y2="122" stroke="#a78bfa" stroke-width="1" stroke-dasharray="3,3" opacity=".7"/>
+  <text x="8" y="126" font-size="8.5" fill="#a78bfa" font-family="sans-serif" font-weight="700">Subscapularis</text>
+  <text x="8" y="137" font-size="7.5" fill="#a78bfa" font-family="sans-serif">(wird gedehnt)</text>
+  <line x1="10" y1="155" x2="90" y2="115" stroke="#64748b" stroke-width="1" stroke-dasharray="3,3" opacity=".5"/>
+  <text x="8" y="153" font-size="8" fill="#64748b" font-family="sans-serif">Schultergelenk</text>
+  <!-- Legend -->
+  <text x="140" y="232" text-anchor="end" font-size="7.5" fill="#fbbf24" font-family="sans-serif">← Außenrotation</text>
+  <text x="10" y="232" font-size="7" fill="#1e3a5f" font-family="sans-serif">Querschnitt · schematisch</text>
+</svg>`;
+}
+
+// S4 – Innenrotation: Seitenansicht (ersetzt Vogelperspektive)
+function svgIntRotSide(){
+  return `<svg viewBox="0 0 200 240" xmlns="http://www.w3.org/2000/svg">
+  <rect width="200" height="240" fill="#0a1628" rx="10"/>
+  <defs>
+    <radialGradient id="irg1" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#a78bfa" stop-opacity=".6"/><stop offset="100%" stop-color="#a78bfa" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="if1"><feGaussianBlur stdDeviation="4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  </defs>
+  <text x="10" y="14" font-size="8" fill="#a78bfa" font-family="sans-serif" font-weight="bold">Innenrotation · Seitenansicht</text>
+  <!-- Wall left (person faces wall) -->
+  <rect x="8" y="18" width="28" height="216" rx="4" fill="#1a1040" stroke="#a78bfa55" stroke-width="1.5"/>
+  <line x1="36" y1="18" x2="36" y2="234" stroke="#a78bfa" stroke-width="2.5"
+    class="anim" style="animation:wallPulse 2.2s ease-in-out infinite"/>
+  <text x="22" y="130" text-anchor="middle" font-size="8" fill="#a78bfa44" font-family="sans-serif" transform="rotate(90,22,130)">Wand</text>
+  <!-- Subscapularis glow -->
+  <ellipse cx="72" cy="96" rx="26" ry="24" fill="url(#irg1)" class="anim" style="animation:muscleGlow 2.2s ease-in-out infinite"/>
+  <!-- PERSON SILHOUETTE SIDE VIEW (facing left = wall) -->
+  <!-- Head -->
+  <ellipse cx="110" cy="46" rx="24" ry="28" fill="#1a4a7a"/>
+  <path d="M88 34 Q110 18 132 34 Q125 17 110 14 Q95 14 88 34Z" fill="#0f2a4a"/>
+  <!-- ear -->
+  <ellipse cx="88" cy="46" rx="5" ry="8" fill="#1a4a7a" stroke="#2a6aaa" stroke-width="1"/>
+  <!-- eye -->
+  <ellipse cx="96" cy="42" rx="4" ry="3.5" fill="#38bdf8" opacity=".6"/>
+  <!-- Neck -->
+  <rect x="100" y="71" width="20" height="16" rx="8" fill="#1a4a7a"/>
+  <!-- Torso -->
+  <path d="M78 220 Q76 178 82 164 Q94 148 110 146 Q126 148 138 164 Q144 178 142 220Z" fill="#1a4a7a"/>
+  <!-- Legs -->
+  <rect x="88" y="218" width="16" height="18" rx="7" fill="#1a4a7a"/>
+  <rect x="112" y="218" width="16" height="18" rx="7" fill="#153d63"/>
+  <!-- Shoulder joint -->
+  <circle cx="72" cy="90" r="9" fill="#0f2a4a" stroke="#a78bfa" stroke-width="2.5"
+    filter="url(#if1)" class="anim" style="animation:pulse 2.5s ease-in-out infinite"/>
+  <!-- RIGHT ARM pressing INWARD (toward wall, forearm presses forward) -->
+  <g class="anim" style="animation:pressOut 3s ease-in-out infinite;transform-origin:72px 90px" style="transform-origin:72px 90px">
+    <!-- Upper arm -->
+    <rect x="64" y="85" width="14" height="44" rx="7" fill="#6a3aaa"/>
+    <!-- Elbow -->
+    <ellipse cx="71" cy="127" rx="10" ry="9" fill="#0f2a4a" stroke="#a78bfa" stroke-width="2"/>
+    <!-- Forearm going toward wall -->
+    <rect x="36" y="121" width="38" height="12" rx="6" fill="#6a3aaa"/>
+    <!-- Hand pressing wall -->
+    <ellipse cx="37" cy="127" rx="8" ry="7" fill="#a78bfa" opacity=".9"/>
+  </g>
+  <!-- Arrow -->
+  <g class="anim" style="animation:arrL 1.8s ease-in-out infinite">
+    <line x1="60" y1="108" x2="46" y2="108" stroke="#fbbf24" stroke-width="3" stroke-linecap="round"/>
+    <polygon points="48,102 36,108 48,114" fill="#fbbf24"/>
+    <text x="48" y="99" font-size="9" fill="#fbbf24" font-family="sans-serif" font-weight="800">← drücken</text>
+  </g>
+  <!-- Labels -->
+  <text x="130" y="105" font-size="8" fill="#a78bfa" font-family="sans-serif" font-weight="700">Subscapu-</text>
+  <text x="130" y="116" font-size="8" fill="#a78bfa" font-family="sans-serif" font-weight="700">laris</text>
+  <line x1="130" y1="110" x2="96" y2="100" stroke="#a78bfa" stroke-width="1" stroke-dasharray="3,3" opacity=".6"/>
+  <text x="40" y="232" font-size="7.5" fill="#94a3b8" font-family="sans-serif">Handfläche zeigt zur Wand</text>
+</svg>`;
+}
+
+// S4 – Innenrotation: Anatomie
+function svgIntRotAnatomy(){
+  return `<svg viewBox="0 0 200 240" xmlns="http://www.w3.org/2000/svg">
+  <rect width="200" height="240" fill="#0a1628" rx="10"/>
+  <defs>
+    <radialGradient id="ira1" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#a78bfa" stop-opacity=".7"/><stop offset="100%" stop-color="#a78bfa" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="ira2" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#38bdf8" stop-opacity=".3"/><stop offset="100%" stop-color="#38bdf8" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="if2"><feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  </defs>
+  <text x="10" y="14" font-size="8" fill="#a78bfa" font-family="sans-serif" font-weight="bold">Subscapularis · Anatomie</text>
+  <!-- Socket -->
+  <ellipse cx="100" cy="110" rx="28" ry="32" fill="#0d1b2e" stroke="#1e3a5f" stroke-width="2"/>
+  <!-- Subscapularis glow (main) -->
+  <circle cx="100" cy="110" r="42" fill="url(#ira1)" class="anim" style="animation:muscleGlow 2s ease-in-out infinite"/>
+  <!-- Subscapularis muscle arc (front, strong) -->
+  <path d="M72 126 Q100 142 128 126" stroke="#a78bfa" stroke-width="10" fill="none" stroke-linecap="round" opacity=".55"/>
+  <!-- Infraspinatus muted -->
+  <path d="M72 88 Q100 74 128 88" stroke="#38bdf8" stroke-width="5" fill="none" stroke-linecap="round" opacity=".2"/>
+  <!-- Humeral head -->
+  <circle cx="100" cy="110" r="20" fill="#1a3a6a" stroke="#a78bfa" stroke-width="2.5" filter="url(#if2)"/>
+  <circle cx="100" cy="110" r="14" fill="#2a3a7a" class="anim" style="animation:muscleGlow 2s ease-in-out infinite"/>
+  <!-- Rotation arrow (internal – clockwise) -->
+  <g class="anim" style="animation:arrL 2s ease-in-out infinite">
+    <path d="M74 124 Q62 110 74 96" stroke="#fbbf24" stroke-width="3" fill="none" stroke-linecap="round" stroke-dasharray="6,3"/>
+    <polygon points="80,97 70,91 74,104" fill="#fbbf24"/>
+  </g>
+  <!-- Humerus shaft -->
+  <rect x="90" y="128" width="20" height="70" rx="10" fill="#1a4a7a" stroke="#2a6aaa" stroke-width="1.5"/>
+  <!-- Wall + forearm pressing -->
+  <rect x="8" y="40" width="26" height="180" rx="4" fill="#1a1040" stroke="#a78bfa55" stroke-width="1.5"/>
+  <rect x="30" y="154" width="14" height="12" rx="5" fill="#6a3aaa"/>
+  <rect x="30" y="157" width="10" height="14" rx="4" fill="#a78bfa" opacity=".85"
+    class="anim" style="animation:wallPulse 2s ease-in-out infinite"/>
+  <!-- Labels -->
+  <line x1="190" y1="130" x2="128" y2="126" stroke="#a78bfa" stroke-width="1" stroke-dasharray="3,3" opacity=".7"/>
+  <text x="108" y="146" font-size="8.5" fill="#a78bfa" font-family="sans-serif" font-weight="700">Subscapularis</text>
+  <text x="108" y="157" font-size="7.5" fill="#a78bfa" font-family="sans-serif">(Innenrotation)</text>
+  <line x1="190" y1="88" x2="128" y2="90" stroke="#38bdf8" stroke-width="1" stroke-dasharray="3,3" opacity=".4"/>
+  <text x="108" y="88" font-size="8" fill="#38bdf866" font-family="sans-serif">Infraspinatus</text>
+  <line x1="30" y1="155" x2="90" y2="128" stroke="#64748b" stroke-width="1" stroke-dasharray="3,3" opacity=".5"/>
+  <text x="8" y="232" font-size="7" fill="#1e3a5f" font-family="sans-serif">Querschnitt · Subscapularis fixiert Sehne</text>
+</svg>`;
+}
+
+// S1 – Kinnrückzug: Step-Diagramm
+function svgS1Steps(){
+  return `<svg viewBox="0 0 200 240" xmlns="http://www.w3.org/2000/svg">
+  <rect width="200" height="240" fill="#0a1628" rx="10"/>
+  <text x="100" y="14" text-anchor="middle" font-size="8.5" fill="#38bdf8" font-family="sans-serif" font-weight="bold">3 SCHRITTE · Kinnrückzug</text>
+  <!-- STEP 1: bad posture -->
+  <rect x="4" y="20" width="58" height="205" rx="8" fill="#0d1b2e" stroke="#f8717155" stroke-width="1.5"/>
+  <text x="33" y="35" text-anchor="middle" font-size="8" fill="#f87171" font-family="sans-serif" font-weight="700">❌ Falsch</text>
+  <!-- head forward -->
+  <ellipse cx="40" cy="82" rx="17" ry="20" fill="#1a4a7a"/>
+  <path d="M24 70 Q40 58 56 70 Q50 57 40 55 Q30 55 24 70Z" fill="#0f2a4a"/>
+  <ellipse cx="54" cy="90" rx="4" ry="3" fill="#38bdf8" opacity=".5"/>
+  <rect x="32" y="99" width="14" height="14" rx="5" fill="#1a4a7a"/>
+  <path d="M14 200 Q13 170 18 158 Q26 144 38 142 Q50 144 56 155 Q60 165 59 200Z" fill="#1a4a7a"/>
+  <!-- "forward head" dashed guide line -->
+  <line x1="33" y1="72" x2="33" y2="200" stroke="#f87171" stroke-width="1" stroke-dasharray="3,3" opacity=".5"/>
+  <text x="33" y="215" text-anchor="middle" font-size="7" fill="#f87171" font-family="sans-serif">Kopf vor</text>
+  <text x="33" y="224" text-anchor="middle" font-size="7" fill="#f87171" font-family="sans-serif">Körper</text>
+  <!-- STEP 2: chin tuck arrow -->
+  <g class="anim" style="animation:arrL 2s ease-in-out infinite">
+    <line x1="77" y1="90" x2="67" y2="90" stroke="#fbbf24" stroke-width="2.5"/>
+    <polygon points="70,85 62,90 70,95" fill="#fbbf24"/>
+  </g>
+  <!-- STEP 2: chin back -->
+  <rect x="71" y="20" width="58" height="205" rx="8" fill="#0d1b2e" stroke="#fbbf2444" stroke-width="1.5"/>
+  <text x="100" y="35" text-anchor="middle" font-size="8" fill="#fbbf24" font-family="sans-serif" font-weight="700">Zurück</text>
+  <ellipse cx="98" cy="82" rx="17" ry="20" fill="#1a4a7a"/>
+  <path d="M82 70 Q98 58 114 70 Q108 57 98 55 Q88 55 82 70Z" fill="#0f2a4a"/>
+  <ellipse cx="110" cy="90" rx="4" ry="3" fill="#38bdf8" opacity=".5"/>
+  <rect x="90" y="99" width="14" height="14" rx="5" fill="#1a4a7a"/>
+  <path d="M80 200 Q79 170 84 158 Q92 144 100 142 Q108 144 116 155 Q120 165 120 200Z" fill="#1a4a7a"/>
+  <line x1="100" y1="62" x2="100" y2="200" stroke="#fbbf24" stroke-width="1" stroke-dasharray="3,3" opacity=".5"/>
+  <text x="100" y="215" text-anchor="middle" font-size="7" fill="#fbbf24" font-family="sans-serif">Kinn</text>
+  <text x="100" y="224" text-anchor="middle" font-size="7" fill="#fbbf24" font-family="sans-serif">zurück</text>
+  <!-- STEP 3 arrow -->
+  <g class="anim" style="animation:arrR 2s ease-in-out infinite">
+    <line x1="136" y1="90" x2="144" y2="90" stroke="#34d399" stroke-width="2.5"/>
+    <polygon points="142,85 152,90 142,95" fill="#34d399"/>
+  </g>
+  <!-- STEP 3: hold -->
+  <rect x="138" y="20" width="58" height="205" rx="8" fill="#091a11" stroke="#34d39966" stroke-width="1.5"/>
+  <text x="167" y="35" text-anchor="middle" font-size="8" fill="#34d399" font-family="sans-serif" font-weight="700">✓ Halten</text>
+  <!-- head aligned, glow -->
+  <ellipse cx="163" cy="82" rx="17" ry="20" fill="#1a4a7a"/>
+  <path d="M147 70 Q163 58 179 70 Q173 57 163 55 Q153 55 147 70Z" fill="#0f2a4a"/>
+  <ellipse cx="175" cy="90" rx="4" ry="3" fill="#38bdf8" opacity=".5"/>
+  <rect x="155" y="99" width="14" height="14" rx="5" fill="#1a4a7a"/>
+  <path d="M145 200 Q144 170 149 158 Q157 144 165 142 Q173 144 181 155 Q185 165 185 200Z" fill="#1a4a7a"/>
+  <line x1="163" y1="62" x2="163" y2="200" stroke="#34d399" stroke-width="1.5" stroke-dasharray="3,3" opacity=".6"/>
+  <!-- glow around neck region -->
+  <ellipse cx="163" cy="106" rx="14" ry="10" fill="#34d399" class="anim"
+    style="animation:muscleGlow 2s ease-in-out infinite" opacity=".4"/>
+  <text x="163" y="215" text-anchor="middle" font-size="7" fill="#34d399" font-family="sans-serif">10 Sek.</text>
+  <text x="163" y="224" text-anchor="middle" font-size="7" fill="#34d399" font-family="sans-serif">halten</text>
+</svg>`;
+}
+
+// S5 – Türrahmen-Dehnung: Step-Diagramm
+function svgS5Steps(){
+  return `<svg viewBox="0 0 200 240" xmlns="http://www.w3.org/2000/svg">
+  <rect width="200" height="240" fill="#0a1628" rx="10"/>
+  <text x="100" y="14" text-anchor="middle" font-size="8.5" fill="#38bdf8" font-family="sans-serif" font-weight="bold">3 SCHRITTE · Türrahmen</text>
+  <!-- Shared door frame -->
+  <rect x="4" y="20" width="58" height="210" rx="8" fill="#0d1b2e" stroke="#1e3a5f" stroke-width="1.5"/>
+  <rect x="71" y="20" width="58" height="210" rx="8" fill="#0d1b2e" stroke="#fbbf2444" stroke-width="1.5"/>
+  <rect x="138" y="20" width="58" height="210" rx="8" fill="#091a11" stroke="#34d39966" stroke-width="1.5"/>
+  <text x="33" y="35" text-anchor="middle" font-size="7.5" fill="#64748b" font-family="sans-serif" font-weight="700">1 · Stehen</text>
+  <text x="100" y="35" text-anchor="middle" font-size="7.5" fill="#fbbf24" font-family="sans-serif" font-weight="700">2 · Arm hoch</text>
+  <text x="167" y="35" text-anchor="middle" font-size="7.5" fill="#34d399" font-family="sans-serif" font-weight="700">3 · Dehnen</text>
+  <!-- Panel 1: door frame + person standing -->
+  <rect x="7" y="42" width="8" height="180" rx="3" fill="#1e3a5f"/>
+  <rect x="54" y="42" width="8" height="180" rx="3" fill="#1e3a5f"/>
+  <ellipse cx="33" cy="70" rx="11" ry="13" fill="#1a4a7a"/>
+  <rect x="27" y="80" width="12" height="40" rx="5" fill="#1a4a7a"/>
+  <rect x="17" y="83" width="9" height="32" rx="4" fill="#153d63"/>
+  <rect x="40" y="83" width="9" height="32" rx="4" fill="#153d63"/>
+  <rect x="27" y="118" width="10" height="38" rx="5" fill="#1a4a7a"/>
+  <rect x="36" y="118" width="10" height="38" rx="5" fill="#153d63"/>
+  <!-- Panel 2: arm raised and placed on frame -->
+  <rect x="74" y="42" width="8" height="180" rx="3" fill="#1e3a5f"/>
+  <rect x="118" y="42" width="8" height="180" rx="3" fill="#1e3a5f"/>
+  <ellipse cx="100" cy="68" rx="11" ry="13" fill="#1a4a7a"/>
+  <rect x="94" y="78" width="12" height="40" rx="5" fill="#1a4a7a"/>
+  <rect x="83" y="80" width="9" height="32" rx="4" fill="#153d63"/>
+  <!-- Raised right arm touching frame -->
+  <rect x="104" y="50" width="9" height="32" rx="4" fill="#2a6aaa"/>
+  <ellipse cx="118" cy="78" rx="7" ry="5" fill="#2a6aaa"/>
+  <rect x="94" y="116" width="10" height="38" rx="5" fill="#1a4a7a"/>
+  <rect x="103" y="116" width="10" height="38" rx="5" fill="#153d63"/>
+  <text x="100" y="210" text-anchor="middle" font-size="7" fill="#fbbf24" font-family="sans-serif">Schulterhöhe</text>
+  <!-- Panel 3: lean forward, stretch -->
+  <rect x="141" y="42" width="8" height="180" rx="3" fill="#1e3a5f"/>
+  <rect x="185" y="42" width="7" height="180" rx="3" fill="#1e3a5f"/>
+  <!-- person leaning forward -->
+  <g class="anim" style="animation:doorSway 3.5s ease-in-out infinite;transform-origin:167px 130px">
+    <ellipse cx="162" cy="68" rx="11" ry="13" fill="#1a4a7a"/>
+    <rect x="156" y="78" width="12" height="38" rx="5" fill="#1a4a7a"/>
+    <rect x="145" y="80" width="9" height="30" rx="4" fill="#153d63"/>
+    <!-- arm on frame -->
+    <rect x="166" y="50" width="9" height="30" rx="4" fill="#2a6aaa"/>
+    <ellipse cx="185" cy="77" rx="6" ry="5" fill="#2a6aaa"/>
+    <rect x="156" y="114" width="10" height="38" rx="5" fill="#1a4a7a"/>
+    <rect x="165" y="114" width="10" height="38" rx="5" fill="#153d63"/>
+  </g>
+  <!-- stretch indicator -->
+  <ellipse cx="152" cy="90" rx="10" ry="8" fill="#34d399" class="anim"
+    style="animation:muscleGlow 2s ease-in-out infinite" opacity=".5"/>
+  <text x="167" y="210" text-anchor="middle" font-size="7" fill="#34d399" font-family="sans-serif">30 Sek.</text>
+  <text x="167" y="220" text-anchor="middle" font-size="7" fill="#34d399" font-family="sans-serif">halten</text>
+  <!-- Arrows between steps -->
+  <g class="anim" style="animation:arrR 2s ease-in-out infinite">
+    <line x1="66" y1="100" x2="70" y2="100" stroke="#fbbf24" stroke-width="2"/>
+    <polygon points="69,96 74,100 69,104" fill="#fbbf24"/>
+  </g>
+  <g class="anim" style="animation:arrR 2s ease-in-out infinite">
+    <line x1="133" y1="100" x2="137" y2="100" stroke="#34d399" stroke-width="2"/>
+    <polygon points="136,96 141,100 136,104" fill="#34d399"/>
+  </g>
+</svg>`;
+}
+
+// K2 – Mini Squat: Step-Diagramm (Tiefenanzeige)
+function svgK2Steps(){
+  return `<svg viewBox="0 0 200 240" xmlns="http://www.w3.org/2000/svg">
+  <rect width="200" height="240" fill="#0a1628" rx="10"/>
+  <text x="100" y="14" text-anchor="middle" font-size="8.5" fill="#34d399" font-family="sans-serif" font-weight="bold">Kniewinkel · Tiefenanzeige</text>
+  <!-- Floor line -->
+  <line x1="4" y1="222" x2="196" y2="222" stroke="#1e3a5f" stroke-width="2"/>
+  <!-- Panel backgrounds -->
+  <rect x="4" y="20" width="58" height="200" rx="8" fill="#0d1b2e" stroke="#1e3a5f" stroke-width="1.5"/>
+  <rect x="71" y="20" width="58" height="200" rx="8" fill="#0d1b2e" stroke="#fbbf2444" stroke-width="1.5"/>
+  <rect x="138" y="20" width="58" height="200" rx="8" fill="#091a11" stroke="#34d39966" stroke-width="1.5"/>
+  <text x="33" y="35" text-anchor="middle" font-size="7.5" fill="#64748b" font-family="sans-serif" font-weight="700">Start · 0°</text>
+  <text x="100" y="35" text-anchor="middle" font-size="7.5" fill="#fbbf24" font-family="sans-serif" font-weight="700">Leicht · ~30°</text>
+  <text x="167" y="35" text-anchor="middle" font-size="7.5" fill="#34d399" font-family="sans-serif" font-weight="700">Max · 60° ✓</text>
+  <!-- PANEL 1: Standing straight -->
+  <ellipse cx="33" cy="64" rx="11" ry="13" fill="#1a4a7a"/>
+  <rect x="27" y="74" width="12" height="38" rx="5" fill="#1a4a7a"/>
+  <rect x="16" y="77" width="9" height="28" rx="4" fill="#153d63"/>
+  <rect x="41" y="77" width="9" height="28" rx="4" fill="#153d63"/>
+  <rect x="22" y="110" width="11" height="48" rx="5" fill="#1a4a7a"/>
+  <rect x="33" y="110" width="11" height="48" rx="5" fill="#153d63"/>
+  <ellipse cx="28" cy="220" rx="12" ry="5" fill="#1a4a7a"/>
+  <ellipse cx="39" cy="220" rx="12" ry="5" fill="#153d63"/>
+  <!-- PANEL 2: Slight squat -->
+  <ellipse cx="100" cy="70" rx="11" ry="13" fill="#1a4a7a"/>
+  <rect x="94" y="80" width="12" height="34" rx="5" fill="#1a4a7a"/>
+  <rect x="82" y="82" width="9" height="24" rx="4" fill="#153d63"/>
+  <rect x="109" y="82" width="9" height="24" rx="4" fill="#153d63"/>
+  <!-- slightly bent upper legs -->
+  <rect x="88" y="113" width="11" height="38" rx="5" fill="#1a4a7a" transform="rotate(-8,94,132)"/>
+  <rect x="100" y="113" width="11" height="38" rx="5" fill="#153d63" transform="rotate(8,105,132)"/>
+  <!-- lower legs -->
+  <rect x="86" y="148" width="11" height="34" rx="5" fill="#1a4a7a" transform="rotate(6,92,165)"/>
+  <rect x="100" y="148" width="11" height="34" rx="5" fill="#153d63" transform="rotate(-6,105,165)"/>
+  <ellipse cx="92" cy="220" rx="12" ry="5" fill="#1a4a7a"/>
+  <ellipse cx="107" cy="220" rx="12" ry="5" fill="#153d63"/>
+  <!-- angle arc -->
+  <path d="M92 148 Q86 165 95 175" stroke="#fbbf24" stroke-width="1.5" fill="none" stroke-dasharray="3,2"/>
+  <text x="74" y="178" font-size="8" fill="#fbbf24" font-family="sans-serif">~30°</text>
+  <!-- PANEL 3: 60° squat -->
+  <ellipse cx="167" cy="78" rx="11" ry="13" fill="#1a4a7a"/>
+  <rect x="161" y="88" width="12" height="30" rx="5" fill="#1a4a7a"/>
+  <rect x="150" y="90" width="9" height="20" rx="4" fill="#153d63"/>
+  <rect x="175" y="90" width="9" height="20" rx="4" fill="#153d63"/>
+  <!-- deep bent upper legs -->
+  <rect x="154" y="118" width="11" height="34" rx="5" fill="#1a4a7a" transform="rotate(-16,160,135)"/>
+  <rect x="168" y="118" width="11" height="34" rx="5" fill="#153d63" transform="rotate(16,173,135)"/>
+  <!-- lower legs -->
+  <rect x="148" y="148" width="11" height="34" rx="5" fill="#1a4a7a" transform="rotate(12,154,165)"/>
+  <rect x="166" y="148" width="11" height="34" rx="5" fill="#153d63" transform="rotate(-12,171,165)"/>
+  <ellipse cx="155" cy="220" rx="12" ry="5" fill="#1a4a7a"/>
+  <ellipse cx="173" cy="220" rx="12" ry="5" fill="#153d63"/>
+  <!-- 60° angle indicator -->
+  <path d="M156 152 Q144 170 158 183" stroke="#34d399" stroke-width="2" fill="none" stroke-dasharray="4,2"/>
+  <text x="138" y="186" font-size="8.5" fill="#34d399" font-family="sans-serif" font-weight="800">60°</text>
+  <!-- MAX label -->
+  <rect x="142" y="192" width="48" height="14" rx="5" fill="#064e3b"/>
+  <text x="166" y="203" text-anchor="middle" font-size="8" fill="#34d399" font-family="sans-serif" font-weight="700">MAX! Nicht tiefer</text>
+  <!-- Quad glow -->
+  <ellipse cx="162" cy="130" rx="10" ry="16" fill="#34d399" class="anim"
+    style="animation:muscleGlow 2s ease-in-out infinite" opacity=".35"/>
+  <!-- Arrows between steps -->
+  <g class="anim" style="animation:arrR 2s ease-in-out infinite">
+    <line x1="66" y1="120" x2="70" y2="120" stroke="#fbbf24" stroke-width="2"/>
+    <polygon points="69,116 74,120 69,124" fill="#fbbf24"/>
+  </g>
+  <g class="anim" style="animation:arrR 2s ease-in-out infinite">
+    <line x1="133" y1="120" x2="137" y2="120" stroke="#34d399" stroke-width="2"/>
+    <polygon points="136,116 141,120 136,124" fill="#34d399"/>
+  </g>
+</svg>`;
+}
+
 // ── EXERCISES ─────────────────────────────────────────
 const EX = [
   {
@@ -1259,7 +1691,7 @@ const EX = [
        '10 Sekunden halten, dann langsam lösen'],
     tip:'Büroarbeit schiebt den Kopf nach vorne → Schulter kippt innen → Bizepsrille verengt sich. Dieser Zug korrigiert die gesamte Schultermechanik.',
     video:'https://www.youtube.com/results?search_query=chin+tuck+exercise+neck+correct+posture',
-    svg: svgChinTuck,
+    svgs:{a:svgChinTuck, b:svgS1Steps},
     tmr:{sets:3,reps:10,holdSec:10,repRestSec:5,restSec:45}
   },
   {
@@ -1271,7 +1703,7 @@ const EX = [
        '5 Sekunden halten, dann kontrolliert lösen'],
     tip:'Stell dir vor, einen Bleistift zwischen den Schulterblättern festzuhalten. Genau diese Aktivierung brauchen wir.',
     video:'https://www.youtube.com/results?search_query=scapular+retraction+exercise+shoulder+blade+squeeze',
-    svg: svgScapula,
+    svgs:{a:svgScapula},
     tmr:{sets:3,reps:15,holdSec:5,repRestSec:3,restSec:45}
   },
   {
@@ -1283,7 +1715,7 @@ const EX = [
        'Keine Bewegung! Nur Spannung aufbauen. 10 Sek. halten.'],
     tip:'Isometrisch = Muskel arbeitet ohne Gelenk-Bewegung. Schonendste Methode für gereizte Sehnen in Phase 1.',
     video:'https://www.youtube.com/results?search_query=isometric+external+rotation+shoulder+wall+exercise',
-    svg: svgExtRot,
+    svgs:{a:svgExtRotBack, c:svgExtRotAnatomy},
     tmr:{sets:3,reps:10,holdSec:10,repRestSec:5,restSec:45}
   },
   {
@@ -1295,7 +1727,7 @@ const EX = [
        'Keine Bewegung! 10 Sek. Spannung halten.'],
     tip:'Der Subscapularis-Muskel hält die Bizepssehne in ihrer Rille. Ist er schwach, springt die Sehne heraus – das ist dein Knacken.',
     video:'https://www.youtube.com/results?search_query=isometric+internal+rotation+shoulder+wall+exercise',
-    svg: svgIntRot,
+    svgs:{a:svgIntRotSide, c:svgIntRotAnatomy},
     tmr:{sets:3,reps:10,holdSec:10,repRestSec:5,restSec:45}
   },
   {
@@ -1308,7 +1740,7 @@ const EX = [
        '30 Sekunden halten – ruhig durch die Nase atmen'],
     tip:'Büroarbeit verkürzt den kleinen Brustmuskel (Pec Minor), der die Schulter nach vorne zieht und die Bizepsrille einengt.',
     video:'https://www.youtube.com/results?search_query=doorway+chest+stretch+pec+minor+shoulder+physiotherapy',
-    svg: svgDoor,
+    svgs:{a:svgDoor, b:svgS5Steps},
     tmr:{sets:1,reps:6,holdSec:30,repRestSec:12,restSec:0,sideLabels:['Rechts','Links','Rechts','Links','Rechts','Links']}
   },
   // ── K1–K5: KNIE ───────────────────────────────────
@@ -1321,7 +1753,7 @@ const EX = [
        'Langsam wieder locker lassen'],
     tip:'Aktiviert den inneren Quadrizeps gezielt ohne Druck auf das transplantierte Knorpelgewebe.',
     video:'https://www.youtube.com/results?search_query=terminal+knee+extension+VMO+exercise+band',
-    svg: svgK1,
+    svgs:{a:svgK1},
     tmr:{sets:3,reps:15,holdSec:0,paceSec:2,restSec:45}
   },
   {
@@ -1333,7 +1765,7 @@ const EX = [
        'Kontrolliert wieder hochkommen'],
     tip:'Nie tiefer als 60° – das schützt das transplantierte Knorpelgewebe. Mit der Zeit steigern wenn schmerzfrei.',
     video:'https://www.youtube.com/results?search_query=mini+squat+knee+cartilage+rehab+exercise',
-    svg: svgK2,
+    svgs:{a:svgK2, b:svgK2Steps},
     tmr:{sets:3,reps:12,holdSec:3,repRestSec:2,restSec:45}
   },
   {
@@ -1345,7 +1777,7 @@ const EX = [
        '2 Sek. oben halten, kontrolliert absenken'],
     tip:'Perfekt für Muskelaufbau ohne jeglichen Druck auf den Knorpel – wichtig in frühen Rehaphasen.',
     video:'https://www.youtube.com/results?search_query=straight+leg+raise+quadriceps+knee+rehabilitation',
-    svg: svgK3,
+    svgs:{a:svgK3},
     tmr:{sets:3,reps:15,holdSec:2,repRestSec:2,restSec:45}
   },
   {
@@ -1357,7 +1789,7 @@ const EX = [
        'Kontrolliert hoch und runter – kein Schwung'],
     tip:'Stufe niedrig halten! Nur steigern wenn kein Schmerz. Gute Vorbereitung auf Treppen und Alltagsbewegungen.',
     video:'https://www.youtube.com/results?search_query=step+up+exercise+knee+rehabilitation+low+step',
-    svg: svgK4,
+    svgs:{a:svgK4},
     tmr:{sets:3,reps:10,holdSec:0,paceSec:3,restSec:45}
   },
   {
@@ -1369,7 +1801,7 @@ const EX = [
        'Langsam absenken ohne ganz abzulegen'],
     tip:'Starkes Gesäß entlastet das Knie bei jedem Schritt. Einer der wichtigsten Moves nach Knieoperation.',
     video:'https://www.youtube.com/results?search_query=glute+bridge+exercise+knee+rehabilitation',
-    svg: svgK5,
+    svgs:{a:svgK5},
     tmr:{sets:3,reps:15,holdSec:2,repRestSec:2,restSec:45}
   },
   // ── B1–B3: CORE / BAUCH ───────────────────────────
@@ -1382,7 +1814,7 @@ const EX = [
        'Zurück zur Mitte, Seite wechseln'],
     tip:'Wenn die Lendenwirbelsäule sich hebt, ist die Bewegung zu groß. Kleiner machen ist besser als falsch.',
     video:'https://www.youtube.com/results?search_query=dead+bug+exercise+core+stability+back+flat',
-    svg: svgB1,
+    svgs:{a:svgB1},
     tmr:{sets:3,reps:16,holdSec:0,paceSec:3,restSec:45}
   },
   {
@@ -1394,7 +1826,7 @@ const EX = [
        'Kontroliert zurück, andere Seite'],
     tip:'Schultern entspannt lassen – kein Hochziehen. Der ganze Rumpf stabilisiert diese Bewegung.',
     video:'https://www.youtube.com/results?search_query=bird+dog+exercise+core+back+stability',
-    svg: svgB2,
+    svgs:{a:svgB2},
     tmr:{sets:3,reps:20,holdSec:5,repRestSec:3,restSec:45}
   },
   {
@@ -1406,7 +1838,7 @@ const EX = [
        'Kontrolliert absenken – kein Schwung'],
     tip:'Kein Schwung! Kontrollierte langsame Bewegung aktiviert die tiefen Bauchmuskeln weit besser als Tempo.',
     video:'https://www.youtube.com/results?search_query=reverse+crunch+exercise+lower+abs+no+neck',
-    svg: svgB3,
+    svgs:{a:svgB3},
     tmr:{sets:3,reps:12,holdSec:0,paceSec:3,restSec:45}
   },
   // ── BONUS / OPTIONAL ──────────────────────────────
@@ -1420,7 +1852,7 @@ const EX = [
        'Kreis langsam größer werden lassen – wenn schmerzfrei'],
     tip:'Schwerkraft zieht das Schultergelenk sanft auseinander. Perfekt nach dem Aufwachen oder als Tagesstart.',
     video:'https://www.youtube.com/results?search_query=codman+pendulum+exercise+shoulder+mobilization',
-    svg: svgPendulum,
+    svgs:{a:svgPendulum},
     tmr:{sets:2,reps:20,holdSec:0,paceSec:2,restSec:30}
   },
   {
@@ -1433,7 +1865,7 @@ const EX = [
        'Nur so weit wie Rücken und Ellbogen Kontakt halten'],
     tip:'Zeigt sofort wie eingeschränkt die Schulterblatt-Bewegung ist. Je schwerer, desto wichtiger!',
     video:'https://www.youtube.com/results?search_query=wall+angels+scapular+control+shoulder+mobility',
-    svg: svgWallAngels,
+    svgs:{a:svgWallAngels},
     tmr:{sets:2,reps:10,holdSec:0,paceSec:3,restSec:30}
   },
   {
@@ -1446,7 +1878,7 @@ const EX = [
        'Kontrolliert absenken – Fersen nicht aufstampfen'],
     tip:'Starke Waden entlasten das Kniegelenk bei jedem Schritt und verbessern die Durchblutung nach der OP.',
     video:'https://www.youtube.com/results?search_query=calf+raise+exercise+knee+rehabilitation+standing',
-    svg: svgCalfRaise,
+    svgs:{a:svgCalfRaise},
     tmr:{sets:3,reps:20,holdSec:1,repRestSec:1,restSec:45}
   },
   {
@@ -1459,7 +1891,7 @@ const EX = [
        '2 Sek. oben, langsam absenken – Bein nicht ganz ablegen'],
     tip:'Schwache Hüftabduktoren lassen das Knie beim Gehen nach innen kippen. Direkter Schutz des Knorpels.',
     video:'https://www.youtube.com/results?search_query=side+lying+hip+abduction+exercise+knee+stability',
-    svg: svgHipAbduction,
+    svgs:{a:svgHipAbduction},
     tmr:{sets:3,reps:15,holdSec:2,repRestSec:2,restSec:45}
   },
   {
@@ -1472,7 +1904,7 @@ const EX = [
        '20–30 Sek. halten, dann Seite wechseln – links länger ok'],
     tip:'Linker Arm trägt, rechte Schulter tut nichts. Trotzdem maximale Wirkung für die seitliche Rumpfkette.',
     video:'https://www.youtube.com/results?search_query=side+plank+forearm+core+exercise+beginner',
-    svg: svgSidePlank,
+    svgs:{a:svgSidePlank},
     tmr:{sets:3,reps:1,holdSec:25,repRestSec:15,restSec:30}
   },
   {
@@ -1485,7 +1917,7 @@ const EX = [
        'Kontrolliert absenken, Seite wechseln'],
     tip:'Kräftigt die Rückenstrecker, die bei Büroarbeit am meisten erschlaffen. Ergänzt Dead Bug perfekt.',
     video:'https://www.youtube.com/results?search_query=superman+exercise+back+extension+core+strength',
-    svg: svgSuperman,
+    svgs:{a:svgSuperman},
     tmr:{sets:3,reps:10,holdSec:5,repRestSec:3,restSec:45}
   }
 ];
@@ -1673,6 +2105,19 @@ function stopAllTimers(){
   Object.keys(activeTimers).forEach(k=>delete activeTimers[k]);
 }
 
+// ── SVG VIEW STATE ──────────────────────────────────────────────
+const exViews = {}; // { idx: 'a' | 'b' | 'c' }
+const VIEW_LABELS = { a:'🎬 Bewegung', b:'📋 Schritte', c:'🫀 Anatomie' };
+
+function setExView(idx, view){
+  exViews[idx] = view;
+  const box = document.getElementById('svgview-'+idx);
+  if(box) box.innerHTML = EX[idx].svgs[view]();
+  document.querySelectorAll('#svgtabs-'+idx+' .svg-tab-btn').forEach(btn=>{
+    btn.classList.toggle('active', btn.dataset.view===view);
+  });
+}
+
 // ── CALENDAR BUILD ─────────────────────────────────────────────
 function buildCal(){
   const c = document.getElementById('calContainer');
@@ -1795,7 +2240,16 @@ function buildExCard(idx, i, done, date, isOpt){
     <div class="ex-bd">
       <div class="ex-layout">
         <div class="svg-box">
-          ${ex.svg()}
+          ${(()=>{
+            const views = Object.keys(ex.svgs);
+            const curView = exViews[idx] || 'a';
+            const tabs = views.length > 1
+              ? `<div class="svg-tab-row" id="svgtabs-${idx}">${
+                  views.map(v=>`<button class="svg-tab-btn${v===curView?' active':''}" data-view="${v}"
+                    onclick="setExView(${idx},'${v}')">${VIEW_LABELS[v]||v}</button>`).join('')
+                }</div>` : '';
+            return tabs + `<div id="svgview-${idx}">${ex.svgs[curView]()}</div>`;
+          })()}
           <div class="svg-hint">Hover = Pause</div>
         </div>
         <div class="ex-info">
@@ -1889,6 +2343,7 @@ function toggleEx(idx, dateKey){
 
 function closeModal(){
   stopAllTimers();
+  Object.keys(exViews).forEach(k=>delete exViews[k]);
   document.getElementById('overlay').classList.remove('open');
   document.body.style.overflow='';
   buildCal();
