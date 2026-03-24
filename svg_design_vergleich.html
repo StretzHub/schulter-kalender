@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SVG Design Vergleich – Isometrische Außenrotation</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#060d18;color:#f0f9ff;font-family:'Segoe UI',system-ui,sans-serif;padding:24px 16px;min-height:100vh}
+h1{text-align:center;font-size:1.3em;font-weight:800;margin-bottom:4px;
+  background:linear-gradient(90deg,#38bdf8,#a78bfa);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.intro{text-align:center;color:#64748b;font-size:.83em;margin-bottom:36px}
+.ex-name{color:#a78bfa;font-weight:600}
+
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;max-width:1100px;margin:0 auto}
+
+.card{background:#0d1b2e;border:1px solid #1e3a5f;border-radius:16px;overflow:hidden}
+.card-head{padding:14px 18px 12px;border-bottom:1px solid #1e3a5f;
+  background:linear-gradient(90deg,#0f2240,#0d1b2e)}
+.variant-tag{font-size:.68em;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;
+  color:#64748b;margin-bottom:4px}
+.card-title{font-size:1em;font-weight:700;color:#f0f9ff}
+.card-sub{font-size:.76em;color:#64748b;margin-top:2px}
+
+.svg-wrap{padding:0;background:#060d18;display:flex;justify-content:center}
+.svg-wrap svg{display:block;width:100%;max-width:320px;height:auto}
+
+.verdict{padding:14px 18px;display:flex;flex-direction:column;gap:6px}
+.verdict-row{display:flex;align-items:center;gap:8px;font-size:.78em}
+.verdict-row.pro{color:#34d399}
+.verdict-row.con{color:#f87171}
+.verdict-row.neu{color:#fbbf24}
+
+/* ─────────────────────────────────
+   ANIMATION KEYFRAMES
+───────────────────────────────── */
+@keyframes pressOut{0%,100%{transform:rotate(0deg)}40%,60%{transform:rotate(18deg)}}
+@keyframes muscleGlow{0%,100%{opacity:.08}50%{opacity:.55}}
+@keyframes wallPulse{0%,100%{opacity:.4}50%{opacity:1}}
+@keyframes arrowPulse{0%,100%{transform:translateX(0)}50%{transform:translateX(6px)}}
+@keyframes stepFade{0%,30%{opacity:.3;transform:scale(.97)}50%,80%{opacity:1;transform:scale(1)}100%{opacity:.3;transform:scale(.97)}}
+@keyframes holdPulse{0%,100%{r:22}50%{r:26}}
+@keyframes breathe{0%,100%{transform:scaleY(1)}50%{transform:scaleY(1.015)}}
+@keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+
+.card{animation:fadeIn .4s ease both}
+.card:nth-child(2){animation-delay:.1s}
+.card:nth-child(3){animation-delay:.2s}
+</style>
+</head>
+<body>
+
+<h1>SVG Design Vergleich</h1>
+<p class="intro">Übung: <span class="ex-name">Isometrische Außenrotation (S3)</span> · 3 Varianten im Direktvergleich</p>
+
+<div class="grid">
+
+<!-- ═══════════════════════════════════════
+     VARIANTE A – SILHOUETTE / SEITENANSICHT
+════════════════════════════════════════ -->
+<div class="card">
+  <div class="card-head">
+    <div class="variant-tag">Variante A</div>
+    <div class="card-title">Silhouette · Seitenansicht</div>
+    <div class="card-sub">Filled figure, iOS Fitness-Stil, klare Seitenansicht</div>
+  </div>
+  <div class="svg-wrap">
+  <svg viewBox="0 0 280 320" xmlns="http://www.w3.org/2000/svg">
+    <rect width="280" height="320" fill="#07101e"/>
+
+    <!-- Background gradient -->
+    <defs>
+      <radialGradient id="shoulderGlow" cx="55%" cy="45%" r="30%">
+        <stop offset="0%" stop-color="#38bdf8" stop-opacity=".6"/>
+        <stop offset="100%" stop-color="#38bdf8" stop-opacity="0"/>
+      </radialGradient>
+      <radialGradient id="bodyGrad" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stop-color="#1e4a7a"/>
+        <stop offset="100%" stop-color="#0f2a4a"/>
+      </radialGradient>
+      <filter id="glow">
+        <feGaussianBlur stdDeviation="5" result="b"/>
+        <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+      </filter>
+    </defs>
+
+    <!-- Wall (right side) -->
+    <rect x="220" y="20" width="46" height="280" rx="4"
+      fill="#0d2a4a" stroke="#38bdf855" stroke-width="1.5"/>
+    <line x1="220" y1="20" x2="220" y2="300" stroke="#38bdf8" stroke-width="2.5"
+      style="animation:wallPulse 2s ease-in-out infinite"/>
+    <text x="243" y="170" text-anchor="middle" font-size="10" fill="#38bdf844"
+      font-family="sans-serif" transform="rotate(90,243,170)">Wand</text>
+
+    <!-- MUSCLE GLOW – shoulder area -->
+    <ellipse cx="168" cy="148" rx="32" ry="28"
+      fill="url(#shoulderGlow)"
+      style="animation:muscleGlow 2.2s ease-in-out infinite"/>
+
+    <!-- SILHOUETTE BODY (side view, person facing left, right side toward wall) -->
+    <!-- Base body standing upright -->
+    <g style="animation:breathe 4s ease-in-out infinite;transform-origin:160px 250px">
+      <!-- Legs -->
+      <rect x="148" y="248" width="18" height="62" rx="9" fill="#1a4a7a"/>
+      <rect x="170" y="248" width="18" height="62" rx="9" fill="#153d63"/>
+      <!-- Feet -->
+      <ellipse cx="157" cy="312" rx="16" ry="7" fill="#1a4a7a"/>
+      <ellipse cx="179" cy="312" rx="14" ry="7" fill="#153d63"/>
+      <!-- Torso -->
+      <path d="M138 250 Q136 210 142 196 Q152 180 166 178 Q180 180 190 196 Q196 210 194 250Z"
+        fill="#1a4a7a"/>
+      <!-- Neck -->
+      <rect x="156" y="162" width="22" height="20" rx="8" fill="#1a4a7a"/>
+      <!-- Head -->
+      <ellipse cx="167" cy="145" rx="26" ry="30" fill="#1a4a7a"/>
+      <!-- Hair detail -->
+      <path d="M143 132 Q167 116 191 132 Q184 114 167 111 Q150 111 143 132Z" fill="#0f2a4a"/>
+      <!-- Face hint (eye) -->
+      <ellipse cx="180" cy="139" rx="4" ry="3.5" fill="#38bdf8" opacity=".6"/>
+    </g>
+
+    <!-- ACTIVE ARM (animated) – right arm pressing outward against wall -->
+    <!-- Upper arm (horizontal, elbow bent 90°) -->
+    <g style="animation:pressOut 3s ease-in-out infinite;transform-origin:186px 196px">
+      <!-- Upper arm -->
+      <rect x="185" y="188" width="14" height="44" rx="7" fill="#2a6aaa"
+        transform="rotate(0,192,210)"/>
+      <!-- Elbow joint -->
+      <ellipse cx="192" cy="230" rx="10" ry="9" fill="#1a4a7a" stroke="#38bdf8" stroke-width="2"/>
+      <!-- Forearm (points toward wall) -->
+      <rect x="192" y="224" width="34" height="13" rx="6" fill="#2a6aaa"/>
+      <!-- Hand against wall -->
+      <ellipse cx="224" cy="230" rx="10" ry="8" fill="#1e5a8a" stroke="#38bdf8" stroke-width="1.5"/>
+    </g>
+
+    <!-- Shoulder joint highlight -->
+    <circle cx="186" cy="196" r="10" fill="#0d2a4a" stroke="#38bdf8" stroke-width="2.5"
+      filter="url(#glow)" style="animation:muscleGlow 2.2s ease-in-out infinite"/>
+
+    <!-- Arrow showing outward force -->
+    <g style="animation:arrowPulse 2s ease-in-out infinite">
+      <line x1="204" y1="210" x2="218" y2="210" stroke="#fbbf24" stroke-width="3" stroke-linecap="round"/>
+      <polygon points="215,204 228,210 215,216" fill="#fbbf24"/>
+    </g>
+    <text x="210" y="200" font-size="9.5" fill="#fbbf24" font-family="sans-serif" font-weight="800"
+      style="animation:arrowPulse 2s ease-in-out infinite">DRÜCKEN</text>
+
+    <!-- Labels -->
+    <text x="14" y="200" font-size="9" fill="#34d399" font-family="sans-serif" font-weight="700">Rotator-</text>
+    <text x="14" y="212" font-size="9" fill="#34d399" font-family="sans-serif" font-weight="700">manschette</text>
+    <line x1="90" y1="205" x2="168" y2="195" stroke="#34d399" stroke-width="1"
+      stroke-dasharray="3,3" opacity=".7"/>
+
+    <text x="14" y="244" font-size="8.5" fill="#64748b" font-family="sans-serif">Ellbogen am Körper</text>
+    <text x="14" y="256" font-size="8.5" fill="#64748b" font-family="sans-serif">90° gebeugt</text>
+
+    <!-- View label -->
+    <text x="14" y="314" font-size="8" fill="#1e3a5f" font-family="sans-serif">Seitenansicht · rechts an Wand</text>
+  </svg>
+  </div>
+  <div class="verdict">
+    <div class="verdict-row pro">✓ Sofort verständlich – echte Körperform</div>
+    <div class="verdict-row pro">✓ Klare Bewegungsrichtung (Pfeil + Farbe)</div>
+    <div class="verdict-row pro">✓ Muskel-Highlight zeigt was arbeitet</div>
+    <div class="verdict-row con">✗ Arm-Anatomie in SVG aufwändig zu zeichnen</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     VARIANTE B – STEP DIAGRAM (3 Phasen)
+════════════════════════════════════════ -->
+<div class="card">
+  <div class="card-head">
+    <div class="variant-tag">Variante B</div>
+    <div class="card-title">Step-Diagramm · 3 Phasen</div>
+    <div class="card-sub">Keine Animation – 3 klare Zustände nebeneinander</div>
+  </div>
+  <div class="svg-wrap">
+  <svg viewBox="0 0 280 320" xmlns="http://www.w3.org/2000/svg">
+    <rect width="280" height="320" fill="#07101e"/>
+    <defs>
+      <filter id="glow2">
+        <feGaussianBlur stdDeviation="4" result="b"/>
+        <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+      </filter>
+    </defs>
+
+    <!-- Title -->
+    <text x="140" y="22" text-anchor="middle" font-size="11" fill="#64748b" font-family="sans-serif"
+      font-weight="700" letter-spacing="1">AUSFÜHRUNG</text>
+
+    <!-- ── STEP 1: Position ── -->
+    <g>
+      <!-- Panel bg -->
+      <rect x="8" y="32" width="76" height="200" rx="10" fill="#0d1b2e" stroke="#1e3a5f" stroke-width="1.5"/>
+      <!-- Step badge -->
+      <circle cx="46" cy="32" r="11" fill="#1e3a5f"/>
+      <text x="46" y="36" text-anchor="middle" font-size="10" fill="#64748b" font-family="sans-serif" font-weight="800">1</text>
+      <!-- Mini figure front view -->
+      <!-- head -->
+      <ellipse cx="46" cy="72" rx="14" ry="16" fill="#1a4a7a"/>
+      <!-- torso -->
+      <rect x="34" y="86" width="24" height="52" rx="10" fill="#1a4a7a"/>
+      <!-- arm left (down) -->
+      <rect x="20" y="88" width="12" height="38" rx="6" fill="#153d63"/>
+      <!-- arm right (down) – elbow 90° -->
+      <rect x="58" y="88" width="12" height="28" rx="6" fill="#2a6aaa"/>
+      <!-- forearm right (down) -->
+      <rect x="60" y="115" width="10" height="22" rx="5" fill="#2a6aaa" transform="rotate(0,65,126)"/>
+      <!-- legs -->
+      <rect x="34" y="136" width="10" height="46" rx="5" fill="#1a4a7a"/>
+      <rect x="48" y="136" width="10" height="46" rx="5" fill="#153d63"/>
+      <!-- feet -->
+      <ellipse cx="39" cy="183" rx="10" ry="5" fill="#1a4a7a"/>
+      <ellipse cx="53" cy="183" rx="10" ry="5" fill="#153d63"/>
+      <!-- label -->
+      <text x="46" y="210" text-anchor="middle" font-size="9.5" fill="#64748b" font-family="sans-serif">Position</text>
+      <text x="46" y="222" text-anchor="middle" font-size="8.5" fill="#475569" font-family="sans-serif">stehen</text>
+    </g>
+
+    <!-- Arrow 1→2 -->
+    <g>
+      <line x1="88" y1="132" x2="100" y2="132" stroke="#38bdf8" stroke-width="2.5"/>
+      <polygon points="98,127 108,132 98,137" fill="#38bdf8"/>
+    </g>
+
+    <!-- ── STEP 2: Anlegen ── -->
+    <g>
+      <rect x="102" y="32" width="76" height="200" rx="10" fill="#0d1b2e" stroke="#38bdf855" stroke-width="1.5"/>
+      <circle cx="140" cy="32" r="11" fill="#1e3a5f"/>
+      <text x="140" y="36" text-anchor="middle" font-size="10" fill="#38bdf8" font-family="sans-serif" font-weight="800">2</text>
+      <!-- Wall (right of figure) -->
+      <rect x="170" y="50" width="6" height="180" rx="2" fill="#0f2a4a" stroke="#38bdf844" stroke-width="1"/>
+      <!-- head -->
+      <ellipse cx="130" cy="72" rx="14" ry="16" fill="#1a4a7a"/>
+      <!-- torso -->
+      <rect x="118" y="86" width="24" height="52" rx="10" fill="#1a4a7a"/>
+      <!-- arm right – starting position (pointing toward wall) -->
+      <rect x="142" y="88" width="12" height="28" rx="6" fill="#2a6aaa"/>
+      <!-- forearm toward wall (not quite touching) -->
+      <rect x="144" y="112" width="22" height="10" rx="5" fill="#2a6aaa"/>
+      <!-- hand -->
+      <ellipse cx="164" cy="117" rx="8" ry="6" fill="#1e5a8a"/>
+      <!-- arm left (down) -->
+      <rect x="104" y="88" width="12" height="38" rx="6" fill="#153d63"/>
+      <!-- legs -->
+      <rect x="118" y="136" width="10" height="46" rx="5" fill="#1a4a7a"/>
+      <rect x="132" y="136" width="10" height="46" rx="5" fill="#153d63"/>
+      <ellipse cx="123" cy="183" rx="10" ry="5" fill="#1a4a7a"/>
+      <ellipse cx="137" cy="183" rx="10" ry="5" fill="#153d63"/>
+      <!-- label -->
+      <text x="140" y="210" text-anchor="middle" font-size="9.5" fill="#94a3b8" font-family="sans-serif">Anlegen</text>
+      <text x="140" y="222" text-anchor="middle" font-size="8.5" fill="#475569" font-family="sans-serif">Wand berühren</text>
+    </g>
+
+    <!-- Arrow 2→3 -->
+    <g>
+      <line x1="182" y1="132" x2="194" y2="132" stroke="#fbbf24" stroke-width="2.5"/>
+      <polygon points="192,127 202,132 192,137" fill="#fbbf24"/>
+    </g>
+
+    <!-- ── STEP 3: Drücken + Halten ── -->
+    <g>
+      <rect x="196" y="32" width="76" height="200" rx="10" fill="#0d2a1a" stroke="#34d39966" stroke-width="1.5"/>
+      <circle cx="234" cy="32" r="11" fill="#064e3b"/>
+      <text x="234" y="36" text-anchor="middle" font-size="10" fill="#34d399" font-family="sans-serif" font-weight="800">3</text>
+      <!-- Wall -->
+      <rect x="264" y="50" width="6" height="180" rx="2" fill="#0f2a4a" stroke="#34d39966" stroke-width="1.5"
+        style="animation:wallPulse 2s ease-in-out infinite"/>
+      <!-- Muscle glow on shoulder -->
+      <ellipse cx="242" cy="106" rx="18" ry="16" fill="#34d399"
+        style="animation:muscleGlow 2s ease-in-out infinite" filter="url(#glow2)"/>
+      <!-- head -->
+      <ellipse cx="224" cy="72" rx="14" ry="16" fill="#1a4a7a"/>
+      <!-- torso -->
+      <rect x="212" y="86" width="24" height="52" rx="10" fill="#1a4a7a"/>
+      <!-- arm right – pressing hard against wall -->
+      <rect x="236" y="88" width="12" height="28" rx="6" fill="#2a6aaa"/>
+      <!-- forearm firmly pressed -->
+      <rect x="238" y="112" width="26" height="10" rx="5" fill="#2a6aaa"/>
+      <!-- hand flat on wall -->
+      <rect x="260" y="107" width="6" height="18" rx="3" fill="#34d399" opacity=".8"/>
+      <!-- arm left -->
+      <rect x="198" y="88" width="12" height="38" rx="6" fill="#153d63"/>
+      <!-- legs -->
+      <rect x="212" y="136" width="10" height="46" rx="5" fill="#1a4a7a"/>
+      <rect x="226" y="136" width="10" height="46" rx="5" fill="#153d63"/>
+      <ellipse cx="217" cy="183" rx="10" ry="5" fill="#1a4a7a"/>
+      <ellipse cx="231" cy="183" rx="10" ry="5" fill="#153d63"/>
+      <!-- Force arrow -->
+      <g style="animation:arrowPulse 1.5s ease-in-out infinite">
+        <line x1="248" y1="117" x2="258" y2="117" stroke="#fbbf24" stroke-width="2.5"/>
+        <polygon points="256,112 265,117 256,122" fill="#fbbf24"/>
+      </g>
+      <!-- label -->
+      <text x="234" y="208" text-anchor="middle" font-size="9.5" fill="#34d399" font-family="sans-serif" font-weight="700">HALTEN</text>
+      <text x="234" y="220" text-anchor="middle" font-size="8.5" fill="#34d39988" font-family="sans-serif">10 Sekunden</text>
+    </g>
+
+    <!-- Bottom hint -->
+    <text x="140" y="248" text-anchor="middle" font-size="9" fill="#38bdf8" font-family="sans-serif"
+      font-weight="700">Kein Schwung – nur Spannung aufbauen</text>
+    <text x="140" y="264" text-anchor="middle" font-size="8" fill="#1e3a5f" font-family="sans-serif">Frontalansicht</text>
+
+    <!-- Animated step indicator -->
+    <g>
+      <circle cx="110" cy="290" r="4" fill="#1e3a5f"/>
+      <circle cx="140" cy="290" r="4" fill="#1e3a5f"/>
+      <circle cx="170" cy="290" r="7" fill="#34d399"
+        style="animation:muscleGlow 2s ease-in-out infinite"/>
+    </g>
+    <text x="140" y="308" text-anchor="middle" font-size="8" fill="#34d399" font-family="sans-serif">Schritt 3 aktiv</text>
+  </svg>
+  </div>
+  <div class="verdict">
+    <div class="verdict-row pro">✓ Keine Animation nötig – trotzdem klar</div>
+    <div class="verdict-row pro">✓ Phasen 1→2→3 sofort verständlich</div>
+    <div class="verdict-row pro">✓ Einfach zu erstellen für alle Übungen</div>
+    <div class="verdict-row con">✗ Figuren in 3 Panels etwas klein</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     VARIANTE C – ANATOMIE-DIAGRAMM STYLE
+════════════════════════════════════════ -->
+<div class="card">
+  <div class="card-head">
+    <div class="variant-tag">Variante C</div>
+    <div class="card-title">Anatomie-Diagramm · Muscle Map</div>
+    <div class="card-sub">Klarer Fokus auf Muskeln, Gelenk und Kraftrichtung</div>
+  </div>
+  <div class="svg-wrap">
+  <svg viewBox="0 0 280 320" xmlns="http://www.w3.org/2000/svg">
+    <rect width="280" height="320" fill="#07101e"/>
+    <defs>
+      <radialGradient id="rGlow" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stop-color="#38bdf8" stop-opacity=".8"/>
+        <stop offset="70%" stop-color="#38bdf8" stop-opacity=".2"/>
+        <stop offset="100%" stop-color="#38bdf8" stop-opacity="0"/>
+      </radialGradient>
+      <radialGradient id="subGlow" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stop-color="#a78bfa" stop-opacity=".7"/>
+        <stop offset="100%" stop-color="#a78bfa" stop-opacity="0"/>
+      </radialGradient>
+      <filter id="glow3" x="-30%" y="-30%" width="160%" height="160%">
+        <feGaussianBlur stdDeviation="6" result="b"/>
+        <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+      </filter>
+    </defs>
+
+    <!-- Title label -->
+    <text x="14" y="22" font-size="10" fill="#64748b" font-family="sans-serif"
+      font-weight="700" letter-spacing="1.5">MUSKELN &amp; GELENK</text>
+
+    <!-- ── SIMPLIFIED SHOULDER ANATOMY (front view, enlarged) ── -->
+    <!-- Torso upper section -->
+    <path d="M60 130 Q58 100 68 85 Q85 68 140 65 Q195 68 212 85 Q222 100 220 130 Q220 200 200 220 Q170 235 140 235 Q110 235 80 220 Q60 200 60 130Z"
+      fill="#0d1b2e" stroke="#1e3a5f" stroke-width="2"/>
+
+    <!-- Collarbones -->
+    <path d="M100 88 Q120 82 140 82 Q160 82 180 88" stroke="#2a5a8a" stroke-width="3" fill="none" stroke-linecap="round"/>
+
+    <!-- ── RIGHT SHOULDER JOINT (active) – enlarged focus ── -->
+    <!-- Shoulder glow (rotator cuff area) -->
+    <circle cx="200" cy="102" r="38" fill="url(#rGlow)"
+      style="animation:muscleGlow 2s ease-in-out infinite"/>
+
+    <!-- Shoulder socket (glenoid) -->
+    <ellipse cx="196" cy="100" rx="16" ry="18" fill="#0a1e38" stroke="#38bdf8" stroke-width="2.5"
+      filter="url(#glow3)"/>
+    <!-- Humeral head -->
+    <circle cx="196" cy="100" r="12" fill="#1a4a7a" stroke="#38bdf8" stroke-width="2"
+      style="animation:muscleGlow 1.8s ease-in-out infinite"/>
+
+    <!-- Subscapularis highlight (violet) -->
+    <ellipse cx="192" cy="106" rx="8" ry="10" fill="url(#subGlow)"
+      style="animation:muscleGlow 2.4s ease-in-out infinite 0.4s"/>
+
+    <!-- Upper arm (humerus) -->
+    <rect x="187" y="116" width="18" height="60" rx="9" fill="#1a4a7a" stroke="#2a6aaa" stroke-width="1.5"/>
+
+    <!-- Elbow joint -->
+    <ellipse cx="196" cy="178" rx="13" ry="11" fill="#0d1b2e" stroke="#2a6aaa" stroke-width="2"/>
+
+    <!-- Forearm (horizontal, toward wall) -->
+    <rect x="194" y="171" width="50" height="14" rx="7" fill="#1a4a7a" stroke="#2a6aaa" stroke-width="1.5"/>
+
+    <!-- Wall -->
+    <rect x="244" y="60" width="24" height="240" rx="4" fill="#0d2a4a" stroke="#38bdf866" stroke-width="1.5"/>
+    <text x="256" y="160" text-anchor="middle" font-size="9" fill="#38bdf844"
+      font-family="sans-serif" transform="rotate(90,256,160)">WAND</text>
+
+    <!-- Hand pressing against wall -->
+    <rect x="238" y="167" width="10" height="20" rx="4" fill="#34d399" opacity=".9"
+      style="animation:wallPulse 2s ease-in-out infinite"/>
+
+    <!-- Force arrow (outward) -->
+    <g style="animation:arrowPulse 2s ease-in-out infinite">
+      <line x1="215" y1="178" x2="236" y2="178" stroke="#fbbf24" stroke-width="3.5" stroke-linecap="round"/>
+      <polygon points="233,171 248,178 233,185" fill="#fbbf24"/>
+      <text x="220" y="166" font-size="9.5" fill="#fbbf24" font-family="sans-serif" font-weight="800">DRÜCKEN</text>
+    </g>
+
+    <!-- Left shoulder (muted, reference) -->
+    <ellipse cx="84" cy="100" rx="14" ry="16" fill="#0a1e38" stroke="#1e3a5f" stroke-width="1.5"/>
+    <circle cx="84" cy="100" r="10" fill="#112240" stroke="#1e3a5f" stroke-width="1"/>
+    <rect x="76" y="114" width="16" height="50" rx="8" fill="#112240" stroke="#1e3a5f" stroke-width="1"/>
+    <rect x="74" y="160" width="14" height="12" rx="6" fill="#112240" stroke="#1e3a5f" stroke-width="1"/>
+    <rect x="42" y="158" width="36" height="12" rx="6" fill="#112240" stroke="#1e3a5f" stroke-width="1"/>
+
+    <!-- Annotation: Rotatorenmanschette -->
+    <line x1="18" y1="95" x2="180" y2="100" stroke="#38bdf8" stroke-width="1" stroke-dasharray="4,3" opacity=".6"/>
+    <text x="14" y="93" font-size="9.5" fill="#38bdf8" font-family="sans-serif" font-weight="700">Rotatorenmanschette</text>
+
+    <!-- Annotation: Subscapularis -->
+    <line x1="18" y1="118" x2="184" y2="108" stroke="#a78bfa" stroke-width="1" stroke-dasharray="4,3" opacity=".6"/>
+    <text x="14" y="116" font-size="9" fill="#a78bfa" font-family="sans-serif">Subscapularis</text>
+
+    <!-- Annotation: Schultergelenk -->
+    <line x1="18" y1="140" x2="183" y2="118" stroke="#64748b" stroke-width="1" stroke-dasharray="3,3" opacity=".5"/>
+    <text x="14" y="138" font-size="9" fill="#64748b" font-family="sans-serif">Schultergelenk</text>
+
+    <!-- Legend -->
+    <rect x="14" y="252" width="10" height="10" rx="2" fill="url(#rGlow)"/>
+    <text x="28" y="261" font-size="9" fill="#38bdf8" font-family="sans-serif">Rotatorenmanschette aktiv</text>
+    <rect x="14" y="268" width="10" height="10" rx="2" fill="url(#subGlow)"/>
+    <text x="28" y="277" font-size="9" fill="#a78bfa" font-family="sans-serif">Subscapularis (Sehne fixiert)</text>
+    <circle cx="19" cy="293" r="5" fill="#34d399"/>
+    <text x="28" y="297" font-size="9" fill="#34d399" font-family="sans-serif">Handkontakt zur Wand</text>
+
+    <!-- View label -->
+    <text x="14" y="314" font-size="8" fill="#1e3a5f" font-family="sans-serif">Frontalansicht · vergrößerte Schulterzone</text>
+  </svg>
+  </div>
+  <div class="verdict">
+    <div class="verdict-row pro">✓ Zeigt WARUM die Übung hilft</div>
+    <div class="verdict-row pro">✓ Anatomisch präzise – lehrreich</div>
+    <div class="verdict-row pro">✓ Muscle-Glow sehr motivierend</div>
+    <div class="verdict-row con">✗ Mehr Komplexität – muss für jede Übung angepasst werden</div>
+    <div class="verdict-row neu">→ Ideal als Ergänzung zu A oder B</div>
+  </div>
+</div>
+
+</div><!-- /grid -->
+
+<!-- Bottom summary -->
+<div style="max-width:1100px;margin:36px auto 0;background:#0d1b2e;border:1px solid #1e3a5f;border-radius:14px;padding:20px 24px">
+  <div style="font-size:.82em;font-weight:800;letter-spacing:1.5px;color:#64748b;text-transform:uppercase;margin-bottom:12px">Empfehlung</div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px">
+    <div style="background:#060d18;border-radius:10px;padding:14px;border-left:3px solid #38bdf8">
+      <div style="font-size:.85em;font-weight:700;color:#38bdf8;margin-bottom:4px">Für alle Übungen</div>
+      <div style="font-size:.8em;color:#64748b;line-height:1.5">Variante <strong style="color:#f0f9ff">A</strong> als Standard – Silhouette Seitenansicht. Klar, modern, funktioniert für Schulter, Knie und Core.</div>
+    </div>
+    <div style="background:#060d18;border-radius:10px;padding:14px;border-left:3px solid #fbbf24">
+      <div style="font-size:.85em;font-weight:700;color:#fbbf24;margin-bottom:4px">Für komplexe Bewegungen</div>
+      <div style="font-size:.8em;color:#64748b;line-height:1.5">Variante <strong style="color:#f0f9ff">B</strong> (Step-Diagramm) als Ergänzung, wenn der Bewegungsablauf in 3 klare Phasen zerfällt.</div>
+    </div>
+    <div style="background:#060d18;border-radius:10px;padding:14px;border-left:3px solid #a78bfa">
+      <div style="font-size:.85em;font-weight:700;color:#a78bfa;margin-bottom:4px">Für isometrische Übungen</div>
+      <div style="font-size:.8em;color:#64748b;line-height:1.5">Variante <strong style="color:#f0f9ff">C</strong> (Anatomie-Map) perfekt für S3/S4 – zeigt direkt welcher Muskel arbeitet und warum.</div>
+    </div>
+  </div>
+</div>
+
+<div style="text-align:center;color:#1e3a5f;font-size:.76em;padding:24px 0 8px">
+  Beispiel-Übung: Isometrische Außenrotation (S3) · alle Werte statisch/illustrativ
+</div>
+
+</body>
+</html>
