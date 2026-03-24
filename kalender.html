@@ -357,6 +357,46 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
 .ex-card.ex-opt.ex-opt-core .ex-num{background:linear-gradient(135deg,#fb923c,#c2410c)}
 .ex-card.ex-opt.ex-opt-core{border-color:#3a1f05}
 .ex-card.ex-opt.ex-opt-core .ex-hd{background:linear-gradient(90deg,#1a0d03,#112240)}
+
+/* ── TIMER WIDGET ─────────────────────────────── */
+.timer-widget{margin-top:13px;background:var(--bg);border:1px solid var(--border);border-radius:11px;overflow:hidden}
+.timer-start-row{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;cursor:pointer;transition:.2s;background:linear-gradient(90deg,var(--s3),var(--bg))}
+.timer-start-row:hover{background:linear-gradient(90deg,#0f2a4a,var(--s2))}
+.timer-start-label{font-size:.82em;font-weight:600;color:var(--primary)}
+.timer-body{display:none;padding:14px}
+.timer-body.active{display:block}
+.timer-meta{display:flex;justify-content:space-between;align-items:center;font-size:.78em;color:var(--muted);margin-bottom:8px}
+.timer-set-info{font-weight:700;color:var(--text)}
+.timer-display{text-align:center;padding:10px 0 6px}
+.timer-phase-lbl{font-size:.72em;text-transform:uppercase;letter-spacing:1.2px;font-weight:700;margin-bottom:4px}
+.timer-phase-lbl.ph-hold{color:var(--primary)}
+.timer-phase-lbl.ph-rest{color:var(--warning)}
+.timer-phase-lbl.ph-represt{color:var(--success)}
+.timer-phase-lbl.ph-pace{color:var(--accent)}
+.timer-phase-lbl.ph-done{color:var(--success)}
+.timer-num{font-size:3.8em;font-weight:900;line-height:1;font-variant-numeric:tabular-nums}
+.timer-num.ph-hold{color:var(--primary)}
+.timer-num.ph-rest{color:var(--warning)}
+.timer-num.ph-represt{color:var(--success)}
+.timer-num.ph-pace{color:var(--accent)}
+.timer-num.ph-done{color:var(--success);font-size:2.2em}
+.timer-unit{font-size:.78em;color:var(--muted);margin-top:2px}
+.timer-bar{height:5px;background:var(--border);border-radius:3px;overflow:hidden;margin:10px 0 8px}
+.timer-bar-fill{height:100%;border-radius:3px;transition:width .9s linear}
+.timer-bar-fill.ph-hold{background:linear-gradient(90deg,var(--primary),var(--accent))}
+.timer-bar-fill.ph-rest{background:linear-gradient(90deg,var(--warning),#f59e0b)}
+.timer-bar-fill.ph-represt{background:linear-gradient(90deg,var(--success),#10b981)}
+.timer-bar-fill.ph-pace{background:linear-gradient(90deg,var(--accent),#7c3aed)}
+.timer-btns{display:flex;gap:7px;margin-top:6px}
+.tbtn{flex:1;padding:9px 5px;border-radius:8px;border:none;cursor:pointer;font-size:.81em;font-weight:700;transition:.2s}
+.tbtn-go{background:linear-gradient(90deg,var(--primary),var(--accent));color:#060d18}
+.tbtn-go:hover{opacity:.85}
+.tbtn-stop{background:var(--s3);border:1px solid var(--border);color:var(--muted)}
+.tbtn-stop:hover{border-color:var(--danger);color:var(--danger)}
+.tbtn-skip{background:var(--s3);border:1px solid #3a2a00;color:var(--warning)}
+.tbtn-skip:hover{background:#1a1200}
+.tbtn-again{background:var(--s3);border:1px solid var(--success);color:var(--success)}
+@media(max-width:640px){.timer-num{font-size:3em}.tbtn{font-size:.75em;padding:8px 3px}}
 </style>
 </head>
 <body>
@@ -1219,7 +1259,8 @@ const EX = [
        '10 Sekunden halten, dann langsam lösen'],
     tip:'Büroarbeit schiebt den Kopf nach vorne → Schulter kippt innen → Bizepsrille verengt sich. Dieser Zug korrigiert die gesamte Schultermechanik.',
     video:'https://www.youtube.com/results?search_query=chin+tuck+exercise+neck+correct+posture',
-    svg: svgChinTuck
+    svg: svgChinTuck,
+    tmr:{sets:3,reps:10,holdSec:10,repRestSec:5,restSec:45}
   },
   {
     t:'Schulterblatt-Retraktion', f:'Skapula stabilisieren · Impingement-Raum öffnen',
@@ -1230,7 +1271,8 @@ const EX = [
        '5 Sekunden halten, dann kontrolliert lösen'],
     tip:'Stell dir vor, einen Bleistift zwischen den Schulterblättern festzuhalten. Genau diese Aktivierung brauchen wir.',
     video:'https://www.youtube.com/results?search_query=scapular+retraction+exercise+shoulder+blade+squeeze',
-    svg: svgScapula
+    svg: svgScapula,
+    tmr:{sets:3,reps:15,holdSec:5,repRestSec:3,restSec:45}
   },
   {
     t:'Isometrische Außenrotation', f:'Rotatorenmanschette · Bizepssehne in Rille halten',
@@ -1241,7 +1283,8 @@ const EX = [
        'Keine Bewegung! Nur Spannung aufbauen. 10 Sek. halten.'],
     tip:'Isometrisch = Muskel arbeitet ohne Gelenk-Bewegung. Schonendste Methode für gereizte Sehnen in Phase 1.',
     video:'https://www.youtube.com/results?search_query=isometric+external+rotation+shoulder+wall+exercise',
-    svg: svgExtRot
+    svg: svgExtRot,
+    tmr:{sets:3,reps:10,holdSec:10,repRestSec:5,restSec:45}
   },
   {
     t:'Isometrische Innenrotation', f:'Subscapularis stärken · Sehnen-Subluxation verhindern',
@@ -1252,7 +1295,8 @@ const EX = [
        'Keine Bewegung! 10 Sek. Spannung halten.'],
     tip:'Der Subscapularis-Muskel hält die Bizepssehne in ihrer Rille. Ist er schwach, springt die Sehne heraus – das ist dein Knacken.',
     video:'https://www.youtube.com/results?search_query=isometric+internal+rotation+shoulder+wall+exercise',
-    svg: svgIntRot
+    svg: svgIntRot,
+    tmr:{sets:3,reps:10,holdSec:10,repRestSec:5,restSec:45}
   },
   {
     t:'Türrahmen-Dehnung', f:'Pec Minor dehnen · Schulterprotraktion lösen',
@@ -1264,7 +1308,8 @@ const EX = [
        '30 Sekunden halten – ruhig durch die Nase atmen'],
     tip:'Büroarbeit verkürzt den kleinen Brustmuskel (Pec Minor), der die Schulter nach vorne zieht und die Bizepsrille einengt.',
     video:'https://www.youtube.com/results?search_query=doorway+chest+stretch+pec+minor+shoulder+physiotherapy',
-    svg: svgDoor
+    svg: svgDoor,
+    tmr:{sets:1,reps:6,holdSec:30,repRestSec:12,restSec:0,sideLabels:['Rechts','Links','Rechts','Links','Rechts','Links']}
   },
   // ── K1–K5: KNIE ───────────────────────────────────
   {
@@ -1276,7 +1321,8 @@ const EX = [
        'Langsam wieder locker lassen'],
     tip:'Aktiviert den inneren Quadrizeps gezielt ohne Druck auf das transplantierte Knorpelgewebe.',
     video:'https://www.youtube.com/results?search_query=terminal+knee+extension+VMO+exercise+band',
-    svg: svgK1
+    svg: svgK1,
+    tmr:{sets:3,reps:15,holdSec:0,paceSec:2,restSec:45}
   },
   {
     t:'K2 · Mini Squat (max. 60°)', f:'Quadrizeps · funktionelle Kniestabilität',
@@ -1287,7 +1333,8 @@ const EX = [
        'Kontrolliert wieder hochkommen'],
     tip:'Nie tiefer als 60° – das schützt das transplantierte Knorpelgewebe. Mit der Zeit steigern wenn schmerzfrei.',
     video:'https://www.youtube.com/results?search_query=mini+squat+knee+cartilage+rehab+exercise',
-    svg: svgK2
+    svg: svgK2,
+    tmr:{sets:3,reps:12,holdSec:3,repRestSec:2,restSec:45}
   },
   {
     t:'K3 · Straight Leg Raise', f:'Quadrizeps ohne Kniebelastung',
@@ -1298,7 +1345,8 @@ const EX = [
        '2 Sek. oben halten, kontrolliert absenken'],
     tip:'Perfekt für Muskelaufbau ohne jeglichen Druck auf den Knorpel – wichtig in frühen Rehaphasen.',
     video:'https://www.youtube.com/results?search_query=straight+leg+raise+quadriceps+knee+rehabilitation',
-    svg: svgK3
+    svg: svgK3,
+    tmr:{sets:3,reps:15,holdSec:2,repRestSec:2,restSec:45}
   },
   {
     t:'K4 · Step-Up', f:'Funktionelle Kräftigung · Gleichgewicht',
@@ -1309,7 +1357,8 @@ const EX = [
        'Kontrolliert hoch und runter – kein Schwung'],
     tip:'Stufe niedrig halten! Nur steigern wenn kein Schmerz. Gute Vorbereitung auf Treppen und Alltagsbewegungen.',
     video:'https://www.youtube.com/results?search_query=step+up+exercise+knee+rehabilitation+low+step',
-    svg: svgK4
+    svg: svgK4,
+    tmr:{sets:3,reps:10,holdSec:0,paceSec:3,restSec:45}
   },
   {
     t:'K5 · Glute Bridge', f:'Gesäß · hintere Kette · Knie entlasten',
@@ -1320,7 +1369,8 @@ const EX = [
        'Langsam absenken ohne ganz abzulegen'],
     tip:'Starkes Gesäß entlastet das Knie bei jedem Schritt. Einer der wichtigsten Moves nach Knieoperation.',
     video:'https://www.youtube.com/results?search_query=glute+bridge+exercise+knee+rehabilitation',
-    svg: svgK5
+    svg: svgK5,
+    tmr:{sets:3,reps:15,holdSec:2,repRestSec:2,restSec:45}
   },
   // ── B1–B3: CORE / BAUCH ───────────────────────────
   {
@@ -1332,7 +1382,8 @@ const EX = [
        'Zurück zur Mitte, Seite wechseln'],
     tip:'Wenn die Lendenwirbelsäule sich hebt, ist die Bewegung zu groß. Kleiner machen ist besser als falsch.',
     video:'https://www.youtube.com/results?search_query=dead+bug+exercise+core+stability+back+flat',
-    svg: svgB1
+    svg: svgB1,
+    tmr:{sets:3,reps:16,holdSec:0,paceSec:3,restSec:45}
   },
   {
     t:'B2 · Bird Dog', f:'Core · Rückenstrecker · Gleichgewicht',
@@ -1343,7 +1394,8 @@ const EX = [
        'Kontroliert zurück, andere Seite'],
     tip:'Schultern entspannt lassen – kein Hochziehen. Der ganze Rumpf stabilisiert diese Bewegung.',
     video:'https://www.youtube.com/results?search_query=bird+dog+exercise+core+back+stability',
-    svg: svgB2
+    svg: svgB2,
+    tmr:{sets:3,reps:20,holdSec:5,repRestSec:3,restSec:45}
   },
   {
     t:'B3 · Reverse Crunch', f:'Unterer Bauch · ohne Schulterbelastung',
@@ -1354,7 +1406,8 @@ const EX = [
        'Kontrolliert absenken – kein Schwung'],
     tip:'Kein Schwung! Kontrollierte langsame Bewegung aktiviert die tiefen Bauchmuskeln weit besser als Tempo.',
     video:'https://www.youtube.com/results?search_query=reverse+crunch+exercise+lower+abs+no+neck',
-    svg: svgB3
+    svg: svgB3,
+    tmr:{sets:3,reps:12,holdSec:0,paceSec:3,restSec:45}
   },
   // ── BONUS / OPTIONAL ──────────────────────────────
   {
@@ -1367,7 +1420,8 @@ const EX = [
        'Kreis langsam größer werden lassen – wenn schmerzfrei'],
     tip:'Schwerkraft zieht das Schultergelenk sanft auseinander. Perfekt nach dem Aufwachen oder als Tagesstart.',
     video:'https://www.youtube.com/results?search_query=codman+pendulum+exercise+shoulder+mobilization',
-    svg: svgPendulum
+    svg: svgPendulum,
+    tmr:{sets:2,reps:20,holdSec:0,paceSec:2,restSec:30}
   },
   {
     t:'S+ · Wall Angels', f:'Skapula-Kontrolle · Schulterbeweglichkeit',
@@ -1379,7 +1433,8 @@ const EX = [
        'Nur so weit wie Rücken und Ellbogen Kontakt halten'],
     tip:'Zeigt sofort wie eingeschränkt die Schulterblatt-Bewegung ist. Je schwerer, desto wichtiger!',
     video:'https://www.youtube.com/results?search_query=wall+angels+scapular+control+shoulder+mobility',
-    svg: svgWallAngels
+    svg: svgWallAngels,
+    tmr:{sets:2,reps:10,holdSec:0,paceSec:3,restSec:30}
   },
   {
     t:'K+ · Wadenheben', f:'Wadenmuskel · Unterschenkelkraft · Fußstabilität',
@@ -1391,7 +1446,8 @@ const EX = [
        'Kontrolliert absenken – Fersen nicht aufstampfen'],
     tip:'Starke Waden entlasten das Kniegelenk bei jedem Schritt und verbessern die Durchblutung nach der OP.',
     video:'https://www.youtube.com/results?search_query=calf+raise+exercise+knee+rehabilitation+standing',
-    svg: svgCalfRaise
+    svg: svgCalfRaise,
+    tmr:{sets:3,reps:20,holdSec:1,repRestSec:1,restSec:45}
   },
   {
     t:'K+ · Seitliche Hüftabduktion', f:'Hüftabduktoren · Kniealignment · IT-Band',
@@ -1403,7 +1459,8 @@ const EX = [
        '2 Sek. oben, langsam absenken – Bein nicht ganz ablegen'],
     tip:'Schwache Hüftabduktoren lassen das Knie beim Gehen nach innen kippen. Direkter Schutz des Knorpels.',
     video:'https://www.youtube.com/results?search_query=side+lying+hip+abduction+exercise+knee+stability',
-    svg: svgHipAbduction
+    svg: svgHipAbduction,
+    tmr:{sets:3,reps:15,holdSec:2,repRestSec:2,restSec:45}
   },
   {
     t:'B+ · Side Plank (links unten)', f:'Seitliche Rumpfkette · ohne Schulterbelastung rechts',
@@ -1415,7 +1472,8 @@ const EX = [
        '20–30 Sek. halten, dann Seite wechseln – links länger ok'],
     tip:'Linker Arm trägt, rechte Schulter tut nichts. Trotzdem maximale Wirkung für die seitliche Rumpfkette.',
     video:'https://www.youtube.com/results?search_query=side+plank+forearm+core+exercise+beginner',
-    svg: svgSidePlank
+    svg: svgSidePlank,
+    tmr:{sets:3,reps:1,holdSec:25,repRestSec:15,restSec:30}
   },
   {
     t:'B+ · Superman Hold', f:'Rückenstrecker · hintere Kette · Haltung',
@@ -1427,9 +1485,184 @@ const EX = [
        'Kontrolliert absenken, Seite wechseln'],
     tip:'Kräftigt die Rückenstrecker, die bei Büroarbeit am meisten erschlaffen. Ergänzt Dead Bug perfekt.',
     video:'https://www.youtube.com/results?search_query=superman+exercise+back+extension+core+strength',
-    svg: svgSuperman
+    svg: svgSuperman,
+    tmr:{sets:3,reps:10,holdSec:5,repRestSec:3,restSec:45}
   }
 ];
+
+// ── TIMER ENGINE ───────────────────────────────────────────────
+const activeTimers = {};
+
+function beep(freq=660, dur=160, vol=0.25){
+  try{
+    const ctx=new (window.AudioContext||window.webkitAudioContext)();
+    const o=ctx.createOscillator(), g=ctx.createGain();
+    o.connect(g); g.connect(ctx.destination);
+    o.type='sine'; o.frequency.value=freq;
+    g.gain.setValueAtTime(vol, ctx.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime+dur/1000);
+    o.start(); o.stop(ctx.currentTime+dur/1000);
+  }catch(e){}
+}
+function beepDone(){ beep(880,80); setTimeout(()=>beep(1100,200),100); }
+function beepRest(){ beep(440,250,0.15); }
+function beepTick(){ beep(660,60,0.12); }
+
+class ExTimer{
+  constructor(exIdx){
+    const cfg = EX[exIdx].tmr;
+    this.idx=exIdx;
+    this.sets=cfg.sets||3;
+    this.reps=cfg.reps||10;
+    this.holdSec=cfg.holdSec||0;
+    this.repRestSec=cfg.repRestSec||0;
+    this.restSec=cfg.restSec||45;
+    this.paceSec=cfg.paceSec||0;
+    this.sideLabels=cfg.sideLabels||null;
+    this.curSet=1; this.curRep=1;
+    this.phase='ready'; // ready|hold|represt|setrest|pace|done
+    this.remaining=0; this.total=0;
+    this._iv=null;
+  }
+  get domId(){ return 'tmr-'+this.idx; }
+  start(){
+    if(this.phase==='ready'||this.phase==='done'){
+      this.curSet=1; this.curRep=1;
+      this._startRep();
+    }
+  }
+  stop(){
+    clearInterval(this._iv);
+    this.phase='ready';
+    this._render();
+  }
+  skip(){
+    clearInterval(this._iv);
+    this._advance();
+  }
+  _startRep(){
+    if(this.holdSec>0){
+      this._setPhase('hold', this.holdSec);
+    } else if(this.paceSec>0){
+      this._setPhase('pace', this.paceSec);
+    } else {
+      // instant rep (no timer) – just advance immediately
+      this._advance();
+      return;
+    }
+    this._tick();
+  }
+  _setPhase(ph, sec){
+    this.phase=ph; this.remaining=sec; this.total=sec;
+    this._render();
+    this._iv=setInterval(()=>this._tick(),1000);
+  }
+  _tick(){
+    this.remaining--;
+    if(this.remaining<=3 && this.remaining>0) beepTick();
+    if(this.remaining<=0){
+      clearInterval(this._iv);
+      this._advance();
+    } else { this._render(); }
+  }
+  _advance(){
+    if(this.phase==='hold'||this.phase==='pace'){
+      if(this.curRep<this.reps){
+        this.curRep++;
+        beepTick();
+        if(this.repRestSec>0){
+          this._setPhase('represt', this.repRestSec);
+        } else { this._startRep(); }
+      } else {
+        // all reps done
+        if(this.curSet<this.sets){
+          this.curSet++; this.curRep=1;
+          beepRest();
+          this._setPhase('setrest', this.restSec);
+        } else {
+          this.phase='done';
+          beepDone();
+          this._render();
+        }
+      }
+    } else if(this.phase==='represt'){
+      this._startRep();
+    } else if(this.phase==='setrest'){
+      beepTick();
+      this._startRep();
+    }
+  }
+  _render(){
+    const el=document.getElementById(this.domId);
+    if(!el) return;
+    const tb=el.querySelector('.timer-body');
+    const row=el.querySelector('.timer-start-row');
+    const lbl=el.querySelector('.timer-start-label');
+    if(!tb) return;
+
+    if(this.phase==='ready'){
+      tb.classList.remove('active');
+      lbl.textContent='⏱ Timer starten';
+      row.onclick=()=>this.start();
+      return;
+    }
+    tb.classList.add('active');
+    row.onclick=null; row.style.cursor='default';
+    lbl.textContent='';
+
+    const setLbl = `Set ${this.curSet}/${this.sets}`;
+    const repLbl = this.sideLabels
+      ? `${this.sideLabels[(this.curRep-1)%this.sideLabels.length]} · ${this.curRep}/${this.reps}`
+      : `Wdh. ${this.curRep}/${this.reps}`;
+
+    let phLabel='', phClass='', numTxt='', unitTxt='', barPct=0;
+    switch(this.phase){
+      case 'hold':
+        phLabel='🔥 Halten'; phClass='ph-hold';
+        numTxt=this.remaining; unitTxt='Sekunden';
+        barPct=this.remaining/this.total; break;
+      case 'pace':
+        phLabel='💪 '+repLbl; phClass='ph-pace';
+        numTxt=this.remaining; unitTxt='Sek. Tempo';
+        barPct=this.remaining/this.total; break;
+      case 'represt':
+        phLabel='😮‍💨 Kurze Pause'; phClass='ph-represt';
+        numTxt=this.remaining; unitTxt='Sekunden';
+        barPct=this.remaining/this.total; break;
+      case 'setrest':
+        phLabel='💤 Satzpause'; phClass='ph-rest';
+        numTxt=this.remaining; unitTxt='Sekunden';
+        barPct=this.remaining/this.total; break;
+      case 'done':
+        phLabel='✅ Fertig!'; phClass='ph-done';
+        numTxt='✓'; unitTxt='Alle Sätze geschafft';
+        barPct=1; break;
+    }
+
+    const setInfo = this.phase==='done' ? '' : `<span class="timer-set-info">${setLbl}</span><span>${this.phase!=='setrest'&&this.phase!=='done'?repLbl:('Nächster Set gleich...')}</span>`;
+    const barFill = this.phase==='done' ? '' : `<div class="timer-bar"><div class="timer-bar-fill ${phClass}" style="width:${barPct*100}%"></div></div>`;
+    const btns = this.phase==='done'
+      ? `<button class="tbtn tbtn-again" onclick="activeTimers[${this.idx}].stop()">↺ Nochmal</button>`
+      : `<button class="tbtn tbtn-stop" onclick="activeTimers[${this.idx}].stop()">■ Stop</button>
+         <button class="tbtn tbtn-skip" onclick="activeTimers[${this.idx}].skip()">Skip ▶</button>`;
+
+    tb.innerHTML=`
+      <div class="timer-meta">${setInfo}</div>
+      <div class="timer-display">
+        <div class="timer-phase-lbl ${phClass}">${phLabel}</div>
+        <div class="timer-num ${phClass}">${numTxt}</div>
+        <div class="timer-unit">${unitTxt}</div>
+      </div>
+      ${barFill}
+      <div class="timer-btns">${btns}</div>
+    `;
+  }
+}
+
+function stopAllTimers(){
+  Object.values(activeTimers).forEach(t=>{ clearInterval(t._iv); });
+  Object.keys(activeTimers).forEach(k=>delete activeTimers[k]);
+}
 
 // ── CALENDAR BUILD ─────────────────────────────────────────────
 function buildCal(){
@@ -1569,8 +1802,25 @@ function buildExCard(idx, i, done, date, isOpt){
           </button>
         </div>
       </div>
+      ${ex.tmr?`<div class="timer-widget" id="tmr-${idx}">
+        <div class="timer-start-row">
+          <span class="timer-start-label">⏱ Timer starten</span>
+          <span>▶</span>
+        </div>
+        <div class="timer-body"></div>
+      </div>`:''}
     </div>
   `;
+  if(ex.tmr){
+    // create timer instance and wire start button
+    const tmr = new ExTimer(idx);
+    activeTimers[idx] = tmr;
+    // defer until DOM is ready
+    requestAnimationFrame(()=>{
+      const el=document.getElementById('tmr-'+idx);
+      if(el) el.querySelector('.timer-start-row').onclick=()=>tmr.start();
+    });
+  }
   return card;
 }
 
@@ -1629,6 +1879,7 @@ function toggleEx(idx, dateKey){
 }
 
 function closeModal(){
+  stopAllTimers();
   document.getElementById('overlay').classList.remove('open');
   document.body.style.overflow='';
   buildCal();
