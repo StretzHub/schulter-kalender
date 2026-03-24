@@ -1504,6 +1504,14 @@ function beep(freq=660, dur=160, vol=0.25){
     o.start(); o.stop(ctx.currentTime+dur/1000);
   }catch(e){}
 }
+// Start-Ton: zwei aufsteigende Töne beim Drücken von "Start"
+function beepStart(){
+  beep(440,120,0.2);
+  setTimeout(()=>beep(660,180,0.25),130);
+  setTimeout(()=>beep(880,220,0.22),300);
+}
+// Übungsbeginn-Ton: klarer einzelner Ton wenn neue Wdh./Halte-Phase beginnt
+function beepGo(){ beep(880,140,0.2); }
 function beepDone(){ beep(880,80); setTimeout(()=>beep(1100,200),100); }
 function beepRest(){ beep(440,250,0.15); }
 function beepTick(){ beep(660,60,0.12); }
@@ -1528,7 +1536,8 @@ class ExTimer{
   start(){
     if(this.phase==='ready'||this.phase==='done'){
       this.curSet=1; this.curRep=1;
-      this._startRep();
+      beepStart();
+      setTimeout(()=>this._startRep(), 600);
     }
   }
   stop(){
@@ -1541,12 +1550,12 @@ class ExTimer{
     this._advance();
   }
   _startRep(){
+    beepGo();
     if(this.holdSec>0){
       this._setPhase('hold', this.holdSec);
     } else if(this.paceSec>0){
       this._setPhase('pace', this.paceSec);
     } else {
-      // instant rep (no timer) – just advance immediately
       this._advance();
       return;
     }

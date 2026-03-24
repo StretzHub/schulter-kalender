@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Übungsdarstellung – 5 Designvorschläge</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#0a0f1a;color:#f0f9ff;font-family:'Segoe UI',system-ui,sans-serif;padding:20px}
+h1{text-align:center;font-size:1.4em;margin-bottom:6px;
+   background:linear-gradient(90deg,#38bdf8,#a78bfa);
+   -webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.subtitle{text-align:center;color:#64748b;font-size:.85em;margin-bottom:32px}
+.section{margin-bottom:48px}
+.section-label{
+  font-size:.72em;font-weight:800;letter-spacing:2px;text-transform:uppercase;
+  color:#475569;border-bottom:1px solid #1e3a5f;padding-bottom:8px;margin-bottom:18px;
+  display:flex;align-items:center;gap:10px;
+}
+.section-label span{color:#38bdf8;font-size:1.1em}
+
+/* ══════════════════════════════════════════════
+   VARIANTE 1 – FOCUS CARD (Minimalismus)
+══════════════════════════════════════════════ */
+.v1{
+  background:#0d1b2e;border:1px solid #1e3a5f;border-radius:20px;
+  padding:28px;max-width:480px;margin:0 auto;
+  display:flex;flex-direction:column;gap:18px;
+}
+.v1-header{display:flex;justify-content:space-between;align-items:flex-start}
+.v1-badge{
+  font-size:.72em;font-weight:700;letter-spacing:.8px;text-transform:uppercase;
+  background:#112240;color:#38bdf8;padding:4px 12px;border-radius:20px;
+  border:1px solid #1e3a5f;
+}
+.v1-status{
+  font-size:.72em;color:#34d399;font-weight:600;
+  display:flex;align-items:center;gap:5px;
+}
+.v1-dot{width:7px;height:7px;border-radius:50%;background:#34d399;animation:blink 1.2s ease-in-out infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
+.v1-title{font-size:1.5em;font-weight:800;line-height:1.2}
+.v1-sub{color:#64748b;font-size:.85em;margin-top:3px}
+.v1-progress{display:flex;gap:10px;align-items:center}
+.v1-rings{display:flex;gap:8px}
+.v1-ring-wrap{text-align:center}
+.v1-ring-lbl{font-size:.62em;color:#64748b;margin-bottom:3px}
+.v1-circle{transform:rotate(-90deg)}
+.v1-circle-bg{fill:none;stroke:#1e3a5f;stroke-width:4}
+.v1-circle-fg{fill:none;stroke-width:4;stroke-linecap:round;transition:.5s}
+.v1-ring-num{font-size:.8em;font-weight:700;color:#f0f9ff;margin-top:2px}
+.v1-timer-big{
+  background:#060d18;border-radius:14px;padding:22px;text-align:center;
+  border:1px solid #38bdf855;
+}
+.v1-phase{font-size:.72em;text-transform:uppercase;letter-spacing:1.2px;color:#38bdf8;font-weight:700;margin-bottom:6px}
+.v1-count{font-size:5em;font-weight:900;color:#38bdf8;line-height:1;font-variant-numeric:tabular-nums}
+.v1-unit{font-size:.8em;color:#64748b;margin-top:4px}
+.v1-bar{height:4px;background:#1e3a5f;border-radius:2px;overflow:hidden;margin-top:16px}
+.v1-bar-fill{height:100%;width:60%;background:linear-gradient(90deg,#38bdf8,#a78bfa);border-radius:2px;transition:.8s linear}
+.v1-actions{display:flex;gap:10px}
+.v1-btn{
+  flex:1;padding:12px;border-radius:10px;border:none;cursor:pointer;
+  font-size:.88em;font-weight:700;transition:.2s;
+}
+.v1-btn-stop{background:#112240;color:#64748b;border:1px solid #1e3a5f}
+.v1-btn-skip{background:#1a1200;color:#fbbf24;border:1px solid #3a2a00}
+.v1-step{
+  display:flex;gap:12px;align-items:flex-start;padding:10px 0;
+  border-bottom:1px solid #0f1e35;
+}
+.v1-step:last-child{border:none;padding-bottom:0}
+.v1-step-n{
+  width:24px;height:24px;border-radius:50%;flex-shrink:0;
+  background:linear-gradient(135deg,#38bdf8,#a78bfa);
+  display:flex;align-items:center;justify-content:center;
+  font-size:.72em;font-weight:800;color:#060d18;margin-top:1px;
+}
+.v1-step-n.active{box-shadow:0 0 0 3px #38bdf822,0 0 12px #38bdf844}
+.v1-step-txt{font-size:.85em;line-height:1.5;color:#94a3b8}
+.v1-step-txt.active{color:#f0f9ff;font-weight:600}
+
+/* ══════════════════════════════════════════════
+   VARIANTE 2 – STEPPER / GUIDE (Schritt-für-Schritt)
+══════════════════════════════════════════════ */
+.v2{max-width:500px;margin:0 auto}
+.v2-top{
+  background:linear-gradient(135deg,#0f2a4a,#1a1535);
+  border-radius:16px 16px 0 0;padding:20px 24px 16px;
+  border:1px solid #1e3a5f;border-bottom:none;
+  display:flex;align-items:center;gap:16px;
+}
+.v2-icon{
+  width:52px;height:52px;border-radius:12px;flex-shrink:0;
+  background:linear-gradient(135deg,#38bdf8,#a78bfa);
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.4em;
+}
+.v2-title-block h2{font-size:1.1em;font-weight:700}
+.v2-title-block p{font-size:.78em;color:#64748b;margin-top:2px}
+.v2-pills{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
+.v2-pill{
+  padding:2px 10px;border-radius:12px;font-size:.72em;font-weight:600;
+  background:#1e3a5f;color:#38bdf8;
+}
+.v2-stepper{
+  background:#0d1b2e;border:1px solid #1e3a5f;border-top:none;
+}
+.v2-step{
+  display:flex;gap:0;cursor:pointer;transition:.2s;
+  border-bottom:1px solid #0f1e35;
+}
+.v2-step:last-child{border:none}
+.v2-step.current{background:linear-gradient(90deg,#0f2a4a,#0d1b2e)}
+.v2-step.done{opacity:.55}
+.v2-step-left{
+  width:56px;flex-shrink:0;display:flex;flex-direction:column;
+  align-items:center;padding:14px 0;
+}
+.v2-step-circle{
+  width:28px;height:28px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:.78em;font-weight:800;border:2px solid #1e3a5f;color:#475569;
+  transition:.2s;
+}
+.v2-step.current .v2-step-circle{
+  background:linear-gradient(135deg,#38bdf8,#a78bfa);
+  color:#060d18;border-color:transparent;
+  box-shadow:0 0 12px #38bdf855;
+}
+.v2-step.done .v2-step-circle{background:#064e3b;border-color:#34d399;color:#34d399}
+.v2-step-line{width:2px;background:#1e3a5f;flex:1;margin-top:4px}
+.v2-step-right{padding:14px 16px 14px 0;flex:1}
+.v2-step-title{font-size:.88em;font-weight:600;color:#64748b}
+.v2-step.current .v2-step-title{color:#f0f9ff}
+.v2-step-desc{font-size:.78em;color:#475569;margin-top:3px;line-height:1.5}
+.v2-step.current .v2-step-desc{color:#94a3b8}
+.v2-timer-inline{
+  display:flex;align-items:center;gap:10px;margin-top:8px;
+  background:#060d18;padding:8px 12px;border-radius:8px;
+}
+.v2-t-count{font-size:1.6em;font-weight:900;color:#38bdf8;font-variant-numeric:tabular-nums}
+.v2-t-lbl{font-size:.72em;color:#64748b}
+.v2-t-bar{flex:1;height:4px;background:#1e3a5f;border-radius:2px;overflow:hidden}
+.v2-t-fill{height:100%;width:65%;background:#38bdf8;border-radius:2px}
+.v2-footer{
+  background:#0d1b2e;border:1px solid #1e3a5f;border-top:none;
+  border-radius:0 0 16px 16px;padding:12px 16px;
+  display:flex;justify-content:space-between;align-items:center;
+}
+.v2-footer-info{font-size:.78em;color:#64748b}
+.v2-next-btn{
+  padding:9px 20px;border-radius:8px;border:none;cursor:pointer;
+  background:linear-gradient(90deg,#38bdf8,#a78bfa);
+  color:#060d18;font-weight:700;font-size:.85em;
+}
+
+/* ══════════════════════════════════════════════
+   VARIANTE 3 – GAME / HUD (Gamification)
+══════════════════════════════════════════════ */
+.v3{
+  background:#060d18;border:2px solid #38bdf8;border-radius:16px;
+  max-width:500px;margin:0 auto;overflow:hidden;
+  box-shadow:0 0 40px #38bdf822,inset 0 0 60px #38bdf808;
+}
+.v3-hud-top{
+  background:linear-gradient(90deg,#0a1628,#060d18);
+  padding:10px 16px;display:flex;justify-content:space-between;align-items:center;
+  border-bottom:1px solid #38bdf833;font-size:.72em;
+}
+.v3-hud-label{color:#38bdf8;font-weight:700;letter-spacing:1px;text-transform:uppercase}
+.v3-hud-score{color:#fbbf24;font-weight:700}
+.v3-main{padding:20px}
+.v3-title{
+  font-size:1.3em;font-weight:900;text-transform:uppercase;letter-spacing:1px;
+  background:linear-gradient(90deg,#38bdf8,#a78bfa);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  margin-bottom:4px;
+}
+.v3-sub{font-size:.78em;color:#475569;margin-bottom:16px}
+.v3-meters{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:18px}
+.v3-meter{background:#0a1628;border:1px solid #1e3a5f;border-radius:8px;padding:10px;text-align:center}
+.v3-meter-val{font-size:1.6em;font-weight:900;color:#38bdf8;font-variant-numeric:tabular-nums}
+.v3-meter-lbl{font-size:.62em;color:#475569;text-transform:uppercase;letter-spacing:.6px;margin-top:2px}
+.v3-meter.active .v3-meter-val{color:#fbbf24;text-shadow:0 0 12px #fbbf2455}
+.v3-timer-hud{
+  background:#0a1628;border:1px solid #38bdf833;border-radius:10px;
+  padding:16px;margin-bottom:16px;text-align:center;position:relative;overflow:hidden;
+}
+.v3-timer-hud::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(circle at 50% 0%,#38bdf808,transparent 60%);
+}
+.v3-phase-lbl{font-size:.7em;color:#38bdf8;text-transform:uppercase;letter-spacing:1.5px;font-weight:700}
+.v3-big-num{font-size:4.5em;font-weight:900;color:#38bdf8;line-height:1;font-variant-numeric:tabular-nums;text-shadow:0 0 30px #38bdf866}
+.v3-hud-bar-wrap{margin-top:10px}
+.v3-hud-bar{height:8px;background:#0f1e35;border-radius:4px;overflow:hidden;border:1px solid #1e3a5f}
+.v3-hud-fill{height:100%;width:60%;background:linear-gradient(90deg,#38bdf8,#a78bfa);border-radius:4px;
+  box-shadow:0 0 8px #38bdf855;transition:.8s linear}
+.v3-steps-compact{display:flex;flex-direction:column;gap:4px;margin-bottom:14px}
+.v3-step-row{
+  display:flex;gap:8px;align-items:center;padding:6px 10px;
+  border-radius:6px;font-size:.8em;color:#475569;
+}
+.v3-step-row.active{background:#0f2a4a;color:#f0f9ff;border-left:2px solid #38bdf8}
+.v3-step-row.done{color:#34d39966}
+.v3-step-icon{font-size:.8em;width:16px;text-align:center}
+.v3-btns{display:flex;gap:8px}
+.v3-btn{
+  flex:1;padding:11px;border-radius:8px;border:none;cursor:pointer;
+  font-size:.82em;font-weight:800;text-transform:uppercase;letter-spacing:.5px;transition:.2s;
+}
+.v3-btn-stop{background:#0a1628;color:#475569;border:1px solid #1e3a5f}
+.v3-btn-go{background:linear-gradient(90deg,#38bdf8,#a78bfa);color:#060d18}
+.v3-btn-go:hover{box-shadow:0 0 20px #38bdf855}
+
+/* ══════════════════════════════════════════════
+   VARIANTE 4 – GLASSMORPHISM / iOS-STYLE
+══════════════════════════════════════════════ */
+.v4-bg{
+  background:linear-gradient(135deg,#0a0f1a,#0f1535,#0a0f1a);
+  border-radius:20px;padding:24px;max-width:480px;margin:0 auto;
+  position:relative;overflow:hidden;
+}
+.v4-blob1{
+  position:absolute;top:-60px;right:-40px;width:200px;height:200px;
+  background:radial-gradient(circle,#38bdf822,transparent 70%);pointer-events:none;
+}
+.v4-blob2{
+  position:absolute;bottom:-40px;left:-30px;width:160px;height:160px;
+  background:radial-gradient(circle,#a78bfa18,transparent 70%);pointer-events:none;
+}
+.v4-card{
+  background:rgba(255,255,255,.04);
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  border:1px solid rgba(255,255,255,.1);border-radius:16px;
+  padding:20px;position:relative;z-index:1;
+}
+.v4-chip{
+  display:inline-flex;align-items:center;gap:5px;
+  background:rgba(56,189,248,.12);border:1px solid rgba(56,189,248,.25);
+  border-radius:20px;padding:3px 12px;font-size:.72em;color:#38bdf8;font-weight:600;
+  margin-bottom:14px;
+}
+.v4-title{font-size:1.4em;font-weight:800;letter-spacing:-.3px;margin-bottom:3px}
+.v4-focus{font-size:.8em;color:rgba(255,255,255,.4);margin-bottom:18px}
+.v4-rings-row{display:flex;gap:12px;justify-content:center;margin-bottom:20px}
+.v4-ring-block{text-align:center}
+.v4-ring-svg{filter:drop-shadow(0 0 8px #38bdf844)}
+.v4-ring-label{font-size:.65em;color:rgba(255,255,255,.35);margin-top:4px}
+.v4-ring-val{font-size:1em;font-weight:800;fill:#f0f9ff;dominant-baseline:central;text-anchor:middle}
+.v4-timer-glass{
+  background:rgba(0,0,0,.3);backdrop-filter:blur(10px);
+  border:1px solid rgba(255,255,255,.08);border-radius:14px;
+  padding:16px;text-align:center;margin-bottom:14px;
+}
+.v4-phase{font-size:.68em;color:rgba(56,189,248,.8);text-transform:uppercase;letter-spacing:1.5px;font-weight:700;margin-bottom:6px}
+.v4-count{font-size:4.5em;font-weight:900;line-height:1;
+  background:linear-gradient(135deg,#f0f9ff,#38bdf8);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  font-variant-numeric:tabular-nums;
+}
+.v4-unit{font-size:.75em;color:rgba(255,255,255,.3);margin-top:3px}
+.v4-arc-bar{margin:12px auto 0;display:block}
+.v4-steps{display:flex;flex-direction:column;gap:0;margin-bottom:14px}
+.v4-step{
+  display:flex;gap:10px;align-items:flex-start;
+  padding:8px 10px;border-radius:8px;transition:.2s;
+}
+.v4-step.active{background:rgba(56,189,248,.08);border-left:2px solid rgba(56,189,248,.5)}
+.v4-step-dot{
+  width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.2);
+  margin-top:6px;flex-shrink:0;
+}
+.v4-step.active .v4-step-dot{background:#38bdf8;box-shadow:0 0 6px #38bdf8}
+.v4-step-text{font-size:.82em;color:rgba(255,255,255,.35);line-height:1.5}
+.v4-step.active .v4-step-text{color:rgba(255,255,255,.85)}
+.v4-btns{display:flex;gap:8px}
+.v4-btn{
+  flex:1;padding:12px;border-radius:10px;border:none;cursor:pointer;
+  font-size:.85em;font-weight:700;transition:.2s;
+}
+.v4-btn-stop{background:rgba(255,255,255,.06);color:rgba(255,255,255,.4);border:1px solid rgba(255,255,255,.08)}
+.v4-btn-go{
+  background:linear-gradient(135deg,rgba(56,189,248,.9),rgba(167,139,250,.9));
+  color:#060d18;backdrop-filter:blur(4px);
+}
+.v4-btn-go:hover{box-shadow:0 4px 20px rgba(56,189,248,.3)}
+
+/* ══════════════════════════════════════════════
+   VARIANTE 5 – COMPACT LIST / MOBILE-FIRST
+══════════════════════════════════════════════ */
+.v5{max-width:420px;margin:0 auto}
+.v5-header{
+  background:#0d1b2e;border:1px solid #1e3a5f;border-radius:14px 14px 0 0;
+  padding:14px 16px;display:flex;align-items:center;gap:12px;
+}
+.v5-icon-box{
+  width:40px;height:40px;border-radius:10px;flex-shrink:0;
+  background:linear-gradient(135deg,#38bdf8,#a78bfa);
+  display:flex;align-items:center;justify-content:center;font-size:1.1em;
+}
+.v5-h-title{font-size:1em;font-weight:700}
+.v5-h-sub{font-size:.75em;color:#64748b;margin-top:1px}
+.v5-tag{
+  margin-left:auto;font-size:.68em;font-weight:700;
+  background:#064e3b;color:#34d399;padding:3px 8px;border-radius:6px;
+}
+.v5-timer-bar-area{
+  background:#0a1628;border-left:1px solid #1e3a5f;border-right:1px solid #1e3a5f;
+  padding:12px 16px;
+}
+.v5-progress-row{display:flex;align-items:center;gap:10px}
+.v5-progress-lbl{font-size:.72em;color:#64748b;white-space:nowrap}
+.v5-dots{display:flex;gap:5px;flex:1}
+.v5-dot{
+  height:6px;border-radius:3px;flex:1;background:#1e3a5f;transition:.3s;
+}
+.v5-dot.done{background:linear-gradient(90deg,#38bdf8,#a78bfa)}
+.v5-dot.active{background:#38bdf8;animation:dotPulse .8s ease-in-out infinite}
+@keyframes dotPulse{0%,100%{opacity:1}50%{opacity:.4}}
+.v5-timer-main{
+  display:flex;align-items:center;gap:12px;margin-top:10px;
+  background:#060d18;border-radius:10px;padding:10px 12px;
+}
+.v5-t-num{font-size:2.8em;font-weight:900;color:#38bdf8;font-variant-numeric:tabular-nums;line-height:1}
+.v5-t-info{flex:1}
+.v5-t-phase{font-size:.68em;text-transform:uppercase;letter-spacing:1px;color:#38bdf8;font-weight:700}
+.v5-t-detail{font-size:.8em;color:#64748b;margin-top:2px}
+.v5-t-bar{height:3px;background:#1e3a5f;border-radius:2px;overflow:hidden;margin-top:6px}
+.v5-t-fill{height:100%;width:60%;background:#38bdf8;border-radius:2px;transition:.8s linear}
+.v5-t-btns{display:flex;flex-direction:column;gap:5px}
+.v5-mini-btn{
+  padding:6px 10px;border-radius:6px;border:none;cursor:pointer;
+  font-size:.72em;font-weight:700;white-space:nowrap;transition:.2s;
+}
+.v5-mini-go{background:linear-gradient(90deg,#38bdf8,#a78bfa);color:#060d18}
+.v5-mini-skip{background:#1e3a5f;color:#94a3b8}
+.v5-steps-list{
+  background:#0d1b2e;border:1px solid #1e3a5f;border-top:none;border-bottom:none;
+}
+.v5-step-row{
+  display:flex;gap:10px;align-items:center;padding:9px 14px;
+  border-bottom:1px solid #0f1e35;transition:.2s;
+}
+.v5-step-row:last-child{border:none}
+.v5-step-row.active{background:#0f2a4a}
+.v5-step-num{
+  width:20px;height:20px;border-radius:50%;flex-shrink:0;
+  background:#1e3a5f;color:#64748b;
+  display:flex;align-items:center;justify-content:center;font-size:.68em;font-weight:800;
+}
+.v5-step-row.active .v5-step-num{background:linear-gradient(135deg,#38bdf8,#a78bfa);color:#060d18}
+.v5-step-row.done .v5-step-num{background:#064e3b;color:#34d399}
+.v5-step-text{font-size:.82em;color:#475569}
+.v5-step-row.active .v5-step-text{color:#f0f9ff}
+.v5-step-row.done .v5-step-text{color:#34d39966;text-decoration:line-through}
+.v5-footer{
+  background:#0d1b2e;border:1px solid #1e3a5f;border-top:none;
+  border-radius:0 0 14px 14px;
+  display:flex;gap:8px;padding:10px 14px;
+}
+.v5-check{
+  flex:1;padding:11px;border-radius:9px;border:none;cursor:pointer;
+  background:linear-gradient(90deg,#1a3a5f,#2a1f4e);
+  border:1px solid #a78bfa;color:#f0f9ff;font-weight:600;font-size:.85em;
+}
+.v5-video{
+  padding:11px 14px;border-radius:9px;border:1px solid #1e3a5f;
+  background:#0a1628;color:#64748b;font-size:.82em;cursor:pointer;
+  white-space:nowrap;text-decoration:none;display:flex;align-items:center;
+}
+
+/* RATINGS */
+.ratings{
+  display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;justify-content:center;
+}
+.rating-tag{
+  padding:4px 12px;border-radius:20px;font-size:.72em;font-weight:600;
+  background:#0d1b2e;border:1px solid #1e3a5f;color:#64748b;
+}
+.rating-tag.pro{border-color:#34d39966;color:#34d399}
+.rating-tag.con{border-color:#f8717166;color:#f87171}
+</style>
+</head>
+<body>
+
+<h1>5 Designvorschläge – Übungsdarstellung</h1>
+<p class="subtitle">Beispiel: <strong>Kinnrückzug (S1)</strong> · 3 × 10 Wdh. · 10 Sek. halten · Phase 1</p>
+
+<!-- ═══════════════════════════════════════════ -->
+<div class="section">
+  <div class="section-label"><span>1</span> FOCUS CARD – Minimalistisch &amp; klar</div>
+  <div class="v1">
+    <div class="v1-header">
+      <span class="v1-badge">S1 · Täglich</span>
+      <span class="v1-status"><span class="v1-dot"></span> Set 2/3 läuft</span>
+    </div>
+    <div>
+      <div class="v1-title">Kinnrückzug</div>
+      <div class="v1-sub">Haltungskorrektur · Schulterdach entlasten</div>
+    </div>
+    <div class="v1-progress">
+      <div class="v1-rings">
+        <div class="v1-ring-wrap">
+          <div class="v1-ring-lbl">Sätze</div>
+          <svg class="v1-circle" width="52" height="52" viewBox="0 0 52 52">
+            <circle class="v1-circle-bg" cx="26" cy="26" r="20"/>
+            <circle class="v1-circle-fg" cx="26" cy="26" r="20"
+              stroke="#38bdf8" stroke-dasharray="125.6" stroke-dashoffset="42"/>
+            <text x="26" y="26" text-anchor="middle" dominant-baseline="central"
+              font-size="10" fill="#f0f9ff" font-weight="800" transform="rotate(90,26,26)">2/3</text>
+          </svg>
+          <div class="v1-ring-num"></div>
+        </div>
+        <div class="v1-ring-wrap">
+          <div class="v1-ring-lbl">Wdh.</div>
+          <svg class="v1-circle" width="52" height="52" viewBox="0 0 52 52">
+            <circle class="v1-circle-bg" cx="26" cy="26" r="20"/>
+            <circle class="v1-circle-fg" cx="26" cy="26" r="20"
+              stroke="#a78bfa" stroke-dasharray="125.6" stroke-dashoffset="63"/>
+            <text x="26" y="26" text-anchor="middle" dominant-baseline="central"
+              font-size="10" fill="#f0f9ff" font-weight="800" transform="rotate(90,26,26)">5/10</text>
+          </svg>
+        </div>
+        <div class="v1-ring-wrap">
+          <div class="v1-ring-lbl">Gesamt</div>
+          <svg class="v1-circle" width="52" height="52" viewBox="0 0 52 52">
+            <circle class="v1-circle-bg" cx="26" cy="26" r="20"/>
+            <circle class="v1-circle-fg" cx="26" cy="26" r="20"
+              stroke="#34d399" stroke-dasharray="125.6" stroke-dashoffset="75"/>
+            <text x="26" y="26" text-anchor="middle" dominant-baseline="central"
+              font-size="10" fill="#f0f9ff" font-weight="800" transform="rotate(90,26,26)">40%</text>
+          </svg>
+        </div>
+      </div>
+    </div>
+    <div class="v1-timer-big">
+      <div class="v1-phase">🔥 Halten</div>
+      <div class="v1-count">7</div>
+      <div class="v1-unit">Sekunden</div>
+      <div class="v1-bar"><div class="v1-bar-fill"></div></div>
+    </div>
+    <div>
+      <div class="v1-step"><div class="v1-step-n">1</div><div class="v1-step-txt done">Aufrecht sitzen, Blick geradeaus</div></div>
+      <div class="v1-step"><div class="v1-step-n active">2</div><div class="v1-step-txt active">Kinn gerade nach <strong>hinten</strong> schieben – nicht nicken</div></div>
+      <div class="v1-step"><div class="v1-step-n">3</div><div class="v1-step-txt">Ziehen im Nacken spüren? Korrekt.</div></div>
+      <div class="v1-step"><div class="v1-step-n">4</div><div class="v1-step-txt">10 Sekunden halten, dann lösen</div></div>
+    </div>
+    <div class="v1-actions">
+      <button class="v1-btn v1-btn-stop">■ Stop</button>
+      <button class="v1-btn v1-btn-skip">Skip ▶</button>
+    </div>
+  </div>
+  <div class="ratings">
+    <span class="rating-tag pro">✓ Sehr übersichtlich</span>
+    <span class="rating-tag pro">✓ 3 Ringe zeigen Fortschritt klar</span>
+    <span class="rating-tag pro">✓ Kein Scrollen nötig</span>
+    <span class="rating-tag con">✗ Kein Bild/Animation</span>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<div class="section">
+  <div class="section-label"><span>2</span> STEPPER – Geführte Schritt-für-Schritt Anleitung</div>
+  <div class="v2">
+    <div class="v2-top">
+      <div class="v2-icon">🧠</div>
+      <div class="v2-title-block">
+        <h2>Kinnrückzug</h2>
+        <p>Haltungskorrektur · Schulterdach entlasten</p>
+        <div class="v2-pills">
+          <span class="v2-pill">3 × 10</span>
+          <span class="v2-pill">10 Sek. halten</span>
+          <span class="v2-pill">Täglich</span>
+        </div>
+      </div>
+    </div>
+    <div class="v2-stepper">
+      <div class="v2-step done">
+        <div class="v2-step-left">
+          <div class="v2-step-circle">✓</div>
+          <div class="v2-step-line"></div>
+        </div>
+        <div class="v2-step-right">
+          <div class="v2-step-title">Position einnehmen</div>
+          <div class="v2-step-desc">Aufrecht sitzen oder stehen, Blick geradeaus</div>
+        </div>
+      </div>
+      <div class="v2-step current">
+        <div class="v2-step-left">
+          <div class="v2-step-circle">2</div>
+          <div class="v2-step-line"></div>
+        </div>
+        <div class="v2-step-right">
+          <div class="v2-step-title">Kinn zurückschieben &amp; halten</div>
+          <div class="v2-step-desc">Kinn gerade nach hinten schieben – nicht nach unten nicken!</div>
+          <div class="v2-timer-inline">
+            <div>
+              <div class="v2-t-count">7</div>
+            </div>
+            <div style="flex:1">
+              <div class="v2-t-lbl">🔥 Halten · Wdh. 5/10</div>
+              <div class="v2-t-bar"><div class="v2-t-fill"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="v2-step">
+        <div class="v2-step-left">
+          <div class="v2-step-circle">3</div>
+          <div class="v2-step-line"></div>
+        </div>
+        <div class="v2-step-right">
+          <div class="v2-step-title">Ziehen im Nacken spüren</div>
+          <div class="v2-step-desc">Ziehgefühl bestätigt korrekte Ausführung</div>
+        </div>
+      </div>
+      <div class="v2-step">
+        <div class="v2-step-left">
+          <div class="v2-step-circle">4</div>
+        </div>
+        <div class="v2-step-right">
+          <div class="v2-step-title">Lösen &amp; wiederholen</div>
+          <div class="v2-step-desc">Langsam lösen, kurze Pause, weiter</div>
+        </div>
+      </div>
+    </div>
+    <div class="v2-footer">
+      <span class="v2-footer-info">Set 2/3 · Wdh. 5/10</span>
+      <button class="v2-next-btn">Weiter ▶</button>
+    </div>
+  </div>
+  <div class="ratings">
+    <span class="rating-tag pro">✓ Sehr intuitiv wie eine App</span>
+    <span class="rating-tag pro">✓ Timer direkt im aktiven Schritt</span>
+    <span class="rating-tag pro">✓ Gut für Anfänger</span>
+    <span class="rating-tag con">✗ Etwas lang bei vielen Schritten</span>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<div class="section">
+  <div class="section-label"><span>3</span> GAME HUD – Gamification &amp; Motivation</div>
+  <div class="v3">
+    <div class="v3-hud-top">
+      <span class="v3-hud-label">⚡ Phase 1 · Tag 3</span>
+      <span class="v3-hud-score">🏆 420 XP heute</span>
+    </div>
+    <div class="v3-main">
+      <div class="v3-title">Kinnrückzug</div>
+      <div class="v3-sub">S1 · Haltungskorrektur · Schulterdach entlasten</div>
+      <div class="v3-meters">
+        <div class="v3-meter">
+          <div class="v3-meter-val">2</div>
+          <div class="v3-meter-lbl">/ 3 Sets</div>
+        </div>
+        <div class="v3-meter active">
+          <div class="v3-meter-val">5</div>
+          <div class="v3-meter-lbl">/ 10 Wdh.</div>
+        </div>
+        <div class="v3-meter">
+          <div class="v3-meter-val">7</div>
+          <div class="v3-meter-lbl">Sek. left</div>
+        </div>
+      </div>
+      <div class="v3-timer-hud">
+        <div class="v3-phase-lbl">🔥 Halten – nicht loslassen!</div>
+        <div class="v3-big-num">7</div>
+        <div class="v3-hud-bar-wrap">
+          <div class="v3-hud-bar"><div class="v3-hud-fill"></div></div>
+        </div>
+      </div>
+      <div class="v3-steps-compact">
+        <div class="v3-step-row done"><span class="v3-step-icon">✓</span>Position einnehmen</div>
+        <div class="v3-step-row active"><span class="v3-step-icon">▶</span>Kinn zurück schieben &amp; HALTEN</div>
+        <div class="v3-step-row"><span class="v3-step-icon">○</span>Nackenziehen spüren</div>
+        <div class="v3-step-row"><span class="v3-step-icon">○</span>Lösen &amp; wiederholen</div>
+      </div>
+      <div class="v3-btns">
+        <button class="v3-btn v3-btn-stop">■ Abbrechen</button>
+        <button class="v3-btn v3-btn-go">Skip ▶▶</button>
+      </div>
+    </div>
+  </div>
+  <div class="ratings">
+    <span class="rating-tag pro">✓ Motivierend &amp; energetisch</span>
+    <span class="rating-tag pro">✓ XP / Score für Gamification</span>
+    <span class="rating-tag pro">✓ Gut lesbar, großer Timer</span>
+    <span class="rating-tag con">✗ Kann zu verspielt wirken</span>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<div class="section">
+  <div class="section-label"><span>4</span> GLASSMORPHISM – Modern &amp; Premium iOS-Stil</div>
+  <div class="v4-bg">
+    <div class="v4-blob1"></div>
+    <div class="v4-blob2"></div>
+    <div class="v4-card">
+      <div class="v4-chip">✦ S1 · Schulter · Täglich</div>
+      <div class="v4-title">Kinnrückzug</div>
+      <div class="v4-focus">Haltungskorrektur · Schulterdach entlasten</div>
+      <div class="v4-rings-row">
+        <div class="v4-ring-block">
+          <svg class="v4-ring-svg" width="70" height="70" viewBox="0 0 70 70">
+            <circle cx="35" cy="35" r="28" fill="none" stroke="rgba(56,189,248,.15)" stroke-width="5"/>
+            <circle cx="35" cy="35" r="28" fill="none" stroke="#38bdf8" stroke-width="5"
+              stroke-linecap="round" stroke-dasharray="175.9" stroke-dashoffset="59"
+              transform="rotate(-90 35 35)"/>
+            <text class="v4-ring-val" x="35" y="35" font-size="13" fill="white" font-weight="800">2/3</text>
+          </svg>
+          <div class="v4-ring-label">Sätze</div>
+        </div>
+        <div class="v4-ring-block">
+          <svg class="v4-ring-svg" width="70" height="70" viewBox="0 0 70 70">
+            <circle cx="35" cy="35" r="28" fill="none" stroke="rgba(167,139,250,.15)" stroke-width="5"/>
+            <circle cx="35" cy="35" r="28" fill="none" stroke="#a78bfa" stroke-width="5"
+              stroke-linecap="round" stroke-dasharray="175.9" stroke-dashoffset="88"
+              transform="rotate(-90 35 35)"/>
+            <text class="v4-ring-val" x="35" y="35" font-size="13" fill="white" font-weight="800">5/10</text>
+          </svg>
+          <div class="v4-ring-label">Wdh.</div>
+        </div>
+        <div class="v4-ring-block">
+          <svg class="v4-ring-svg" width="70" height="70" viewBox="0 0 70 70">
+            <circle cx="35" cy="35" r="28" fill="none" stroke="rgba(52,211,153,.15)" stroke-width="5"/>
+            <circle cx="35" cy="35" r="28" fill="none" stroke="#34d399" stroke-width="5"
+              stroke-linecap="round" stroke-dasharray="175.9" stroke-dashoffset="106"
+              transform="rotate(-90 35 35)"/>
+            <text class="v4-ring-val" x="35" y="35" font-size="12" fill="white" font-weight="800">40%</text>
+          </svg>
+          <div class="v4-ring-label">Gesamt</div>
+        </div>
+      </div>
+      <div class="v4-timer-glass">
+        <div class="v4-phase">🔥 Halten</div>
+        <div class="v4-count">7</div>
+        <div class="v4-unit">Sekunden · Wdh. 5/10</div>
+        <svg class="v4-arc-bar" width="200" height="12" viewBox="0 0 200 12">
+          <rect x="0" y="3" width="200" height="6" rx="3" fill="rgba(255,255,255,.06)"/>
+          <rect x="0" y="3" width="120" height="6" rx="3" fill="url(#arcGrad)"/>
+          <defs>
+            <linearGradient id="arcGrad" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%" stop-color="#38bdf8"/>
+              <stop offset="100%" stop-color="#a78bfa"/>
+            </linearGradient>
+          </defs>
+        </svg>
+      </div>
+      <div class="v4-steps">
+        <div class="v4-step"><div class="v4-step-dot"></div><div class="v4-step-text">Aufrecht sitzen, Blick geradeaus</div></div>
+        <div class="v4-step active"><div class="v4-step-dot"></div><div class="v4-step-text">Kinn gerade nach hinten – nicht nicken</div></div>
+        <div class="v4-step"><div class="v4-step-dot"></div><div class="v4-step-text">Ziehen im Nacken? Das ist korrekt</div></div>
+        <div class="v4-step"><div class="v4-step-dot"></div><div class="v4-step-text">10 Sek. halten, dann lösen</div></div>
+      </div>
+      <div class="v4-btns">
+        <button class="v4-btn v4-btn-stop">■ Stop</button>
+        <button class="v4-btn v4-btn-go">Skip ▶</button>
+      </div>
+    </div>
+  </div>
+  <div class="ratings">
+    <span class="rating-tag pro">✓ Premium &amp; modern</span>
+    <span class="rating-tag pro">✓ Ringe sehr elegant</span>
+    <span class="rating-tag pro">✓ Guter Kontrast trotz Glass-Effekt</span>
+    <span class="rating-tag con">✗ Backdrop-blur braucht guten Browser</span>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<div class="section">
+  <div class="section-label"><span>5</span> COMPACT LIST – Mobil-optimiert, schnell &amp; dicht</div>
+  <div class="v5">
+    <div class="v5-header">
+      <div class="v5-icon-box">🧠</div>
+      <div>
+        <div class="v5-h-title">Kinnrückzug</div>
+        <div class="v5-h-sub">3 × 10 · 10 Sek. halten</div>
+      </div>
+      <div class="v5-tag">Set 2/3</div>
+    </div>
+    <div class="v5-timer-bar-area">
+      <div class="v5-progress-row">
+        <span class="v5-progress-lbl">Wdh.</span>
+        <div class="v5-dots">
+          <div class="v5-dot done"></div>
+          <div class="v5-dot done"></div>
+          <div class="v5-dot done"></div>
+          <div class="v5-dot done"></div>
+          <div class="v5-dot active"></div>
+          <div class="v5-dot"></div>
+          <div class="v5-dot"></div>
+          <div class="v5-dot"></div>
+          <div class="v5-dot"></div>
+          <div class="v5-dot"></div>
+        </div>
+        <span class="v5-progress-lbl">5/10</span>
+      </div>
+      <div class="v5-timer-main">
+        <div class="v5-t-num">7</div>
+        <div class="v5-t-info">
+          <div class="v5-t-phase">🔥 HALTEN</div>
+          <div class="v5-t-detail">Wdh. 5 von 10</div>
+          <div class="v5-t-bar"><div class="v5-t-fill"></div></div>
+        </div>
+        <div class="v5-t-btns">
+          <button class="v5-mini-btn v5-mini-go">▶ Start</button>
+          <button class="v5-mini-btn v5-mini-skip">Skip</button>
+        </div>
+      </div>
+    </div>
+    <div class="v5-steps-list">
+      <div class="v5-step-row done">
+        <div class="v5-step-num">✓</div>
+        <div class="v5-step-text">Aufrecht sitzen, Blick geradeaus</div>
+      </div>
+      <div class="v5-step-row active">
+        <div class="v5-step-num">2</div>
+        <div class="v5-step-text">Kinn gerade nach hinten schieben – nicht nicken!</div>
+      </div>
+      <div class="v5-step-row">
+        <div class="v5-step-num">3</div>
+        <div class="v5-step-text">Ziehgefühl im Nacken? Das ist korrekt</div>
+      </div>
+      <div class="v5-step-row">
+        <div class="v5-step-num">4</div>
+        <div class="v5-step-text">10 Sek. halten, dann kontrolliert lösen</div>
+      </div>
+    </div>
+    <div class="v5-footer">
+      <button class="v5-check">✓ Als erledigt markieren</button>
+      <a class="v5-video" href="#" onclick="return false">▶ Video</a>
+    </div>
+  </div>
+  <div class="ratings">
+    <span class="rating-tag pro">✓ Bestes Handy-Layout</span>
+    <span class="rating-tag pro">✓ Dot-Fortschrittsanzeige sehr intuitiv</span>
+    <span class="rating-tag pro">✓ Sehr kompakt, wenig Scrollen</span>
+    <span class="rating-tag con">✗ Kein Bild / Animation</span>
+  </div>
+</div>
+
+<div style="text-align:center;color:#1e3a5f;font-size:.78em;padding:32px 0 16px">
+  Alle 5 Varianten sind statische Vorschauen – Timer-Werte sind Beispielwerte.
+</div>
+
+</body>
+</html>
