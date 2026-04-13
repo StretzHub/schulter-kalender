@@ -409,6 +409,81 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
 .tbtn-skip:hover{background:#1a1200}
 .tbtn-again{background:var(--s3);border:1px solid var(--success);color:var(--success)}
 @media(max-width:640px){.timer-num{font-size:3em}.tbtn{font-size:.75em;padding:8px 3px}}
+
+/* SET DOTS */
+.timer-sets-dots{display:flex;gap:7px;justify-content:center;margin:8px 0 2px}
+.tsdot{width:11px;height:11px;border-radius:50%;background:var(--border);transition:.3s}
+.tsdot.tsd-done{background:var(--success)}
+.tsdot.tsd-active{background:var(--primary);box-shadow:0 0 7px var(--primary)}
+
+/* KURZPROGRAMM */
+.kurz-btn{
+  padding:4px 11px;border-radius:8px;font-size:.78em;font-weight:600;cursor:pointer;
+  background:var(--s3);border:1px solid #3a1f05;color:#fb923c;transition:.2s;white-space:nowrap;
+}
+.kurz-btn.active{background:#1a0d03;border-color:#fbbf24;color:#fbbf24}
+.kurz-btn:hover{border-color:#fbbf24}
+
+/* DAY LOG DOT */
+.day-log{display:flex;align-items:center;gap:4px;margin-top:2px}
+.day-log-pain{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.day-log-txt{font-size:.6em;color:var(--muted)}
+
+/* POST-EINHEIT MODAL */
+.post-overlay{
+  position:fixed;inset:0;background:#000000d0;z-index:300;
+  display:flex;align-items:center;justify-content:center;padding:20px;
+  opacity:0;pointer-events:none;transition:.25s;
+}
+.post-overlay.open{opacity:1;pointer-events:all}
+.post-modal{
+  background:var(--s1);border-radius:16px;width:100%;max-width:460px;
+  border:1px solid var(--border);overflow:hidden;
+  transform:scale(.95);transition:.25s;
+}
+.post-overlay.open .post-modal{transform:scale(1)}
+.post-hdr{
+  padding:14px 18px 12px;border-bottom:1px solid var(--border);
+  display:flex;justify-content:space-between;align-items:center;
+  background:linear-gradient(90deg,#091a11,var(--s1));
+}
+.post-hdr h2{font-size:.92em;color:var(--success)}
+.post-body{padding:16px 18px 20px;display:flex;flex-direction:column;gap:14px}
+.post-label{font-size:.8em;font-weight:700;color:var(--text);margin-bottom:6px}
+.pain-grid{display:flex;gap:4px;flex-wrap:wrap}
+.pain-btn{
+  width:34px;height:34px;border-radius:8px;border:1px solid var(--border);
+  background:var(--s3);color:var(--muted);font-weight:700;font-size:.82em;
+  cursor:pointer;transition:.2s;
+}
+.pain-btn:hover{border-color:var(--primary);color:var(--primary)}
+.pain-btn.pb-sel{color:#060d18 !important;border-color:transparent !important}
+.knack-row{display:flex;align-items:center;gap:14px}
+.knack-count{font-size:2.2em;font-weight:900;color:var(--primary);min-width:44px;text-align:center}
+.knack-btn{
+  width:40px;height:40px;border-radius:50%;border:2px solid var(--primary);
+  background:var(--s3);color:var(--primary);font-size:1.3em;font-weight:700;
+  cursor:pointer;transition:.2s;
+}
+.knack-btn:hover{background:var(--primary);color:#060d18}
+.knack-label{font-size:.78em;color:var(--muted)}
+.post-note{
+  width:100%;background:var(--bg);border:1px solid var(--border);border-radius:8px;
+  color:var(--text);font-family:inherit;font-size:.82em;
+  padding:8px 10px;resize:vertical;min-height:56px;outline:none;
+}
+.post-note:focus{border-color:var(--primary)}
+.post-save-btn{
+  display:block;width:100%;padding:11px;border-radius:9px;
+  background:linear-gradient(90deg,var(--success),#059669);
+  border:none;color:#060d18;font-weight:700;font-size:.9em;cursor:pointer;transition:.2s;
+}
+.post-save-btn:hover{opacity:.85}
+.post-skip{
+  text-align:center;font-size:.75em;color:var(--muted);cursor:pointer;
+  text-decoration:underline;margin-top:-6px;
+}
+.post-skip:hover{color:var(--text)}
 </style>
 </head>
 <body>
@@ -444,6 +519,37 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
   </div>
 </div>
 
+<!-- POST-EINHEIT MODAL -->
+<div class="post-overlay" id="postOverlay">
+  <div class="post-modal">
+    <div class="post-hdr">
+      <h2>🎉 Pflichtübungen abgeschlossen!</h2>
+      <button class="close-btn" onclick="closePostModal()">✕</button>
+    </div>
+    <div class="post-body">
+      <div>
+        <div class="post-label">💥 Schmerz während der Einheit (0–10)</div>
+        <div class="pain-grid" id="painGrid"></div>
+      </div>
+      <div>
+        <div class="post-label">🔔 Schulter-Knacken: wie oft?</div>
+        <div class="knack-row">
+          <button class="knack-btn" onclick="adjKnacken(-1)">−</button>
+          <div class="knack-count" id="knackCount">0</div>
+          <button class="knack-btn" onclick="adjKnacken(1)">+</button>
+          <span class="knack-label">mal heute</span>
+        </div>
+      </div>
+      <div>
+        <div class="post-label">📝 Notiz (optional)</div>
+        <textarea class="post-note" id="postNote" placeholder="Besonderheiten, Verspannungen, Müdigkeit…"></textarea>
+      </div>
+      <button class="post-save-btn" onclick="savePostEntry()">💾 Speichern</button>
+      <div class="post-skip" onclick="closePostModal()">Überspringen</div>
+    </div>
+  </div>
+</div>
+
 <!-- FOLDER STATUS BAR -->
 <div class="folder-bar">
   <span class="folder-status" id="folderStatus">📁 Kein Berichtsordner gewählt</span>
@@ -467,7 +573,10 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
         <div class="modal-title" id="mTitle"></div>
         <div class="modal-sub" id="mSub"></div>
       </div>
-      <button class="close-btn" onclick="closeModal()">✕</button>
+      <div style="display:flex;gap:8px;align-items:center;flex-shrink:0">
+        <button class="kurz-btn" id="kurzBtn" onclick="toggleKurz()" style="display:none">⚡ Kurzprogramm</button>
+        <button class="close-btn" onclick="closeModal()">✕</button>
+      </div>
     </div>
     <div class="mprog"><div class="mprog-fill" id="mProgFill"></div></div>
     <div class="mprog-text" id="mProgText"></div>
@@ -489,6 +598,87 @@ const addDays = (d,n) => { const x=new Date(d); x.setDate(x.getDate()+n); return
 const sameDay = (a,b) => a.toDateString()===b.toDateString();
 const isPast = d => d < TODAY && !sameDay(d,TODAY);
 const fmtDate = d => d.getDate()+'. '+MN[d.getMonth()];
+
+// ── SUPABASE CLOUD SYNC ──────────────────────────────────────
+const SUPABASE_URL = 'https://nqshil8t8hjkfqiigup.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_VI3So7yfNgdrXvco6ZOXhg_kkexlyDq';
+
+const getUserId = () => {
+  let uid = localStorage.getItem('schulter_user_id');
+  if (!uid) {
+    uid = 'user_' + Math.random().toString(36).substr(2, 9);
+    localStorage.setItem('schulter_user_id', uid);
+  }
+  return uid;
+};
+
+async function saveToCloud(trainingDate, painLevel, knackenCount, notes) {
+  try {
+    const userId = getUserId();
+    const payload = {
+      user_id: userId,
+      training_date: trainingDate,
+      pain_level: painLevel >= 0 ? painLevel : null,
+      knacken_level: knackenCount >= 0 ? knackenCount : null,
+      notes: notes || null,
+      exercises: {}
+    };
+
+    const response = await fetch(`${SUPABASE_URL}/rest/v1/training_logs`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${SUPABASE_KEY}`,
+        'apikey': SUPABASE_KEY,
+        'Prefer': 'return=minimal'
+      },
+      body: JSON.stringify(payload)
+    });
+
+    if (!response.ok) {
+      console.warn('Cloud sync info:', response.status);
+    } else {
+      console.log('✅ Cloud synced:', trainingDate);
+    }
+  } catch (e) {
+    console.log('Storage continues working:', e.message);
+  }
+}
+
+async function loadFromCloud() {
+  try {
+    const userId = getUserId();
+    const response = await fetch(
+      `${SUPABASE_URL}/rest/v1/training_logs?user_id=eq.${encodeURIComponent(userId)}&order=training_date.desc&limit=100`,
+      {
+        headers: {
+          'Authorization': `Bearer ${SUPABASE_KEY}`,
+          'apikey': SUPABASE_KEY
+        }
+      }
+    );
+
+    if (response.ok) {
+      const data = await response.json();
+      data.forEach(entry => {
+        if (entry.training_date) {
+          const dk = entry.training_date;
+          const existing = getLog(dk);
+          if (!existing) {
+            saveLog(dk, {
+              pain: entry.pain_level,
+              knacken: entry.knacken_level || 0,
+              note: entry.notes || ''
+            });
+          }
+        }
+      });
+      console.log('📥 Loaded:', data.length, 'entries');
+    }
+  } catch (e) {
+    console.log('Cloud not available, using local');
+  }
+}
 const localDate = d => {
   const y=d.getFullYear(), m=String(d.getMonth()+1).padStart(2,'0'), day=String(d.getDate()).padStart(2,'0');
   return y+'-'+m+'-'+day;
@@ -502,6 +692,76 @@ const doneIds = o => Object.keys(o).map(Number);
 const isDone  = (o,idx) => String(idx) in o;
 
 let curDay = null;
+let kurzMode = false;
+let postDate = null, postPain = -1, postKnacken = 0;
+
+const getLog  = dk => { try{return JSON.parse(localStorage.getItem('log_'+dk))||null;}catch(e){return null;} };
+const saveLog = (dk,o) => localStorage.setItem('log_'+dk, JSON.stringify(o));
+const painColor = p => p<=2?'#34d399':p<=5?'#fbbf24':p<=7?'#fb923c':'#f87171';
+
+function buildPainGrid(sel){
+  const g = document.getElementById('painGrid');
+  if(!g) return;
+  g.innerHTML = Array.from({length:11},(_,i)=>{
+    const c = i<=2?'#34d399':i<=5?'#fbbf24':i<=7?'#fb923c':'#f87171';
+    const selStyle = i===sel ? `background:${c};color:#060d18;border-color:${c}` : '';
+    return `<button class="pain-btn${i===sel?' pb-sel':''}" style="${selStyle}"
+      onclick="setPain(${i})">${i}</button>`;
+  }).join('');
+}
+
+function openPostModal(date){
+  postDate = date;
+  const dk = localDate(date);
+  const existing = getLog(dk);
+  postPain = existing ? existing.pain : -1;
+  postKnacken = existing ? (existing.knacken||0) : 0;
+  buildPainGrid(postPain);
+  document.getElementById('knackCount').textContent = postKnacken;
+  document.getElementById('postNote').value = existing ? (existing.note||'') : '';
+  document.getElementById('postOverlay').classList.add('open');
+}
+
+function adjKnacken(n){
+  postKnacken = Math.max(0, postKnacken + n);
+  document.getElementById('knackCount').textContent = postKnacken;
+}
+
+function setPain(n){
+  postPain = n;
+  buildPainGrid(n);
+}
+
+function closePostModal(){
+  document.getElementById('postOverlay').classList.remove('open');
+}
+
+async function savePostEntry(){
+  if(!postDate) return;
+  const note = document.getElementById('postNote').value.trim();
+  const dateStr = localDate(postDate);
+  
+  saveLog(dateStr, {pain: postPain, knacken: postKnacken, note});
+  await saveToCloud(dateStr, postPain, postKnacken, note);
+  
+  closePostModal();
+  buildCal();
+}
+
+function toggleKurz(){
+  kurzMode = !kurzMode;
+  const btn = document.getElementById('kurzBtn');
+  if(btn) btn.classList.toggle('active', kurzMode);
+  const ids    = kurzMode ? [0,1,4] : curDay.exIds;
+  const optIds = kurzMode ? []       : curDay.optIds;
+  document.getElementById('mSub').textContent = kurzMode
+    ? '⚡ Kurzprogramm · S1, S2, S5 (3 Übungen)'
+    : (curDay.type==='train-knee'?'Schulter + Knie · 10 Pflichtübungen':
+       curDay.type==='train-core'?'Schulter + Core · 8 Pflichtübungen':
+       'Leichttag · 3 Übungen') + (curDay.optIds.length?' · +'+curDay.optIds.length+' Bonus':'');
+  stopAllTimers();
+  renderModal(ids, optIds, curDay.date);
+}
 
 // ── SVG DEFINITIONS ───────────────────────────────────
 
@@ -1754,7 +2014,7 @@ const EX = [
     tip:'Aktiviert den inneren Quadrizeps gezielt ohne Druck auf das transplantierte Knorpelgewebe.',
     video:'https://www.youtube.com/results?search_query=terminal+knee+extension+VMO+exercise+band',
     svgs:{a:svgK1},
-    tmr:{sets:3,reps:15,holdSec:0,paceSec:2,restSec:45}
+    tmr:{sets:3,reps:15,holdSec:0,paceSec:3,restSec:45}
   },
   {
     t:'K2 · Mini Squat (max. 60°)', f:'Quadrizeps · funktionelle Kniestabilität',
@@ -1853,7 +2113,7 @@ const EX = [
     tip:'Schwerkraft zieht das Schultergelenk sanft auseinander. Perfekt nach dem Aufwachen oder als Tagesstart.',
     video:'https://www.youtube.com/results?search_query=codman+pendulum+exercise+shoulder+mobilization',
     svgs:{a:svgPendulum},
-    tmr:{sets:2,reps:20,holdSec:0,paceSec:2,restSec:30}
+    tmr:{sets:2,reps:20,holdSec:0,paceSec:3,restSec:30}
   },
   {
     t:'S+ · Wall Angels', f:'Skapula-Kontrolle · Schulterbeweglichkeit',
@@ -1936,17 +2196,23 @@ function beep(freq=660, dur=160, vol=0.25){
     o.start(); o.stop(ctx.currentTime+dur/1000);
   }catch(e){}
 }
-// Start-Ton: zwei aufsteigende Töne beim Drücken von "Start"
-function beepStart(){
-  beep(440,120,0.2);
-  setTimeout(()=>beep(660,180,0.25),130);
-  setTimeout(()=>beep(880,220,0.22),300);
+// Ton beim Start einer Übungsphase (heller, kurzer Ton)
+function beepGo(){ beep(880,200,0.28); }
+// Ton bei jeder 0 / Ende einer Wiederholung (langer, dunkler Ton)
+function beepRepEnd(){
+  try{
+    const ctx=new (window.AudioContext||window.webkitAudioContext)();
+    const o=ctx.createOscillator(), g=ctx.createGain();
+    o.connect(g); g.connect(ctx.destination);
+    o.type='sine'; o.frequency.value=180;
+    g.gain.setValueAtTime(0.4, ctx.currentTime);
+    g.gain.linearRampToValueAtTime(0.35, ctx.currentTime+0.1);
+    g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime+1.2);
+    o.start(); o.stop(ctx.currentTime+1.2);
+  }catch(e){}
 }
-// Übungsbeginn-Ton: klarer einzelner Ton wenn neue Wdh./Halte-Phase beginnt
-function beepGo(){ beep(880,140,0.2); }
-function beepDone(){ beep(880,80); setTimeout(()=>beep(1100,200),100); }
-function beepRest(){ beep(440,250,0.15); }
-function beepTick(){ beep(660,60,0.12); }
+// Ton beim Ende der gesamten Übung (zwei tiefe Töne nacheinander)
+function beepDone(){ beep(220,500,0.35); setTimeout(()=>beep(165,700,0.3), 550); }
 
 class ExTimer{
   constructor(exIdx){
@@ -1962,23 +2228,22 @@ class ExTimer{
     this.curSet=1; this.curRep=1;
     this.phase='ready'; // ready|hold|represt|setrest|pace|done
     this.remaining=0; this.total=0;
-    this._iv=null;
+    this._iv=null; this._advTm=null;
   }
   get domId(){ return 'tmr-'+this.idx; }
   start(){
     if(this.phase==='ready'||this.phase==='done'){
       this.curSet=1; this.curRep=1;
-      beepStart();
-      setTimeout(()=>this._startRep(), 600);
+      this._startRep();
     }
   }
   stop(){
-    clearInterval(this._iv);
+    clearInterval(this._iv); clearTimeout(this._advTm); this._advTm=null;
     this.phase='ready';
     this._render();
   }
   skip(){
-    clearInterval(this._iv);
+    clearInterval(this._iv); clearTimeout(this._advTm); this._advTm=null;
     this._advance();
   }
   _startRep(){
@@ -2000,17 +2265,17 @@ class ExTimer{
   }
   _tick(){
     this.remaining--;
-    if(this.remaining<=3 && this.remaining>0) beepTick();
     if(this.remaining<=0){
       clearInterval(this._iv);
-      this._advance();
+      this._render();
+      beepRepEnd();
+      this._advTm=setTimeout(()=>{ this._advTm=null; this._advance(); }, 800);
     } else { this._render(); }
   }
   _advance(){
     if(this.phase==='hold'||this.phase==='pace'){
       if(this.curRep<this.reps){
         this.curRep++;
-        beepTick();
         if(this.repRestSec>0){
           this._setPhase('represt', this.repRestSec);
         } else { this._startRep(); }
@@ -2018,7 +2283,6 @@ class ExTimer{
         // all reps done
         if(this.curSet<this.sets){
           this.curSet++; this.curRep=1;
-          beepRest();
           this._setPhase('setrest', this.restSec);
         } else {
           this.phase='done';
@@ -2029,7 +2293,6 @@ class ExTimer{
     } else if(this.phase==='represt'){
       this._startRep();
     } else if(this.phase==='setrest'){
-      beepTick();
       this._startRep();
     }
   }
@@ -2082,6 +2345,11 @@ class ExTimer{
 
     const setInfo = this.phase==='done' ? '' : `<span class="timer-set-info">${setLbl}</span><span>${this.phase!=='setrest'&&this.phase!=='done'?repLbl:('Nächster Set gleich...')}</span>`;
     const barFill = this.phase==='done' ? '' : `<div class="timer-bar"><div class="timer-bar-fill ${phClass}" style="width:${barPct*100}%"></div></div>`;
+    const setDots = this.phase!=='done' && this.sets>1
+      ? `<div class="timer-sets-dots">${Array.from({length:this.sets},(_,i)=>{
+          const cls = i<this.curSet-1?'tsdot tsd-done':i===this.curSet-1?'tsdot tsd-active':'tsdot';
+          return `<div class="${cls}"></div>`;
+        }).join('')}</div>` : '';
     const btns = this.phase==='done'
       ? `<button class="tbtn tbtn-again" onclick="activeTimers[${this.idx}].stop()">↺ Nochmal</button>`
       : `<button class="tbtn tbtn-stop" onclick="activeTimers[${this.idx}].stop()">■ Stop</button>
@@ -2094,6 +2362,7 @@ class ExTimer{
         <div class="timer-num ${phClass}">${numTxt}</div>
         <div class="timer-unit">${unitTxt}</div>
       </div>
+      ${setDots}
       ${barFill}
       <div class="timer-btns">${btns}</div>
     `;
@@ -2159,6 +2428,12 @@ function buildCal(){
         else if(pct>0) card.classList.add('partial-day');
       }
 
+      const log = getLog(localDate(date));
+      const logDot = log ? `<div class="day-log">
+        <div class="day-log-pain" style="background:${painColor(log.pain>=0?log.pain:0)}"></div>
+        <span class="day-log-txt">${log.pain>=0?'S'+log.pain:'—'}${log.knacken>0?' · 🔔'+log.knacken:''}</span>
+      </div>` : '';
+
       card.innerHTML=`
         ${sameDay(date,TODAY)?'<div class="today-tag">HEUTE</div>':''}
         <div class="day-name">${WD[d]}</div>
@@ -2168,6 +2443,7 @@ function buildCal(){
         </div>
         ${exIds.length>0?`<div class="day-prog"><div class="day-prog-fill" style="width:${pct*100}%"></div></div>`:''}
         ${pct>=1?`<div class="day-done-text">✓ Erledigt${optDone>0?' · +'+optDone+' Bonus':''}</div>`:''}
+        ${logDot}
       `;
       if(type!=='rest') card.addEventListener('click',()=>openModal(date,type,exIds));
       grid.appendChild(card);
@@ -2205,11 +2481,17 @@ function openModal(date, type, exIds){
   const optIds = optForType(type);
   curDay={date,type,exIds,optIds};
   optSectionOpen = false;
+  kurzMode = false;
   document.getElementById('mTitle').textContent = WD[date.getDay()]+', '+fmtDate(date);
   const sub = type==='train-knee'?'Schulter + Knie · 10 Pflichtübungen':
               type==='train-core'?'Schulter + Core · 8 Pflichtübungen':
               'Leichttag · 3 Übungen';
   document.getElementById('mSub').textContent = sub + (optIds.length?' · +'+optIds.length+' Bonus':'');
+  const kurzBtn = document.getElementById('kurzBtn');
+  if(kurzBtn){
+    kurzBtn.classList.remove('active');
+    kurzBtn.style.display = type!=='light' ? '' : 'none';
+  }
   renderModal(exIds, optIds, date);
   document.getElementById('overlay').classList.add('open');
   document.body.style.overflow='hidden';
@@ -2334,11 +2616,17 @@ function toggleOptSection(){
 }
 
 function toggleEx(idx, dateKey){
-  let done=getPS(dateKey);
+  const activeIds = kurzMode ? [0,1,4] : curDay.exIds;
+  let done = getPS(dateKey);
+  const wasDone = activeIds.every(i=>isDone(done,i));
   if(isDone(done,idx)){ delete done[String(idx)]; }
   else { done[String(idx)]=new Date().toISOString(); }
   savePS(dateKey,done);
-  renderModal(curDay.exIds, curDay.optIds, curDay.date);
+  const nowDone = activeIds.every(i=>isDone(done,i));
+  renderModal(kurzMode?[0,1,4]:curDay.exIds, kurzMode?[]:curDay.optIds, curDay.date);
+  if(!wasDone && nowDone){
+    setTimeout(()=>openPostModal(curDay.date), 350);
+  }
 }
 
 function closeModal(){
@@ -2540,6 +2828,12 @@ async function openReport(){
           weekLines.push('    🔥 '+EX[idx].t+' – '+ts+' Uhr (Bonus)');
         }
       });
+      const log2=getLog(ds);
+      if(log2){
+        weekLines.push('    💥 Schmerz: '+(log2.pain>=0?log2.pain+'/10':'–')+
+          (log2.knacken>0?' · 🔔 Knacken: '+log2.knacken+'x':'')+
+          (log2.note?' · '+log2.note:''));
+      }
     }
     if(weekLines.length>0){
       lines.push('── Woche '+(w+1)+' ──');
@@ -2564,6 +2858,7 @@ async function openReport(){
 
 async function init(){
   buildCal();
+  await loadFromCloud().then(() => buildCal());
   if(!isFSSupported()) return;
   const h=await loadHandle();
   if(!h) return;
