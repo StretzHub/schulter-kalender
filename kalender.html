@@ -604,12 +604,8 @@ const SUPABASE_URL = 'https://nqshil8t8hjkfqiigup.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_VI3So7yfNgdrXvco6ZOXhg_kkexlyDq';
 
 const getUserId = () => {
-  let uid = localStorage.getItem('schulter_user_id');
-  if (!uid) {
-    uid = 'user_' + Math.random().toString(36).substr(2, 9);
-    localStorage.setItem('schulter_user_id', uid);
-  }
-  return uid;
+  // Fixed user ID for Domi - alle Geräte nutzen die gleiche ID
+  return 'schulter_domi_001';
 };
 
 async function saveToCloud(trainingDate, painLevel, knackenCount, notes) {
